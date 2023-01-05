@@ -7,5 +7,5 @@ Psychology tests app build in React Native with Expo
       * if you have nvm run:
       * ```nvm install 18.12.1```
       * ```nvm use 18.12.1```
-  3. Run ```npm i```
+  3. Navigate inside the repo and run ```npm i```
   4. Start the app with ```npm run start```
