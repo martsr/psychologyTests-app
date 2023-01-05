@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   Image
 } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import colors from '../config/colors';
 
