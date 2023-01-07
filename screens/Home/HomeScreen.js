@@ -7,7 +7,7 @@ import {
   Image
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import colors from '../../config/colors';
 import { general, mainPage } from '../../config/styles/GeneralStyles';
@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
       </View>
       <View style={{margin:50,marginTop:20,flex:1,justifyContent: "center", alignItems: "center",flexDirection: 'row',flexWrap: "wrap"}}>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => this.props.navigation.navigate('PyramidAndPalmTreesTest')} delayPressIn={0}>
-          <Image style={mainPage.image} source={require('../../assets/PyramidsAndPalmTreesTestIcon.png')}/>
+        <MaterialCommunityIcons name="pyramid" size={40} color={"#444444"}/>
           <Text style={general.textStyle}>Pyramid Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.props.navigation.navigate('BellTest')} delayPressIn={0}>
