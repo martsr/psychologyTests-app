@@ -1,4 +1,4 @@
-# psycologyTests-app
+# psychologyTests-app
 Psychology tests app build in React Native with Expo
 
 # setup enviroment
