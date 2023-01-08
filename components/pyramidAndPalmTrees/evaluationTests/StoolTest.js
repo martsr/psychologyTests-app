@@ -1,8 +1,8 @@
-import mainImage from "../../assets/set3_stool/test_3_main.PNG"
-import option1 from "../../assets/set3_stool/test_3_option_1.PNG"
-import option2 from "../../assets/set3_stool/test_3_option_2.PNG"
-import option3 from "../../assets/set3_stool/test_3_option_3.PNG"
-import option4 from "../../assets/set3_stool/test_3_option_4.PNG"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set3_stool/test_3_main.PNG"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set3_stool/test_3_option_1.PNG"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set3_stool/test_3_option_2.PNG"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set3_stool/test_3_option_3.PNG"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set3_stool/test_3_option_4.PNG"
 
 const stoolTest = {
     name: "Stool Test",

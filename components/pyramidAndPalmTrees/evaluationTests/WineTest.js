@@ -1,11 +1,11 @@
-import mainImage from "../../assets/set4_plug/test_4_main.PNG"
-import option1 from "../../assets/set4_plug/test_4_option_1.PNG"
-import option2 from "../../assets/set4_plug/test_4_option_2.PNG"
-import option3 from "../../assets/set4_plug/test_4_option_3.PNG"
-import option4 from "../../assets/set4_plug/test_4_option_4.PNG"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_main.PNG"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_1.PNG"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_2.PNG"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_3.PNG"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_4.PNG"
 
-const plugTest = {
-    name: "Plug Test",
+const wineTest = {
+    name: "Wine Test",
     isAnimated: false,
     cards: [
         {
@@ -15,7 +15,7 @@ const plugTest = {
         },
         {
             image: option1,
-            isCorrect: false,
+            isCorrect: true,
             isMain: false,
             selected: false,
             id: 1,
@@ -36,7 +36,7 @@ const plugTest = {
         },
         {
             image: option4,
-            isCorrect: true,
+            isCorrect: false,
             isMain: false,
             selected: false,
             id: 4,
@@ -46,4 +46,4 @@ const plugTest = {
     results: {}
 }
 
-export default plugTest;
+export default wineTest;
