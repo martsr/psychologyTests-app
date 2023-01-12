@@ -28,14 +28,14 @@ function shuffle(array) {
 }
 
 function generateIcons(addEvent){
-  const inconsList = ["star","book","camera", "video-camera", "gift","plane","heart","bolt","coffee"]
+  const inconsList = ["star","book","camera", "video-camera", "gift","legal","trophy","heart","coffee"]
   var list = []
-  for (let index = 0; index < 163; index++) {
+  for (let index = 0; index < 154; index++) {
     const random = Math.floor(Math.random() * inconsList.length);
     list.push(<IconContainer key = {index} name={inconsList[random]} addEvent={addEvent}></IconContainer>)
   }
   for (let index = 0; index < 10; index++) {
-    list.push(<IconContainer key = {163+index} name={"bell"} addEvent={addEvent}></IconContainer>)
+    list.push(<IconContainer key = {154+index} name={"bell"} addEvent={addEvent}></IconContainer>)
   }
   return shuffle(list)
 }
@@ -76,11 +76,13 @@ export default class BellTest extends React.Component {
     render(){
     return (
       <>
-        <Modal style = {{flex:1,alignItems:"center",justifyContent:"center",flexDirection: "row",backgroundColor: '#F6F3F5', width: 400, opacity:0.5}} animationType="slide" visible={this.state.visible}>
+        <Modal transparent="true" animationType="slide" visible={this.state.visible}>
+          <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
           <Text style={general.textStyle}>Presione la campana</Text>
             <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
               <Text style={general.textStyle}> Comenzar test</Text>
             </TouchableOpacity>
+          </View>
         </Modal>
         <View style={{flex:1, flexDirection: "row", flexWrap:"wrap", margin:20,alignItems: "center",justifyContent: "center"}}>
             {this.state.listado}

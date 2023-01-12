@@ -42,7 +42,7 @@ export default class HomeScreen extends React.Component {
           <Text style={general.textStyle}>Camel Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.props.navigation.navigate('CardTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={40} color={"#444444"}/>
+        <MaterialCommunityIcons name="cards" size={40} color={"#444444"} />
           <Text style={general.textStyle}>Card Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.props.navigation.navigate('ColorTrailsTest')} delayPressIn={0}>
