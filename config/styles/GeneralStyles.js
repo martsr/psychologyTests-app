@@ -6,6 +6,7 @@ const general = StyleSheet.create({
     },
     textStyle:{
         fontSize: 20,
+        marginLeft: 15
     }
 });
 
@@ -13,10 +14,10 @@ const mainPage = StyleSheet.create({
   button: {
     alignItems: "center",
     backgroundColor: "#DDDDDD",
-    padding: 10,
-    width: 200,
+    padding: 15,
+    width: '40%',
     marginTop: 25,
-    marginLeft: 10,
+    marginLeft: 20,
     borderRadius: 15
   },
   image: {

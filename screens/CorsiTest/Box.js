@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity } from "react-native-web";
 
-export default function Box({boxKey, order, color, position, onBoxPress, turn}) {
+export default function Box({boxKey, order, color, position, disabled, onBoxPress, turn}) {
 
   const [boxColor, setBoxColor] = useState(color);
 
@@ -24,7 +24,7 @@ export default function Box({boxKey, order, color, position, onBoxPress, turn}) 
   }, [color]);
 
   const onPress = () => {
-    if (boxColor == 'yellow') return;
+    if (boxColor == 'yellow' || disabled) return;
     onBoxPress(boxKey, order);
   };
 
