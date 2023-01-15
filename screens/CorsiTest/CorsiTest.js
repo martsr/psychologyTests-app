@@ -5,7 +5,7 @@ import Box from './Box';
 import boxesData from './boxesData';
 import Instructions from './Instructions';
 
-export default function CorsiTest() {
+export default function CorsiTest({navigation, route}) {
   const [boxes, setBoxes] = useState(boxesData);
   const [turn, setTurn] = useState(0);
   const [boxOrderToBePressed, setBoxOrderToBePressed] = useState(1);
@@ -17,20 +17,25 @@ export default function CorsiTest() {
   const [inverted, setInverted] = useState(false);
   const [start, setStart] = useState(false);
   const [startTime, setStartTime] = useState(null);
+  const [boxesDisabled, setBoxesDisabled] = useState(true);
+
+  const {patientNumber} = route.params;
+  console.log(patientNumber);
 
   useEffect(() => {
     setInvertedBoxOrderToBePressed(amountOfBoxesToBePressed);
     setNumberOfPressedBoxes(0);
-  }, [amountOfBoxesToBePressed])
-
-  useEffect(() => {
+    setBoxesDisabled(true);
+    setTimeout(() => {
+      setBoxesDisabled(false);
+    }, amountOfBoxesToBePressed * 1000 + 1000);
     setStartTime(new Date());
   }, [start, turn]);
 
   
   return start ? (
     <View style={{ width: '100%', height: '100%', backgroundColor: 'black', padding: '2em' }}>
-      <Text>{inverted ? 'Invertido' : ''}</Text>
+      <View style={{height:'1em', width: '1em',  backgroundColor: boxesDisabled? 'yellow' : 'green', marginLeft: 'auto', borderRadius: '50%'}}></View>
       <View style={{ flexGrow: 1, position: 'relative' }}>
         {
           boxes.map((aBox) => {
@@ -42,6 +47,7 @@ export default function CorsiTest() {
               order={inverted ? aBox.invertedSequenceOrder[turn] : aBox.sequenceOrder[turn]}
               color={aBox.color}
               position={aBox.position}
+              disabled = {boxesDisabled}
               onBoxPress={onBoxPress}
               style={{ position: 'absolute', left: aBox.position[0], top: aBox.position[1] }}>
               </Box>
@@ -84,7 +90,7 @@ export default function CorsiTest() {
       return;
     }
     if (inverted && turn == boxes.length - 2) {
-      alert('END');
+      navigation.navigate('HomeScreen');
     }
     saveResult();
     setNumberOfCorrects(0);
