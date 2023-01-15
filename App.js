@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
@@ -13,6 +13,8 @@ import CorsiTest from './screens/CorsiTest/CorsiTest';
 import CardTest from './screens/CardTest/CardTest';
 import ColorTrailsTest from './screens/ColorTrailsTest/ColorTrailsTest';
 import CamelTest from './screens/CamelTest/CamelTest';
+import DatabaseService from './services/DatabaseService';
+import { useCallback, useState } from 'react';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -85,9 +87,14 @@ function TestsTab() {
 }
 
 function DownloadsTab() {
+  const isFocused = useIsFocused();
+
   return (
     <View>
-      <Text>Download</Text>
+      <Text>Downloads</Text>
+      <Text>
+        {JSON.stringify(DatabaseService.instance().getResults())}
+      </Text>
     </View>
   );
 }
