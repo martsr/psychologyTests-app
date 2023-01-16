@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import AppButton from '../../components/Button';
+import DatabaseService from '../../services/DatabaseService';
 import Box from './Box';
 import boxesData from './boxesData';
 import Instructions from './Instructions';
@@ -20,7 +21,6 @@ export default function CorsiTest({navigation, route}) {
   const [boxesDisabled, setBoxesDisabled] = useState(true);
 
   const {patientNumber} = route.params;
-  console.log(patientNumber);
 
   useEffect(() => {
     setInvertedBoxOrderToBePressed(amountOfBoxesToBePressed);
@@ -31,6 +31,13 @@ export default function CorsiTest({navigation, route}) {
     }, amountOfBoxesToBePressed * 1000 + 1000);
     setStartTime(new Date());
   }, [start, turn]);
+
+  useEffect(() => {
+    if (inverted && turn == boxes.length - 1) {
+      DatabaseService.instance().saveCorsiTestResult(patientNumber, results);
+      navigation.navigate('HomeScreen');
+    }
+  }, [results.length])
 
   
   return start ? (
@@ -88,9 +95,6 @@ export default function CorsiTest({navigation, route}) {
   function nextLevel() {
     if (numberOfPressedBoxes == 0) {
       return;
-    }
-    if (inverted && turn == boxes.length - 2) {
-      navigation.navigate('HomeScreen');
     }
     saveResult();
     setNumberOfCorrects(0);
