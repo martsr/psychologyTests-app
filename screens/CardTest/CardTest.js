@@ -105,7 +105,7 @@ export default class CardTest extends React.Component {
             </TouchableOpacity>
           </View>
         </Modal>
-        <Modal transparent="true" animationType="slide" visible={this.state.responseModalVisible}>
+        <Modal transparent="true" visible={this.state.responseModalVisible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
                 {this.state.lastEvent == "catch" ?
                     <View style ={{backgroundColor: "#b5d7c4", opacity:0.7, width:500, height:200, borderRadius:15}}>

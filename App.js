@@ -30,6 +30,7 @@ export default function App() {
           <Stack.Screen
             name='BellTest'
             component={BellTest}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name='HanoiTest'

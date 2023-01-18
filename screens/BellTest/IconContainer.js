@@ -31,9 +31,9 @@ export default class IconContainer extends React.Component {
 
   render(){
   return (
-      <View>
+      <View style={{height: this.props.height, width: this.props.width}}>
         <TouchableOpacity onPress={this.pressed} style={{transform: [{ rotate: this.state.direction }]}}>
-          <FontAwesome name={this.props.name} size={70} color={this.state.iconColor}/>
+          <FontAwesome name={this.props.name} color={this.state.iconColor} size={this.props.width}/>
         </TouchableOpacity>
       </View>
     );
