@@ -13,6 +13,7 @@ import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import CardContainer from './CardContainer';
 import { general, mainPage } from '../../config/styles/GeneralStyles';
+import CardTutorial from './cardTutorial';
 
 function generateCards(){
     const iconsList=['rabbit','ship']
@@ -40,6 +41,7 @@ export default class CardTest extends React.Component {
         idToDelete: 0,
         lastEvent: "",
         totalEvents:0,
+        finishedTutorial:false
     }
 
     addEvent=(id,name,color,side)=>{
@@ -80,6 +82,10 @@ export default class CardTest extends React.Component {
         this.setState({visible: false, cards: generateCards()})
     }
 
+    finishTutorial = () =>{
+        this.setState({finishedTutorial: true})
+    }
+
     setResponseModalInvisible =()=>{
         var result = this.state.cards.filter( item=> item.id != this.state.idToDelete);
         const color = ["#a95906","#ffffff"][Math.floor(Math.random() * 2)]
@@ -97,13 +103,14 @@ export default class CardTest extends React.Component {
         const listado = this.state.cards.map( (item) => <CardContainer key={item.id} id={item.id} name={item.name} color={item.color} addEvent={this.addEvent}/> );
         return (
         <>
+        {!this.state.finishedTutorial ?<CardTutorial finishTutorial={this.finishTutorial}></CardTutorial>:<>
         <Modal transparent="true" animationType="slide" visible={this.state.visible}>
-          <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center',backgroundColor:"#F6F3F5"}}>
-          <Text style={general.textStyle}>criterio : {this.state.evaluation}</Text>
-            <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
-              <Text style={general.textStyle}> Comenzar test</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center',backgroundColor:"#F6F3F5"}}>
+                <Text style={general.textStyle}>criterio : {this.state.evaluation}</Text>
+                <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
+                    <Text style={general.textStyle}> Comenzar test</Text>
+                </TouchableOpacity>
+            </View>
         </Modal>
         <Modal transparent="true" visible={this.state.responseModalVisible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
@@ -140,7 +147,54 @@ export default class CardTest extends React.Component {
                 </View>
             </View>
         </View>
+        </>}
         </>
         );
     }
 };
+
+/*<>
+        <Modal transparent="true" animationType="slide" visible={this.state.visible}>
+            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center',backgroundColor:"#F6F3F5"}}>
+                <Text style={general.textStyle}>criterio : {this.state.evaluation}</Text>
+                <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
+                    <Text style={general.textStyle}> Comenzar test</Text>
+                </TouchableOpacity>
+            </View>
+        </Modal>
+        <Modal transparent="true" visible={this.state.responseModalVisible}>
+            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
+                {this.state.lastEvent == "catch" ?
+                    <View style ={{backgroundColor: "#b5d7c4", opacity:0.7, width:500, height:200, borderRadius:15}}>
+                        <Text style={[general.textStyle,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
+                        <View style={{alignSelf:"center"}}>
+                            <FontAwesome name="check-circle" size={50} color="#4b9b7f" />
+                        </View>
+                        <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
+                            <Text style={general.textStyle}> Siguiente carta</Text>
+                        </TouchableOpacity>
+                    </View>:
+                    <View style ={{backgroundColor: "#dab89d", opacity:0.7, width:500, height:200, borderRadius:15}}>
+                    <Text style={[general.textStyle,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
+                    <View style={{alignSelf:"center"}}>
+                        <FontAwesome name="times-circle" size={50} color="#e04d44" />
+                    </View>
+                    <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
+                        <Text style={general.textStyle}> Siguiente carta</Text>
+                    </TouchableOpacity>
+                    </View>
+                }
+            </View>
+        </Modal>
+        <View style={CardsConfig.container}>
+            {listado[0]}
+            <View style={CardsConfig.optionsContainer}>
+                <View style={CardsConfig.box}>
+                    <MaterialCommunityIcons style={{alignSelf: "center"}} name="rabbit" size={150} color={this.state.rabbitColor} />
+                </View>
+                <View style={CardsConfig.box}>
+                    <Fontisto style={{alignSelf: "center"}}name="ship" size={130} color={this.state.shipColor} />
+                </View>
+            </View>
+        </View>
+        </>*/

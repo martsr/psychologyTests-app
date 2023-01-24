@@ -17,16 +17,13 @@ export default class IconContainer extends React.Component {
     direction: directions[Math.floor(Math.random() * directions.length)]}
 
   pressed = () => {
-    var event= ""
-    if(this.props.name != "bell"){
-      event="mistake"
-    }
     if(this.props.name == "bell" && this.state.iconColor == "#000000"){
       this.setState({iconColor: "#FF0000"})
-      event="bell"
-      console.log("Pressed")
+      this.props.addEvent("bell")
     }
-    this.props.addEvent(event)
+    else if(this.props.name != "bell"){
+      this.props.addEvent("mistake")
+    }
   }
 
   render(){

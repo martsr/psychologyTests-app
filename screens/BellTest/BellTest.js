@@ -78,6 +78,9 @@ export default class BellTest extends React.Component {
   setInvisible =()=>{
     this.setState({visible: false, listado: generateIcons(this.addEvent, this.state.height, this.state.width)})
   }
+  testApproved = () => {
+    this.setState({testApproved: true, testBellColor: "#03c03c"})
+  }
   state = {
     bells: 0,
     mistakes: 0,
@@ -85,28 +88,40 @@ export default class BellTest extends React.Component {
     listado: [],
     height: windowHeight/10,
     width: windowWidth/16,
-    visibleFinished: false
+    visibleFinished: false,
+    testApproved: false,
+    testBellColor: "#000000"
   }
     render(){
     return (
       <>
         <Modal transparent="true" animationType="slide" visible={this.state.visible}>
+          <View style={{flex: 1,margin:30,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
           <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
-          <View style={{flex: 1,flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}}>
-            <Text style={general.textStyle}>En este test usted deberá presionar todas las campanas </Text>
-              <FontAwesome name={"bell"} color={"#000000"} size={20}/>
-            <Text style={general.textStyle}>que encuentre </Text>
+              <Text style={{fontSize: 30}}>En este test usted deberá encontrar todas las campanas </Text>
+              <FontAwesome name={"bell"} color={"#000000"} size={30}/>
           </View>
-          <View style={{flex: 3,flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}}>
-            <FontAwesome name={"bell"} color={"#000000"} size={70}/>
-            <FontAwesome name={"star"} color={"#000000"} size={70}/>
-            <FontAwesome name={"camera"} color={"#000000"} size={70}/>
+          <View style={{marginTop: 20, paddingHorizontal: 100,flex: 3,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', borderColor: "#bcbcbc", borderWidth: 2, borderRadius:15, backgroundColor: "#eeeeee"}}>
+          <Text style={{fontSize: 30}}>Presione la campana</Text>
+            <View style={{flex: 1,flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}}>
+              <TouchableOpacity onPress={this.testApproved}>
+                <FontAwesome name={"bell"} color={this.state.testBellColor} size={200}/>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <FontAwesome name={"star"} color={"#000000"} size={200}/>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <FontAwesome name={"camera"} color={"#000000"} size={200}/>
+              </TouchableOpacity>
+            </View>
           </View>
+          {this.state.testApproved ?
           <View style={{flex: 3}}>
-            <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
-              <Text style={general.textStyle}> Comenzar test</Text>
+            <TouchableOpacity style = {{flex:1, flexDirection: "row"}}onPress={this.setInvisible}>
+              <Text style={{fontSize: 30, color:"#03c03c"}}> Comenzar test</Text>
+              <FontAwesome style={{marginLeft: 15}} name={"forward"} color={"#03c03c"} size={50}/>
             </TouchableOpacity>
-          </View>
+          </View>:<View style ={{flex:3}}></View>}
           </View>
         </Modal>
         <Modal animationType="slide" visible={this.state.visibleFinished}>

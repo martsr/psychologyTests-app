@@ -47,6 +47,7 @@ export default function App() {
           <Stack.Screen
             name='CardTest'
             component={CardTest}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name='ColorTrailsTest'
