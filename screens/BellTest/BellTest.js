@@ -12,7 +12,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import IconContainer from './IconContainer'
 
 const windowWidth = Dimensions.get('window').width-20;
-const windowHeight = Dimensions.get('window').height-20;
+const windowHeight = Dimensions.get('window').height-40;
 
 function shuffle(array) {
   let currentIndex = array.length,  randomIndex;
