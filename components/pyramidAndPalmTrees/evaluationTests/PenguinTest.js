@@ -1,12 +1,12 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set31_penguin/set31_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set31_penguin/set31_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set31_penguin/set31_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set31_penguin/set31_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set31_penguin/set31_option_4.png"
 
-const trainTest = {
-    name: "Train Test",
-    isAnimated: false,
+const penguinTest = {
+    name: "Penguin Test",
+    isAnimated: true,
     cards: [
         {
             image: mainImage,
@@ -46,4 +46,4 @@ const trainTest = {
     results: {}
 }
 
-export default trainTest;
+export default penguinTest;

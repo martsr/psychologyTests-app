@@ -1,11 +1,11 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set32_comb/set32_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set32_comb/set32_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set32_comb/set32_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set32_comb/set32_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set32_comb/set32_option_4.png"
 
-const trainTest = {
-    name: "Train Test",
+const combTest = {
+    name: "Comb Test",
     isAnimated: false,
     cards: [
         {
@@ -46,4 +46,4 @@ const trainTest = {
     results: {}
 }
 
-export default trainTest;
+export default combTest;
