@@ -1,11 +1,11 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set19_plane/set19_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set19_plane/set19_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set19_plane/set19_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set19_plane/set19_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set19_plane/set19_option_4.png"
 
-const trainTest = {
-    name: "Train Test",
+const planeTest = {
+    name: "Plane Test",
     isAnimated: false,
     cards: [
         {
@@ -22,21 +22,21 @@ const trainTest = {
         },
         {
             image: option2,
-            isCorrect: false,
+            isCorrect: true,
             isMain: false,
             selected: false,
             id: 2,
         },
         {
             image: option3,
-            isCorrect: true,
+            isCorrect: false,
             isMain: false,
             selected: false,
             id: 3,
         },
         {
             image: option4,
-            isCorrect: false,
+            isCorrect: true,
             isMain: false,
             selected: false,
             id: 4,
@@ -46,4 +46,4 @@ const trainTest = {
     results: {}
 }
 
-export default trainTest;
+export default planeTest;

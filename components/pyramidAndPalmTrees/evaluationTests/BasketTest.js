@@ -1,11 +1,11 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set9_train/set9_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set20_basket/set20_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set20_basket/set20_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set20_basket/set20_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set20_basket/set20_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set20_basket/set20_option_4.png"
 
-const trainTest = {
-    name: "Train Test",
+const basketTest = {
+    name: "Basket Test",
     isAnimated: false,
     cards: [
         {
@@ -36,7 +36,7 @@ const trainTest = {
         },
         {
             image: option4,
-            isCorrect: false,
+            isCorrect: true,
             isMain: false,
             selected: false,
             id: 4,
@@ -46,4 +46,4 @@ const trainTest = {
     results: {}
 }
 
-export default trainTest;
+export default basketTest;
