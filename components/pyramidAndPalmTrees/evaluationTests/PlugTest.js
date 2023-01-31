@@ -1,8 +1,8 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set4_plug/set_4_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set4_plug/set_4_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set4_plug/set_4_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set4_plug/set_4_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set4_plug/set_4_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set6_plug/set_6_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set6_plug/set_6_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set6_plug/set_6_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set6_plug/set_6_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set6_plug/set_6_option_4.png"
 
 const plugTest = {
     name: "Plug Test",

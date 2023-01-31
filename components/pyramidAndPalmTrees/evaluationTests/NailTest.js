@@ -1,8 +1,8 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set2_nail/set_2_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set2_nail/set_2_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set2_nail/set_2_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set2_nail/set_2_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set2_nail/set_2_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set4_nail/set_4_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set4_nail/set_4_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set4_nail/set_4_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set4_nail/set_4_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set4_nail/set_4_option_4.png"
 
 const nailTest = {
     name: "Nail Test",
