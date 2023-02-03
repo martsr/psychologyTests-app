@@ -4,7 +4,7 @@ import { FlatList } from "react-native-web";
 
 import Card from "./Card";
 import colors from "../../config/colors";
-import { shuffle } from "../../Helper";
+import { shuffle } from "../../Helpers/ArraysHelper";
 
 export default function CardsSetTest ({cards, numberOfColumns, handleOnSelect}) {
   const [shuffleCards, setShuffleCards] = useState(true);

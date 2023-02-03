@@ -64,10 +64,10 @@ function PyramidAndPalmTreesTest(props) {
         {showTest()}
         <View style={styles.navigation}>
           <View style={styles.buttonsContainer}>
-            {(testId > 0) && <TouchableOpacity style={styles.button} Text={"BACK"} onPress={hadleBackButton} disabled={backButtonDisable}>
+            {/* {(testId > 0) && <TouchableOpacity style={styles.button} Text={"BACK"} onPress={hadleBackButton} disabled={backButtonDisable}>
                 <Text style={styles.buttonText}>BACK</Text>
               </TouchableOpacity>
-            }
+            } */}
             <TouchableOpacity style={styles.button} Text={"NEXT"} onPress={hadleNextButton} disabled={nextButtonDisable}>
               <Text style={styles.buttonText}>{isTheLastTest()? 'FINISH':'NEXT'}</Text>
             </TouchableOpacity>

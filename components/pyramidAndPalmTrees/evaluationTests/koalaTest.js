@@ -1,8 +1,8 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set5_koala/set_5_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set5_koala/set_5_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set5_koala/set_5_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set5_koala/set_5_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set5_koala/set_5_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set2_koala/set_2_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set2_koala/set_2_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set2_koala/set_2_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set2_koala/set_2_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set2_koala/set_2_option_4.png"
 
 const koalaTest = {
     name: "Koala Test",
