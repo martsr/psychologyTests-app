@@ -76,7 +76,7 @@ export default function HomeScreen({navigation}) {
           <Text style={general.textStyle}>Camel Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('CardTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={40} color={"#444444"}/>
+        <MaterialCommunityIcons name="cards" size={40} color={"#444444"}/>
           <Text style={general.textStyle}>Card Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('ColorTrailsTest')} delayPressIn={0}>

@@ -1,8 +1,8 @@
-import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_main.png"
-import option1 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_1.png"
-import option2 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_2.png"
-import option3 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_3.png"
-import option4 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/test_1_option_4.png"
+import mainImage from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/set_1_main.png"
+import option1 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/set_1_option_1.png"
+import option2 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/set_1_option_2.png"
+import option3 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/set_1_option_3.png"
+import option4 from "../../../assets/pyramidAndPalmTreesAssets/set1_wine/set_1_option_4.png"
 
 const wineTest = {
     name: "Wine Test",

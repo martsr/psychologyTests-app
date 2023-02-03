@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons  } from '@expo/vector-icons';
 
-import PyramidAndPalmTreesTest from './screens/PyramidsAndPalmTree/PyramidsAndPalmTreesScreen';
+import PyramidAndPalmTreesTest from './screens/PyramidsAndPalmTreesTest/PyramidsAndPalmTreesScreen';
 import HomeScreen from './screens/Home/HomeScreen';
 import BellTest from './screens/BellTest/BellTest';
 import HanoiTest from './screens/HanoiTest/HanoiTest';
