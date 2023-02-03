@@ -90,7 +90,7 @@ function DownloadsTab() {
   const isFocused = useIsFocused();
 
   return (
-    <View>
+    <View style={{padding:30}}>
       <Text>Downloads</Text>
       <Text>
         {JSON.stringify(DatabaseService.instance().getResults())}

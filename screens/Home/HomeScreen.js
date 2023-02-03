@@ -51,10 +51,10 @@ export default function HomeScreen({navigation}) {
           </View>
         </View>
       </Modal>
-      <View style={[mainPage.mainStyle]}>
+      <View style={[mainPage.mainStyle, {marginTop: 120}]}>
         <Image style={mainPage.logo} source={require('../../assets/ucaLogo.png')}/>
       </View>
-      <View style={{margin:50,marginTop:20,flex:1,justifyContent: "center", alignItems: "center",flexDirection: 'row',flexWrap: "wrap"}}>
+      <View style={{margin:50,marginTop:100,flex:1,justifyContent: "center", alignItems: "center",flexDirection: 'row',flexWrap: "wrap"}}>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => selectTest('PyramidAndPalmTreesTest')} delayPressIn={0}>
         <MaterialCommunityIcons name="pyramid" size={40} color={"#444444"}/>
           <Text style={general.textStyle}>Pyramid Test</Text>
@@ -132,16 +132,17 @@ export default function HomeScreen({navigation}) {
         elevation: 5,
       },
       title: {
-        fontSize: '1.2rem',
-        fontWeight: 700,
+        fontSize: 19,
+        fontWeight: 'bold',
         marginBottom: 20,
       },
       input: {
         width: '100%',
-        fontSize: '1rem',
-        lineHeight: '150%',
+        fontSize: 16,
         padding: 10,
-        border: 'solid 1px grey',
+        borderWidth: 1,
+        minWidth: 250,
+        borderColor: 'grey',
         marginBottom: 10,
       },
       buttons: {

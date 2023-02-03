@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableHighlight } from "react-native";
-import { FlatList } from "react-native-web";
+import { FlatList } from "react-native";
 
 import Card from "./Card";
 import colors from "../../config/colors";

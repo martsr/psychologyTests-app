@@ -4,7 +4,7 @@ import { View, StyleSheet } from "react-native";
 import Text from "../../components/Text";
 import colors from "../../config/colors";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
-import { TouchableOpacity } from "react-native-web";
+import { TouchableOpacity } from "react-native";
 import tests from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 
 function PyramidAndPalmTreesTest(props) {

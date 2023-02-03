@@ -41,8 +41,8 @@ export default function CorsiTest({navigation, route}) {
 
   
   return start ? (
-    <View style={{ width: '100%', height: '100%', backgroundColor: 'black', padding: '2em' }}>
-      <View style={{height:'1em', width: '1em',  backgroundColor: boxesDisabled? 'yellow' : 'green', marginLeft: 'auto', borderRadius: '50%'}}></View>
+    <View style={{ width: '100%', height: '100%', backgroundColor: 'black', padding: 16 }}>
+      <View style={{height: 16, width: 16,  backgroundColor: boxesDisabled? 'yellow' : 'green', marginLeft: 'auto', borderRadius: 16}}></View>
       <View style={{ flexGrow: 1, position: 'relative' }}>
         {
           boxes.map((aBox) => {
@@ -62,7 +62,7 @@ export default function CorsiTest({navigation, route}) {
           })
         }
       </View>
-      <View style={{ height: '60px' }}>
+      <View style={{ height: 70 }}>
         {numberOfPressedBoxes > 0 ? <AppButton title='✔' onPress={nextLevel}></AppButton> : null}
       </View>
     </View>
