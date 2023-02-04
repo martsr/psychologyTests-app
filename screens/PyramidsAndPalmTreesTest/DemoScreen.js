@@ -6,33 +6,45 @@ import Text from "../../components/Text";
 import colors from "../../config/colors";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native-web";
-import demoTest from "../../components/pyramidAndPalmTrees/evaluationTests/DemoTest";
+import { demoTest } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 
 function DemoScreen({ onStartPress }) {
-  const [startButton, setStartButton] = useState(false);
+  const [testId, setTestId] = useState(0);
+  const [start, setStart] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setmodalMessage] = useState("");
+  const [showButton, setShowButton]  = useState(false);
   const [showCross, setShowCross] = useState(false);
 
   const showTest = () => {
     return (
       <CardSetTest
-        cards={demoTest.cards}
-        numberOfColumns={demoTest.columns}
+        cards={demoTest[testId].cards}
+        numberOfColumns={demoTest[testId].columns}
         handleOnSelect={handleOnSelect}
       />
     );
   };
 
   const handleOnSelect = (card) => {
-	setModalVisible(true)
+	  setModalVisible(true)
+    const isLastTest = (demoTest.length === (testId + 1))
+
     if (card.isCorrect) {
-      setStartButton(true);
-      setmodalMessage("Correcto, ya puede empezar");
+      isLastTest? setStart(true): setShowButton(true);
+      const modalMessage = isLastTest? "Correcto! Ahora aparecerá una cruz en el centro de la pantalla. Por favor, preste atención a la cruz.": "Correcto!";
+      setmodalMessage(modalMessage)
     } else {
       setmodalMessage("Incorrecto, prueba otra opción");
     }
   };
+  
+  const onNextButton = () =>{
+    setShowButton(false)
+    if( !(demoTest.length === (testId + 1)) ){ //check if you are in the last test of the demo
+      setTestId(testId+1)
+    }
+  }
 
   const onStart = () => {
     setShowCross(true);
@@ -41,6 +53,13 @@ function DemoScreen({ onStartPress }) {
       onStartPress();
     }, 3000);
   };
+
+  const handleModalOnPress = () => {
+    setModalVisible(!modalVisible)
+    if(start){
+      onStart();
+    }
+  }
 
   return !showCross ? (
     <View style={styles.detailsContainer}>
@@ -57,27 +76,22 @@ function DemoScreen({ onStartPress }) {
           <View style={styles.modal.modalView}>
             <Text style={styles.modal.title}>{modalMessage}</Text>
             <View style={styles.modal.buttons}>
-              <AppButton color={colors.secondary} title={"Aceptar"} onPress={() => setModalVisible(!modalVisible)}></AppButton>
+              <AppButton color={colors.secondary} title={"Aceptar"} onPress={handleModalOnPress}></AppButton>
             </View>
           </View>
         </View>
       </Modal>
       <View style={styles.navigation}>
-        {startButton ? (
-          <View style={styles.buttonsContainer}>
-            <Text style={styles.text}>
-              Ahora aparecerá una cruz en el centro de la pantalla. Por favor,
-              preste atención a la cruz.
-            </Text>
-            <TouchableOpacity style={styles.button} onPress={onStart}>
-              <Text style={styles.buttonText}>{"START"}</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          ""
-        )}
+        { showButton?
+        (<View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button} onPress={onNextButton}>
+            <Text style={styles.buttonText}>{"NEXT"}</Text>
+          </TouchableOpacity>
+        </View>)
+        : ''}
       </View>
     </View>
+        
   ) : (
     <View style={styles.crossView}>
       <Text style={{ color: colors.white, fontSize: "10rem" }}>✕</Text>
