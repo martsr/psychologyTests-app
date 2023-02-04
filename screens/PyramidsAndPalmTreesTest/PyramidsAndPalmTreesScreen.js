@@ -6,7 +6,7 @@ import colors from "../../config/colors";
 import DemoScreen from "./DemoScreen";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native";
-import tests from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
+import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 
 function PyramidAndPalmTreesTest(props) {
   const [testId, setTestId] = useState(0);
