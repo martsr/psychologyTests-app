@@ -167,9 +167,6 @@ export default function HomeScreen({navigation}) {
       flexDirection: 'row',
       flexWrap: "wrap",
     },
-    items: {
-
-    },
     header:{
       alignItems: 'center',
       flexDirection: "row",
