@@ -1,4 +1,7 @@
 import { StyleSheet } from "react-native"
+
+import colors from "../colors";
+
 const general = StyleSheet.create({
     backgroundStyle: {
         flex:1,
@@ -6,19 +9,22 @@ const general = StyleSheet.create({
     },
     textStyle:{
         fontSize: 20,
-        marginLeft: 15
+        marginLeft: 15,
+        color: colors.white,
     }
 });
 
 const mainPage = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: "#DDDDDD",
+    backgroundColor: colors.homeButton,
+    color: colors.white,
     padding: 15,
-    height: 70,
-    width: '40%',
-    marginTop: 25,
-    marginLeft: 20,
+    height: 100,
+    width: '30%',
+    marginTop: 30,
+    marginBottom: 30,
+    marginLeft: 30,
     borderRadius: 15
   },
   image: {
@@ -33,12 +39,6 @@ const mainPage = StyleSheet.create({
   logo: {
     width: 390,
     height: 120
-  },
-  mainStyle:{
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
   },
 });
 
