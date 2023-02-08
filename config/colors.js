@@ -8,5 +8,6 @@ export default {
   dark: "#0c0c0c",
   danger: "#ff5252",
   button: "#2196F3",
-  homeButton: '#DDDDDD',
+  homeButton: '#2170e5',
+  title: "#000"
 };

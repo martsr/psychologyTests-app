@@ -7,7 +7,6 @@ import {
   View,
   Modal,
   Image,
-  Pressable
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { FontAwesome, MaterialCommunityIcons  } from '@expo/vector-icons';
@@ -51,39 +50,47 @@ export default function HomeScreen({navigation}) {
           </View>
         </View>
       </Modal>
-      <View style={[mainPage.mainStyle, {marginTop: 120}]}>
-        <Image style={mainPage.logo} source={require('../../assets/ucaLogo.png')}/>
+
+      <View style={styles.header}>
+        <View style={{flex: 1, marginLeft: 75}}>
+          <Text style={styles.headerText}>Seleccione una prueba para comenzar</Text>
+        </View>
+        <View style={{justifyContent:"flex-end", height:120, width: 160, marginRight: 75} }>
+          <Image style={styles.logo} source={require('../../assets/logoUca.png')}/> 
+        </View>
       </View>
-      <View style={{margin:50,marginTop:100,flex:1,justifyContent: "center", alignItems: "center",flexDirection: 'row',flexWrap: "wrap"}}>
+
+      <View style={styles.itemsContainer}>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => selectTest('PyramidAndPalmTreesTest')} delayPressIn={0}>
-        <MaterialCommunityIcons name="pyramid" size={40} color={"#444444"}/>
+          <MaterialCommunityIcons name="pyramid" size={60} color={colors.white}/>
           <Text style={general.textStyle}>Pyramid Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('BellTest')} delayPressIn={0}>
-          <FontAwesome name="bell-o" size={40} color={"#444444"}/>
+          <FontAwesome name="bell-o" size={60} color={colors.white}/>
           <Text style={general.textStyle}>Bell Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('HanoiTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={40} color={"#444444"}/>
+          <FontAwesome name="image" size={60} color={colors.white}/>
           <Text style={general.textStyle}>Hanoi Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('CorsiTest')} delayPressIn={0}>
-          <FontAwesome name="cube" size={40} color={"#444444"}/>
+          <FontAwesome name="cube" size={60} color={colors.white}/>
           <Text style={general.textStyle}>Corsi Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('CamelTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={40} color={"#444444"}/>
+          <FontAwesome name="image" size={60} color={colors.white}/>
           <Text style={general.textStyle}>Camel Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('CardTest')} delayPressIn={0}>
-        <MaterialCommunityIcons name="cards" size={40} color={"#444444"}/>
+        <MaterialCommunityIcons name="cards" size={60} color={colors.white}/>
           <Text style={general.textStyle}>Card Test</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('ColorTrailsTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={40} color={"#444444"}/>
+          <FontAwesome name="image" size={60} color={colors.white}/>
           <Text style={general.textStyle}>Color Trails Test</Text>
         </TouchableOpacity>
       </View>
+
     </SafeAreaView>
     );
 
@@ -151,4 +158,31 @@ export default function HomeScreen({navigation}) {
         flexWrap: 'wrap',
       },
     },
+    itemsContainer: {
+      margin:60,
+      marginTop:100,
+      flex:1,
+      justifyContent: "flex-start",
+      alignItems: "center",
+      flexDirection: 'row',
+      flexWrap: "wrap",
+    },
+    header:{
+      alignItems: 'center',
+      flexDirection: "row",
+      width: "100%",
+    },
+    logo: {
+      flex: 1,
+      borderBottomStartRadius: 15,
+      borderBottomEndRadius: 15,
+    },
+    headerItem: {
+      flex: 1,
+    },
+    headerText: {
+      color: colors.title,
+      fontSize: 30,
+      fontWeight: 'bold'
+    }
   });
