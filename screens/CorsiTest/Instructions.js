@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import AppButton from "../../components/Button";
+import AppButton from "../../components/AppButton";
 import Box from "./Box";
 
 export default function Instructions({onStartPress, inverted}) {

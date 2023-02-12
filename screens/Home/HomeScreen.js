@@ -13,7 +13,8 @@ import { FontAwesome, MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import colors from '../../config/colors';
 import { general, mainPage } from '../../config/styles/GeneralStyles';
-import AppButton from '../../components/Button';
+import AppButton from '../../components/AppButton';
+import TestsNames from '../../Helpers/TestsNames';
 
 export default function HomeScreen({navigation}) {
 
@@ -21,21 +22,20 @@ export default function HomeScreen({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [patientNumber, setPatientNumber] = useState(undefined);
   const [error, setError] = useState(null);
-  
+
   return (
-    <SafeAreaView styles={mainPage.mainStyle}>
+    <SafeAreaView>
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}
       >
        <View style={styles.patientModal}>
           <View style={styles.patientModal.modalView}>
-            <Text style={styles.patientModal.title}>Número de paciente</Text>
+            <Text style={styles.patientModal.title}>{TestsNames[selectedTest]}</Text>
             <TextInput
               style={styles.patientModal.input}
               onChangeText={setPatientNumber}
@@ -43,9 +43,9 @@ export default function HomeScreen({navigation}) {
               keyboardType='numeric'
             ></TextInput>
             <Text>{error}</Text>
-            <View style={styles.patientModal.buttons}>
-              <AppButton title={'Cancelar'} onPress={() => cancel()}></AppButton>
-              <AppButton title={'Comenzar'} onPress={() => openTest()}></AppButton>
+            <View style={styles.patientModal.buttonContainer}>
+              <AppButton title={'Cancelar'} color={colors.white} textColor={colors.button} borderColor={colors.button} style={styles.patientModal.button} onPress={() => cancel()}></AppButton>
+              <AppButton title={'Comenzar'} color={colors.button} textColor={colors.white} style={styles.patientModal.button} onPress={() => openTest()}></AppButton>
             </View>
           </View>
         </View>
@@ -61,33 +61,33 @@ export default function HomeScreen({navigation}) {
       </View>
 
       <View style={styles.itemsContainer}>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => selectTest('PyramidAndPalmTreesTest')} delayPressIn={0}>
+        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => selectTest('pyramidAndPalmTreesTest')} delayPressIn={0}>
           <MaterialCommunityIcons name="pyramid" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>Pyramid Test</Text>
+          <Text style={general.textStyle}>{TestsNames.pyramidAndPalmTreesTest}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('BellTest')} delayPressIn={0}>
+        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('bellTest')} delayPressIn={0}>
           <FontAwesome name="bell-o" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>Bell Test</Text>
+          <Text style={general.textStyle}>{TestsNames.bellTest}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('HanoiTest')} delayPressIn={0}>
+        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('hanoiTest')} delayPressIn={0}>
           <FontAwesome name="image" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>Hanoi Test</Text>
+          <Text style={general.textStyle}>{TestsNames.hanoiTest}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('CorsiTest')} delayPressIn={0}>
+        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('corsiTest')} delayPressIn={0}>
           <FontAwesome name="cube" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>Corsi Test</Text>
+          <Text style={general.textStyle}>{TestsNames.corsiTest}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('CamelTest')} delayPressIn={0}>
+        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('camelTest')} delayPressIn={0}>
           <FontAwesome name="image" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>Camel Test</Text>
+          <Text style={general.textStyle}>{TestsNames.camelTest}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('CardTest')} delayPressIn={0}>
+        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('cardTest')} delayPressIn={0}>
         <MaterialCommunityIcons name="cards" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>Card Test</Text>
+          <Text style={general.textStyle}>{TestsNames.cardTest}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('ColorTrailsTest')} delayPressIn={0}>
+        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('colorTrailsTest')} delayPressIn={0}>
           <FontAwesome name="image" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>Color Trails Test</Text>
+          <Text style={general.textStyle}>{TestsNames.colorTrailsTest}</Text>
         </TouchableOpacity>
       </View>
 
@@ -122,8 +122,9 @@ export default function HomeScreen({navigation}) {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 22,
+      backgroundColor: 'rgba(0,0,0,0.5)',
       modalView: {
+        width: 500,
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
@@ -147,16 +148,22 @@ export default function HomeScreen({navigation}) {
         width: '100%',
         fontSize: 16,
         padding: 10,
-        borderWidth: 1,
+        borderBottomWidth: 1,
         minWidth: 250,
         borderColor: 'grey',
         marginBottom: 10,
       },
-      buttons: {
-        display: 'flex',
+      buttonContainer: {
+        flex: 1,
         flexDirection: 'row',
-        flexWrap: 'wrap',
+        justifyContent:"space-evenly",
+        width: 200,
+        marginTop: 25
       },
+      button: {
+        marginLeft: 25,
+        marginRight: 25,
+      }
     },
     itemsContainer: {
       margin:60,
