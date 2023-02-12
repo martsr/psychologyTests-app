@@ -55,31 +55,31 @@ function TestsTab() {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name='PyramidAndPalmTreesTest'
+        name='pyramidAndPalmTreesTest'
         component={PyramidAndPalmTreesTest}
       />
       <Stack.Screen
-        name='BellTest'
+        name='bellTest'
         component={BellTest}
       />
       <Stack.Screen
-        name='HanoiTest'
+        name='hanoiTest'
         component={HanoiTest}
       />
       <Stack.Screen
-        name='CorsiTest'
+        name='corsiTest'
         component={CorsiTest}
       />
       <Stack.Screen
-        name='CamelTest'
+        name='camelTest'
         component={CamelTest}
       />
       <Stack.Screen
-        name='CardTest'
+        name='cardTest'
         component={CardTest}
       />
       <Stack.Screen
-        name='ColorTrailsTest'
+        name='colorTrailsTest'
         component={ColorTrailsTest}
       />
     </Stack.Navigator>

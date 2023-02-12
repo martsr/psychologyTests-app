@@ -69,7 +69,6 @@ import squirrelTest from "./SquirrelTest";
 
 const tests = [
   nailTest,
-  orangeTest,
   stoolTest,
   plugTest,
   wrenchTest,

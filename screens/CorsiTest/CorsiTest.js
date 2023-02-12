@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import AppButton from '../../components/Button';
+import AppButton from '../../components/AppButton';
 import DatabaseService from '../../services/DatabaseService';
 import Box from './Box';
 import boxesData from './boxesData';

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Modal, StyleSheet } from "react-native";
 
-import AppButton from '../../components/Button';
+import AppButton from '../../components/AppButton';
 import Text from "../../components/Text";
 import colors from "../../config/colors";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
