@@ -28,22 +28,22 @@ export default class CardContainer extends React.Component {
         },
         onPanResponderMove: Animated.event([
             null,
-            { dx: this.pan.x, dy: this.pan.y }
-        ]),
+            { dx: this.pan.x, dy: this.pan.y },
+        ],{useNativeDriver: false}),
         onPanResponderRelease: () => {
             this.pan.flattenOffset();
         },
         onPanResponderRelease: (e,movement) => {
             if(movement.dx<-100 && movement.dy>5){
-                Animated.spring(this.pan, { toValue: { x: -deltaX, y: deltaY } }).start();
+                Animated.spring(this.pan, { toValue: { x: -deltaX, y: deltaY },useNativeDriver: false }).start();
                 this.props.addEvent(this.props.id,this.props.name,this.props.color,"rabbit")
             }
             else if(movement.dx>100 && movement.dy>5){
-                Animated.spring(this.pan, { toValue: { x: deltaX, y: deltaY} }).start();
+                Animated.spring(this.pan, { toValue: { x: deltaX, y: deltaY},useNativeDriver: false }).start();
                 this.props.addEvent(this.props.id,this.props.name,this.props.color,"ship")
             }
             else{
-                Animated.spring(this.pan, { toValue: { x: 0, y: 0} }).start();
+                Animated.spring(this.pan, { toValue: { x: 0, y: 0},useNativeDriver: false }).start();
             }
         }
     });
