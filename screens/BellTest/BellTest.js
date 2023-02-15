@@ -78,8 +78,7 @@ export default class BellTest extends React.Component {
   }
   addBell = () => {
     this.setState({bells: this.state.bells + 1})
-    if(this.state.bells == 0){
-      //cambiar a 9
+    if(this.state.bells == 9){
       this.setState({visibleFinished: true})
     }
   }
