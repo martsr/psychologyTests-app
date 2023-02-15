@@ -6,10 +6,11 @@ import {
   Text,
 } from 'react-native';
 
-import { CardsConfig } from '../../config/styles/CardTestStyles';
+import { CardsConfig, instructions } from '../../config/styles/CardTestStyles';
 import { Fontisto, AntDesign, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import CardContainer from './CardContainer';
 import { general, mainPage } from '../../config/styles/GeneralStyles';
+import colors from '../../config/colors';
 
 function generateCards(){
     const iconsList=['rabbit','ship']
@@ -39,7 +40,8 @@ export default class CardTest extends React.Component {
         totalEvents:0,
         nextStepVisible: false,
         endVisible: false,
-        direction: "135deg"
+        direction: "135deg",
+        startedTutorial: false,
     }
 
     addEvent=(id,name,color,side)=>{
@@ -122,70 +124,85 @@ export default class CardTest extends React.Component {
     render(){
         const listado = this.state.cards.map( (item) => <CardContainer key={item.id} id={item.id} name={item.name} color={item.color} addEvent={this.addEvent}/> );
         return (
-        <>
-        <View style={{height: 60}}transparent="true" visible={this.state.visible}>
-                <Text style ={general.textStyle}>En este test usted deberá agrupar las caryas por forma o por color,
-                este criterio de agrupación cambiará en cada prueba. 
-                Comencemos agrupando por {this.state.evaluation}.
-                </Text>
-        </View>
-        <Modal transparent="true" visible={this.state.responseModalVisible}>
-            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
-                {this.state.lastEvent == "catch" ?
-                    <View style ={{backgroundColor: "#b5d7c4", opacity:0.9, width:500, height:200, borderRadius:15}}>
-                        <Text style={[general.textStyle,{alignSelf:"center"}]}>Jugada correcta{this.state.lastEvent}</Text>
+            <>
+            <Modal style={instructions.container} transparent="true" animationType="slide" visible={!this.state.startedTutorial}>
+            <View style={instructions.textContainer}>
+                <Text style={instructions.title}>Instrucciones</Text>
+                <Text style={instructions.text}>En este test usted deberá agrupar las cartas por forma o por color,
+                    este criterio de agrupación cambiará en cada prueba. </Text>
+                <Text style={instructions.text}>Comencemos agrupando por {this.state.evaluation}.</Text>
+            </View>
+            <View style={instructions.buttonContainer}>
+                <TouchableOpacity style={instructions.emptyButton}>
+                    <Text style={instructions.emptyButtonText}>Cancelar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={instructions.button} onPress={() => this.setState({ startedTutorial : true })}>
+                    <Text style={instructions.buttonText}>Empezar tutorial</Text>
+                </TouchableOpacity>
+            </View>
+            </Modal>
+            <Modal transparent="true" visible={this.state.responseModalVisible}>
+                <View style={instructions.popupModalContainer}>
+                    {this.state.lastEvent == "catch" ?
+                        <View style ={instructions.popupModalCorrectContainer}>
+                            <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada correcta {this.state.lastEvent}</Text>
+                            <View style={{alignSelf:"center"}}>
+                                <FontAwesome name="check-circle" size={50} color={colors.homeButton} />
+                            </View>
+                            <View style={instructions.buttonModalContainer}>
+                                <TouchableOpacity style={[instructions.emptyButton,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
+                                    <Text style={instructions.emptyButtonText}> Siguiente carta</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>:
+                        <View style ={instructions.popupModalIncorrectContainer}>
+                        <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada incorrecta, intente nuevamente</Text>
                         <View style={{alignSelf:"center"}}>
-                            <FontAwesome name="check-circle" size={50} color="#4b9b7f" />
+                            <FontAwesome name="times-circle" size={50} color={colors.danger} />
                         </View>
-                        <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
-                            <Text style={general.textStyle}> Siguiente carta</Text>
-                        </TouchableOpacity>
-                    </View>:
-                    <View style ={{backgroundColor: "#dab89d", opacity:0.9, width:500, height:200, borderRadius:15}}>
-                    <Text style={[general.textStyle,{alignSelf:"center"}]}>Jugada incorrecta, intente nuevamente</Text>
-                    <View style={{alignSelf:"center"}}>
-                        <FontAwesome name="times-circle" size={50} color="#e04d44" />
-                    </View>
-                    <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
-                        <FontAwesome name="repeat" size={30} color={"#444444"} />
+                        <View style={[instructions.buttonModalContainer,{flexDirection:'row'}]}>
+                            <TouchableOpacity style={[instructions.emptyDangerButton,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
+                                <FontAwesome name="repeat" size={30} color={"#444444"} />
+                                <Text style={instructions.emptyDangerButtonText}> Reintentar</Text>
+                            </TouchableOpacity>
+                        </View>
+                        </View>
+                    }
+                </View>
+            </Modal>
+            <Modal transparent="true" visible={this.state.nextStepVisible}>
+                <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', backgroundColor:"#F6F3F5"}}>
+                    <Text style={instructions.text}>Excelente!! ahora vamos a agrupar por color</Text>
+                    <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setNextStepModalInvisible}>
+                        <FontAwesome name="thumbs-o-up" size={50} color={colors.white} />
                     </TouchableOpacity>
-                    </View>
-                }
-            </View>
-        </Modal>
-        <Modal transparent="true" visible={this.state.nextStepVisible}>
-            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', backgroundColor:"#b5d7c4"}}>
-                <Text style={general.textStyle}>Excelente!! ahora vamos a agrupar por color</Text>
-                <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setNextStepModalInvisible}>
-                    <FontAwesome name="thumbs-o-up" size={30} color={"#444444"} />
-                </TouchableOpacity>
-            </View>
-        </Modal>
-        <Modal transparent="true" visible={this.state.endVisible}>
-            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', backgroundColor:"#b5d7c4"}}>
-                <Text style={general.textStyle}>Tutorial terminado</Text>
-                <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setendInvisible}>
-                    <FontAwesome name="thumbs-o-up" size={30} color={"#444444"} />
-                </TouchableOpacity>
-            </View>
-        </Modal>
-        <View style={CardsConfig.container}>
-            <View style={{flex:1, alignItems: "center",justifyContent: "center",flexDirection: "row"}}>
-                {listado[0]}
-            </View>
-            <AntDesign style={{transform: [{ rotate: this.state.direction }]}} name="arrowright" size={50} color="green" />
-            <View style={{flex:1, alignItems: "center",justifyContent: "center",flexDirection: "row"}}>
-                <View style={CardsConfig.optionsContainer}>
-                    <View style={CardsConfig.box}>
-                        <MaterialCommunityIcons style={{alignSelf: "center"}} name="rabbit" size={150} color={this.state.rabbitColor} />
-                    </View>
-                    <View style={CardsConfig.box}>
-                        <Fontisto style={{alignSelf: "center"}}name="ship" size={130} color={this.state.shipColor} />
+                </View>
+            </Modal>
+            <Modal transparent="true" visible={this.state.endVisible}>
+                <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', backgroundColor:"#F6F3F5"}}>
+                    <Text style={instructions.text}>Tutorial terminado</Text>
+                    <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setendInvisible}>
+                        <FontAwesome name="thumbs-o-up" size={50} color={colors.white} />
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+            <View style={[CardsConfig.container, instructions.tutorialContainer]}>
+                <View style={{flex:1, alignItems: "center",justifyContent: "center",flexDirection: "row"}}>
+                    {listado[0]}
+                </View>
+                <AntDesign style={{transform: [{ rotate: this.state.direction }]}} name="arrowright" size={50} color="green" />
+                <View style={{flex:1, alignItems: "center",justifyContent: "center",flexDirection: "row"}}>
+                    <View style={CardsConfig.optionsContainer}>
+                        <View style={CardsConfig.box}>
+                            <MaterialCommunityIcons style={{alignSelf: "center"}} name="rabbit" size={150} color={this.state.rabbitColor} />
+                        </View>
+                        <View style={CardsConfig.box}>
+                            <Fontisto style={{alignSelf: "center"}}name="ship" size={130} color={this.state.shipColor} />
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
-        </>
+            </>
         );
     }
 };

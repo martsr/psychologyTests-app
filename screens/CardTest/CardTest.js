@@ -8,12 +8,14 @@ import {
   Text,
 } from 'react-native';
 
-import { CardsConfig } from '../../config/styles/CardTestStyles';
+import { CardsConfig, instructions } from '../../config/styles/CardTestStyles';
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import CardContainer from './CardContainer';
 import { general, mainPage } from '../../config/styles/GeneralStyles';
 import CardTutorial from './cardTutorial';
+import colors from '../../config/colors';
+import ReturnHomeComponent from '../../components/ReturnHomeComponent';
 
 function generateCards(){
     const iconsList=['rabbit','ship']
@@ -41,7 +43,8 @@ export default class CardTest extends React.Component {
         idToDelete: 0,
         lastEvent: "",
         totalEvents:0,
-        finishedTutorial:false
+        finishedTutorial:false,
+        finishedGameModalVisible: false
     }
 
     addEvent=(id,name,color,side)=>{
@@ -97,41 +100,52 @@ export default class CardTest extends React.Component {
             anotherColor = "#a95906"
         }
         this.setState({cards: result, rabbitColor: color, shipColor: anotherColor, responseModalVisible: false});
+        if(this.state.totalEvents==10){
+            this.setState({finishedGameModalVisible: true})
+        }
     }
 
     render(){
         const listado = this.state.cards.map( (item) => <CardContainer key={item.id} id={item.id} name={item.name} color={item.color} addEvent={this.addEvent}/> );
         return (
         <>
+        <Modal animationType="slide" visible={this.state.finishedGameModalVisible}>
+          <ReturnHomeComponent navigation={this.props.navigation}/>
+        </Modal>
         {!this.state.finishedTutorial ?<CardTutorial finishTutorial={this.finishTutorial}></CardTutorial>:<>
         <Modal transparent="true" animationType="slide" visible={this.state.visible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center',backgroundColor:"#F6F3F5"}}>
-                <Text style={general.textStyle}>criterio : {this.state.evaluation}</Text>
+                <Text style={instructions.text}>criterio : {this.state.evaluation}</Text>
                 <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
-                    <Text style={general.textStyle}> Comenzar test</Text>
+                    <Text style={instructions.buttonText}> Comenzar test</Text>
                 </TouchableOpacity>
             </View>
         </Modal>
         <Modal transparent="true" visible={this.state.responseModalVisible}>
-            <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
+            <View style={instructions.popupModalContainer}>
                 {this.state.lastEvent == "catch" ?
-                    <View style ={{backgroundColor: "#b5d7c4", opacity:0.7, width:500, height:200, borderRadius:15}}>
-                        <Text style={[general.textStyle,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
+                    <View style ={instructions.popupModalCorrectContainer}>
+                        <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
                         <View style={{alignSelf:"center"}}>
-                            <FontAwesome name="check-circle" size={50} color="#4b9b7f" />
+                            <FontAwesome name="check-circle" size={50} color={colors.homeButton} />
                         </View>
-                        <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
-                            <Text style={general.textStyle}> Siguiente carta</Text>
-                        </TouchableOpacity>
-                    </View>:
-                    <View style ={{backgroundColor: "#dab89d", opacity:0.7, width:500, height:200, borderRadius:15}}>
-                    <Text style={[general.textStyle,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
-                    <View style={{alignSelf:"center"}}>
-                        <FontAwesome name="times-circle" size={50} color="#e04d44" />
+                        <View style={instructions.buttonModalContainer}>
+                            <TouchableOpacity style={[instructions.emptyButton,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
+                                <Text style={instructions.emptyButtonText}> Siguiente carta</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
-                        <Text style={general.textStyle}> Siguiente carta</Text>
-                    </TouchableOpacity>
+                    :
+                    <View style ={instructions.popupModalIncorrectContainer}>
+                        <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
+                        <View style={{alignSelf:"center"}}>
+                            <FontAwesome name="times-circle" size={50} color={colors.danger} />
+                        </View>
+                        <View style={[instructions.buttonModalContainer,{flexDirection:'row'}]}>
+                            <TouchableOpacity style={[instructions.emptyDangerButton,{alignSelf:"center"}]} onPress={this.setResponseModalInvisible}>
+                                <Text style={instructions.emptyDangerButtonText}>Siguiente carta</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 }
             </View>
