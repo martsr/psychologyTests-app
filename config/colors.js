@@ -9,5 +9,6 @@ export default {
   danger: "#ff5252",
   button: "#2196F3",
   homeButton: '#2170e5',
-  title: "#000"
+  title: "#000",
+  wrong: 'tomato'
 };

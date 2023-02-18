@@ -7,6 +7,7 @@ import colors from "../../config/colors";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native-web";
 import { demoTest } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
+import AnswerFeedbackModal from "../../components/AnswerFeedbackModal";
 
 function DemoScreen({ onStartPress }) {
   const [testId, setTestId] = useState(0);
@@ -15,6 +16,7 @@ function DemoScreen({ onStartPress }) {
   const [modalMessage, setmodalMessage] = useState("");
   const [showButton, setShowButton]  = useState(false);
   const [showCross, setShowCross] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false); 
 
   const showTest = () => {
     return (
@@ -28,6 +30,7 @@ function DemoScreen({ onStartPress }) {
 
   const handleOnSelect = (card) => {
 	  setModalVisible(true)
+    setIsCorrect(card.isCorrect)
     const isLastTest = (demoTest.length === (testId + 1))
 
     if (card.isCorrect) {
@@ -64,23 +67,20 @@ function DemoScreen({ onStartPress }) {
   return !showCross ? (
     <View style={styles.detailsContainer}>
       {showTest()}
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <AnswerFeedbackModal
+        correctAnswer={isCorrect}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        onPressAccept={()=>setModalVisible(!modalVisible)}
       >
-        <View style={styles.modal}>
+        {/* <View style={styles.modal}>
           <View style={styles.modal.modalView}>
             <Text style={styles.modal.title}>{modalMessage}</Text>
             <View style={styles.modal.buttons}>
-              <AppButton color={colors.secondary} title={"Aceptar"} onPress={handleModalOnPress}></AppButton>
+              <AppButton color={isCorrect? colors.secondary : colors.wrong} title={"Aceptar"} onPress={handleModalOnPress}></AppButton>
             </View>
           </View>
-        </View>
-      </Modal>
+        </View> */}
+      </AnswerFeedbackModal>
       <View style={styles.navigation}>
         { showButton?
         (<View style={styles.buttonsContainer}>
@@ -102,7 +102,6 @@ function DemoScreen({ onStartPress }) {
 const styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
-    margin: 10,
   },
   navigation: {
     position: "absolute",
@@ -113,15 +112,15 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    margin: 10,
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   button: {
     backgroundColor: colors.button,
     height: 50,
     width: 200,
     borderRadius: 15,
+    margin: 15,
   },
   buttonText: {
     flex: 1,

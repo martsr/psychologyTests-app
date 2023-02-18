@@ -25,20 +25,22 @@ export default function CardsSetTest ({cards, numberOfColumns, handleOnSelect}) 
 
   const showOptionCards = () => {
     return (
-      <FlatList style={styles.optionCards}
-        data={getCardsOptions()}
-        keyExtractor={(item) => item.id}
-        numColumns={numberOfColumns}
-        renderItem={({ item }) => {
-          return <Card
-            image={item.image}
-            isMain={item.isMain}
-            selected={item.selected}
-            onPress={()=> onSelect(item)}
-          />
-        }
-        }
-      />
+      <View>
+        <FlatList 
+          style={styles.optionCards}
+          data={getCardsOptions()}
+          keyExtractor={(item) => item.id}
+          numColumns={numberOfColumns}
+          renderItem={({ item }) => {
+            return <Card
+              image={item.image}
+              isMain={item.isMain}
+              selected={item.selected}
+              onPress={()=> onSelect(item)}
+            />}
+          }
+        />
+      </View>
     );
   }
 
@@ -87,9 +89,7 @@ const styles = StyleSheet.create({
     optionCardsContainer: {
       flex: 2,
       alignItems:'center',
-      backgroundColor:"lightgreen",
-    },
-    optionCards: {
+      justifyContent: 'center',
       backgroundColor:"lightgreen",
     },
     subTitle: {

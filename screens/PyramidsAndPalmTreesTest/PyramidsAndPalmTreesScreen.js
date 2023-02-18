@@ -7,13 +7,16 @@ import DemoScreen from "./DemoScreen";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native";
 import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
+import InstructionsModal from "../../components/InstructionsModal";
 
 function PyramidAndPalmTreesTest(props) {
   const [testId, setTestId] = useState(0);
   const [backButtonDisable, setbackButtonDisable] = useState(false);
-  const [nextButtonDisable, setnextButtonDisable] = useState(false);
+  const [nextButtonDisable, setNextButtonDisable] = useState(true);
   const [startTime, setStartTime] = useState(null);
   const [start, setStart] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(true);
+  const [testCompleted, setTestCompleted] = useState(false)
   //TODO: enable and disable back and next buttons
 
   const showTest = ()=> {
@@ -27,8 +30,9 @@ function PyramidAndPalmTreesTest(props) {
   }
 
   const hadleNextButton = () =>{
+    setNextButtonDisable(true)
     if( tests.length === (testId + 1) ){ //check if you are in the last test
-      //TODO: END TEST.
+      setTestCompleted(true)
     } else {
       setTestId(testId+1)
       setStartTime(Date.now())
@@ -47,6 +51,7 @@ function PyramidAndPalmTreesTest(props) {
     const now = Date.now()
     const timeSpend = tests[testId]?.results?.timeSpend
     const totalTimeSpend = (now - startTime) + (timeSpend? timeSpend : 0)
+    setNextButtonDisable(false)
 
     tests[testId].results = {timeSpend: totalTimeSpend, isCorrect: card.isCorrect, isAnimated: tests[testId].isAnimated}
     console.log("TEST NUM "+ testId + ": ", tests[testId].results)
@@ -61,27 +66,33 @@ function PyramidAndPalmTreesTest(props) {
   
   return ( start
     ? <View style={styles.detailsContainer}>
-        {showTest()}
+          {showTest()}
         <View style={styles.navigation}>
           <View style={styles.buttonsContainer}>
             {/* {(testId > 0) && <TouchableOpacity style={styles.button} Text={"BACK"} onPress={hadleBackButton} disabled={backButtonDisable}>
                 <Text style={styles.buttonText}>BACK</Text>
               </TouchableOpacity>
             } */}
-            <TouchableOpacity style={styles.button} Text={"NEXT"} onPress={hadleNextButton} disabled={nextButtonDisable}>
+            {!nextButtonDisable? <TouchableOpacity style={styles.button} onPress={hadleNextButton}>
               <Text style={styles.buttonText}>{isTheLastTest()? 'FINISH':'NEXT'}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> : null}
           </View>
         </View>
       </View>
-    : <DemoScreen onStartPress={() => initiateTest()}/>
+    : <>
+        <InstructionsModal
+          instructions={"En la parte superior de la pantalla aparecerá una figura. Deberá seleccionar una de las cuatro imagenes que aparecen en la parte inferior de la pantalla y que comparta alguna reclación"}
+          onPressAccept={ () => setShowInstructions(!showInstructions)}
+          visible={showInstructions}
+        />
+        <DemoScreen onStartPress={() => initiateTest()}/>
+      </>
   );
 }
 
 const styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
-    margin: 10
   },
   navigation: {
     position:"absolute",
@@ -90,10 +101,8 @@ const styles = StyleSheet.create({
     width:"100%"
   },
   buttonsContainer:{
-    flex: 1,
     flexDirection: 'row',
-    justifyContent:"space-evenly",
-    alignItems:"flex-end",
+    justifyContent:"flex-end",
   },
   button: {
     backgroundColor: colors.button,
