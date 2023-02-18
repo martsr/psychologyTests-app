@@ -72,14 +72,6 @@ function DemoScreen({ onStartPress }) {
         visible={modalVisible}
         onPressAccept={()=>setModalVisible(!modalVisible)}
       >
-        {/* <View style={styles.modal}>
-          <View style={styles.modal.modalView}>
-            <Text style={styles.modal.title}>{modalMessage}</Text>
-            <View style={styles.modal.buttons}>
-              <AppButton color={isCorrect? colors.secondary : colors.wrong} title={"Aceptar"} onPress={handleModalOnPress}></AppButton>
-            </View>
-          </View>
-        </View> */}
       </AnswerFeedbackModal>
       <View style={styles.navigation}>
         { showButton?
@@ -138,45 +130,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: "1.2rem",
     color: "black",
-  },
-  modal: {
-	flex: 1,
-	justifyContent: 'center',
-	alignItems: 'center',
-	marginTop: 22,
-	modalView: {
-	  margin: 20,
-	  backgroundColor: 'white',
-	  borderRadius: 20,
-	  padding: 35,
-	  alignItems: 'center',
-	  shadowColor: '#000',
-	  shadowOffset: {
-		width: 0,
-		height: 2,
-	  },
-	  shadowOpacity: 0.25,
-	  shadowRadius: 4,
-	  elevation: 5,
-	},
-	title: {
-	  fontSize: '1.2rem',
-	  fontWeight: 700,
-	  marginBottom: 20,
-	},
-	input: {
-	  width: '100%',
-	  fontSize: '1rem',
-	  lineHeight: '150%',
-	  padding: 10,
-	  border: 'solid 1px grey',
-	  marginBottom: 10,
-	},
-	buttons: {
-	  display: 'flex',
-	  flexDirection: 'row',
-	  flexWrap: 'wrap',
-	},
   },
 });
 
