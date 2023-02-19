@@ -11,7 +11,7 @@ import InstructionsModal from "../../components/InstructionsModal";
 
 function PyramidAndPalmTreesTest(props) {
   const [testId, setTestId] = useState(0);
-  const [backButtonDisable, setbackButtonDisable] = useState(false);
+  // const [backButtonDisable, setbackButtonDisable] = useState(false);
   const [nextButtonDisable, setNextButtonDisable] = useState(true);
   const [startTime, setStartTime] = useState(null);
   const [start, setStart] = useState(false);

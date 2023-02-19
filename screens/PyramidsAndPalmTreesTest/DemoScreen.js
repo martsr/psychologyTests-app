@@ -38,7 +38,7 @@ function DemoScreen({ onStartPress }) {
       const modalMessage = isLastTest? "Correcto! Ahora aparecerá una cruz en el centro de la pantalla. Por favor, preste atención a la cruz.": "Correcto!";
       setmodalMessage(modalMessage)
     } else {
-      setmodalMessage("Incorrecto, prueba otra opción");
+      setmodalMessage("Incorrecto, intente nuevamente");
     }
   };
   
@@ -70,7 +70,8 @@ function DemoScreen({ onStartPress }) {
       <AnswerFeedbackModal
         correctAnswer={isCorrect}
         visible={modalVisible}
-        onPressAccept={()=>setModalVisible(!modalVisible)}
+        answerText={modalMessage}
+        onPressAccept={handleModalOnPress}
       >
       </AnswerFeedbackModal>
       <View style={styles.navigation}>
