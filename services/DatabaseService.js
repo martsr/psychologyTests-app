@@ -1,4 +1,6 @@
-import TestResult from "../models/TestResult";
+import CorsiTestResult from "../models/CorsiTestResult";
+import { Database } from "./Database";
+import * as Promise from "bluebird"
 
 export default class DatabaseService {
   static instance() {
@@ -12,19 +14,37 @@ export default class DatabaseService {
 
   constructor() {
     this.corsiResults = [];
+    this._db = new Database('test');
   }
 
-  saveCorsiTestResult(patientNumber, corsiResult) {
-    this.corsiResults.push(new TestResult(patientNumber, new Date(), corsiResult));
+  async saveCorsiTestResult(patientNumber, corsiResult) {
+    const testResult = new CorsiTestResult(patientNumber, 0, new Date(), corsiResult);
+    await this.createCorsiTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
   }
 
-  getCorsiTestResults() {
-    return this.corsiResults;
+  async createCorsiTable() {
+    await this._db.execute(`create table if not exists corsiTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      inverted text,
+      amountOfBoxes number,
+      correct text,
+      timeInMs number);`);
   }
 
-  getResults() {
+  async getCorsiTestResults() {
+    await this.createCorsiTable();
+    return this._db.execute(`select * from corsiTest`);
+  }
+
+  async getResults() {
     return {
-      corsiTest: this.getCorsiTestResults(),
+      corsiTest: await this.getCorsiTestResults(),
     }
   }
 

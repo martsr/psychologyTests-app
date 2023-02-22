@@ -19,14 +19,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.uca.tpf2023"
+      "bundleIdentifier": "com.uca.tpf2023",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Your description here"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.uca.tpf2023"
+      "package": "com.uca.tpf2023",
+      "permissions": ["WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

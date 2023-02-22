@@ -34,8 +34,9 @@ export default function CorsiTest({navigation, route}) {
 
   useEffect(() => {
     if (inverted && turn == boxes.length - 1) {
-      DatabaseService.instance().saveCorsiTestResult(patientNumber, results);
-      navigation.navigate('HomeScreen');
+      DatabaseService.instance().saveCorsiTestResult(patientNumber, results).then(() => {
+        navigation.navigate('HomeScreen');
+      });
     }
   }, [results.length])
 

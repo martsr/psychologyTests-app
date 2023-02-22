@@ -1,9 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer, useFocusEffect, useIsFocused } from '@react-navigation/native'
+import { NavigationContainer, useIsFocused } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome, MaterialCommunityIcons  } from '@expo/vector-icons';
+import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import PyramidAndPalmTreesTest from './screens/PyramidsAndPalmTreesTest/PyramidsAndPalmTreesScreen';
 import HomeScreen from './screens/Home/HomeScreen';
@@ -14,7 +13,11 @@ import CardTest from './screens/CardTest/CardTest';
 import ColorTrailsTest from './screens/ColorTrailsTest/ColorTrailsTest';
 import CamelTest from './screens/CamelTest/CamelTest';
 import DatabaseService from './services/DatabaseService';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { TouchableOpacity } from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as MediaLibrary from 'expo-media-library';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -88,15 +91,70 @@ function TestsTab() {
 
 function DownloadsTab() {
   const isFocused = useIsFocused();
+  const [results, setResults] = useState(null);
+
+  useEffect(() => {
+    DatabaseService.instance().getResults().then( res => setResults(res)).catch(err => alert(err.message))
+  }, []);
+
+  async function saveFile(data) {
+    let directoryUri = FileSystem.documentDirectory;
+    let fileUri = directoryUri + "corsi.csv";
+    await FileSystem.writeAsStringAsync(fileUri, data, { encoding: FileSystem.EncodingType.UTF8 });
+    return fileUri;
+  };
+    
+  async function shareFile(fileUri){
+    const canShare = await Sharing.isAvailableAsync();
+    // Check if permission granted
+    if (canShare) {
+      try{
+        const res = await Sharing.shareAsync(fileUri);
+        console.log('shareAsync', res);
+        return true;
+      } catch {
+        return false;
+      }
+    } else {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status === 'granted') {
+        // Permisos otorgados, puedes utilizar el método shareAsync
+        const res = await Sharing.shareAsync(fileUri);
+        console.log('shareAsync', res);
+      } else {
+        // El usuario no otorgó permisos, muestra un mensaje o solicita los permisos nuevamente
+        alert('no se otorgaron permisos')
+      }
+    }};
 
   return (
     <View style={{padding:30}}>
-      <Text>Downloads</Text>
+      <Text style={{
+        fontSize: 20,
+        fontWeight: 'bold',
+      }}>Downloads</Text>
+      <TouchableOpacity
+        style={{height: 50, padding:10, backgroundColor: 'blue'}}
+        onPress={refresh}>
+        <Text>Actualizar</Text>  
+      </TouchableOpacity>
       <Text>
-        {JSON.stringify(DatabaseService.instance().getResults())}
+        {JSON.stringify(results)}
       </Text>
     </View>
   );
+    
+  function refresh() {
+    DatabaseService.instance().getResults().then( res => {
+      setResults(res)
+      const header = 'patientNumber,professionalNumber,date,inverted,amountOfBoxes,correct,timeInMs\n';
+      const data = res.corsiTest.rows.map((row) => {
+        return `${row.patientNumber},${row.professionalNumber},${row.date},${row.inverted},${row.amountOfBoxes},${row.correct},${row.timeInMs}\n`
+      }).join('');
+      saveFile(`${header}${data}`).then((fileUri) => shareFile(fileUri));
+    }).catch(err => alert(err.message))
+  }
+
 }
 
 const styles = StyleSheet.create({
