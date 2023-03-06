@@ -29,6 +29,7 @@
       "package": "com.uca.tpf2023"
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "extra": {
