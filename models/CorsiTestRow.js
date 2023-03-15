@@ -28,7 +28,7 @@ export default class CorsiTestRow {
               values (
                 '${this.patientNumber}',
                 '${this.professionalNumber}',
-                '${this.date}',
+                '${this.date.toISOString()}',
                 '${this.inverted}',
                 ${this.amountOfBoxes},
                 '${this.correct}',

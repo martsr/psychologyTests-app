@@ -37,16 +37,31 @@ export default class DatabaseService {
       timeInMs number);`);
   }
 
-  async getCorsiTestResults() {
+  async getCorsiTestCSVResults(fromDate, toDate) {
     await this.createCorsiTable();
-    return this._db.execute(`select * from corsiTest`);
+    const dbResults = await this._db.execute(`select * from corsiTest`);
+    const header = 'patientNumber,professionalNumber,date,inverted,amountOfBoxes,correct,timeInMs\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.inverted},${row.amountOfBoxes},${row.correct},${row.timeInMs}\n`
+    }).join('');
+    return `${header}${data}`;
   }
 
-  async getResults() {
-    return {
-      corsiTest: await this.getCorsiTestResults(),
+  async getCSVResults(test, fromDate, toDate) {
+    if (test == 'corsi') {
+      return this.getCorsiTestCSVResults(fromDate, toDate);
+    } else if (test == 'piramides') {
+      return this.getCorsiTestCSVResults(fromDate, toDate);
+    } else {
+      throw new Error('No existe el test');
     }
   }
+
 
 
 }
