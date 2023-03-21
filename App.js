@@ -13,20 +13,61 @@ import CardTest from './screens/CardTest/CardTest';
 import ColorTrailsTest from './screens/ColorTrailsTest/ColorTrailsTest';
 import CamelTest from './screens/CamelTest/CamelTest';
 import DatabaseService from './services/DatabaseService';
-import { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as MediaLibrary from 'expo-media-library';
 
 import DropDownPicker from "react-native-dropdown-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useState } from 'react';
+import {Provider} from 'react-redux';
+import { applyMiddleware } from 'redux';
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
+import thunk from 'redux-thunk';
+import userReducer from './redux/reducers/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import storage from 'redux-persist/lib/storage';
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+
+const rootReducer = combineReducers({
+  userReducer
+});
+const store = configureStore({
+  reducer: persistReducer(
+    {
+      key: 'root',
+      storage
+    },
+    rootReducer
+  ),
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+      serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+  }),
+});
+let persistor = persistStore(store);
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
+    <Provider store={store}>
+    <PersistGate persistor={persistor}>
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen 
@@ -49,6 +90,8 @@ export default function App() {
         ></Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
+    </PersistGate>
+    </Provider>
   );
 }
 

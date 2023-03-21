@@ -7,6 +7,7 @@ import colors from "../../config/colors";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native-web";
 import { demoTest } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
+import AnswerFeedbackModal from "../../components/AnswerFeedbackModal";
 
 function DemoScreen({ onStartPress }) {
   const [testId, setTestId] = useState(0);
@@ -15,6 +16,7 @@ function DemoScreen({ onStartPress }) {
   const [modalMessage, setmodalMessage] = useState("");
   const [showButton, setShowButton]  = useState(false);
   const [showCross, setShowCross] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false); 
 
   const showTest = () => {
     return (
@@ -28,6 +30,7 @@ function DemoScreen({ onStartPress }) {
 
   const handleOnSelect = (card) => {
 	  setModalVisible(true)
+    setIsCorrect(card.isCorrect)
     const isLastTest = (demoTest.length === (testId + 1))
 
     if (card.isCorrect) {
@@ -35,7 +38,7 @@ function DemoScreen({ onStartPress }) {
       const modalMessage = isLastTest? "Correcto! Ahora aparecerá una cruz en el centro de la pantalla. Por favor, preste atención a la cruz.": "Correcto!";
       setmodalMessage(modalMessage)
     } else {
-      setmodalMessage("Incorrecto, prueba otra opción");
+      setmodalMessage("Incorrecto, intente nuevamente");
     }
   };
   
@@ -64,23 +67,13 @@ function DemoScreen({ onStartPress }) {
   return !showCross ? (
     <View style={styles.detailsContainer}>
       {showTest()}
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <AnswerFeedbackModal
+        correctAnswer={isCorrect}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        answerText={modalMessage}
+        onPressAccept={handleModalOnPress}
       >
-        <View style={styles.modal}>
-          <View style={styles.modal.modalView}>
-            <Text style={styles.modal.title}>{modalMessage}</Text>
-            <View style={styles.modal.buttons}>
-              <AppButton color={colors.secondary} title={"Aceptar"} onPress={handleModalOnPress}></AppButton>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      </AnswerFeedbackModal>
       <View style={styles.navigation}>
         { showButton?
         (<View style={styles.buttonsContainer}>
@@ -102,7 +95,6 @@ function DemoScreen({ onStartPress }) {
 const styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
-    margin: 10,
   },
   navigation: {
     position: "absolute",
@@ -113,15 +105,15 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    margin: 10,
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   button: {
     backgroundColor: colors.button,
     height: 50,
     width: 200,
     borderRadius: 15,
+    margin: 15,
   },
   buttonText: {
     flex: 1,
@@ -139,45 +131,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: "1.2rem",
     color: "black",
-  },
-  modal: {
-	flex: 1,
-	justifyContent: 'center',
-	alignItems: 'center',
-	marginTop: 22,
-	modalView: {
-	  margin: 20,
-	  backgroundColor: 'white',
-	  borderRadius: 20,
-	  padding: 35,
-	  alignItems: 'center',
-	  shadowColor: '#000',
-	  shadowOffset: {
-		width: 0,
-		height: 2,
-	  },
-	  shadowOpacity: 0.25,
-	  shadowRadius: 4,
-	  elevation: 5,
-	},
-	title: {
-	  fontSize: '1.2rem',
-	  fontWeight: 700,
-	  marginBottom: 20,
-	},
-	input: {
-	  width: '100%',
-	  fontSize: '1rem',
-	  lineHeight: '150%',
-	  padding: 10,
-	  border: 'solid 1px grey',
-	  marginBottom: 10,
-	},
-	buttons: {
-	  display: 'flex',
-	  flexDirection: 'row',
-	  flexWrap: 'wrap',
-	},
   },
 });
 

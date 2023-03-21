@@ -14,3 +14,10 @@ Psychology tests app build in React Native with Expo
   # To build an apk on EAS
     1. Add EAS project id on app.json
     2. Run ```eas build -p android --profile preview ```
+
+### Dev Team
+  * Alejandra Flores
+  * Francisco Jaimes Freyre
+  * Francisco Roth
+  * Tomas Nozica
+  

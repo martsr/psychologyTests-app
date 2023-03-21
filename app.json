@@ -33,6 +33,7 @@
       "permissions": ["WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "extra": {
