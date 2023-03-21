@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import AppButton from "../../components/AppButton";
+import colors from "../../config/colors";
 import Box from "./Box";
 
 export default function Instructions({onStartPress, inverted}) {
@@ -58,19 +59,40 @@ export default function Instructions({onStartPress, inverted}) {
   }
   return (
     !showCross?
-    (<View style={{width: '100%', height: '100%', backgroundColor: 'black', padding: 20, alignItems: 'center', justifyContent: 'space-evenly'}}>
-      <Text style={{color: 'white', fontSize: 32}}>Instrucciones</Text>
-      <Text style={{color: 'white', fontSize: 24, textAlign: 'center'}}>Verá 9 cuadrados azules en la pantalla y se irán encendiendo en amarillo en determinado orden. Preste atención y repita el orden de la secuencia una vez que se hayan apagado. Hagamos una prueba {inverted? '(Ahora invertido)': ''}</Text>
+    (<View style={{width: '100%', height: '100%', padding: 20, alignItems: 'center', justifyContent: 'space-evenly'}}>
+      <Text style={styles.title}>Instrucciones</Text>
+      <Text style={styles.description}>Verá 9 cuadrados azules en la pantalla y se irán encendiendo en amarillo en determinado orden. Preste atención y repita el orden de la secuencia una vez que se hayan apagado. Hagamos una prueba {inverted? '(Ahora invertido)': ''}</Text>
       {!done? (test? <View style={{flexDirection: 'row'}}>
         <Box order={1} boxKey={1} color='blue' onBoxPress={inverted? onBoxPressInverted : onBoxPress}></Box>
         <Box order={2} boxKey={2} color='blue' onBoxPress={inverted? onBoxPressInverted : onBoxPress}></Box>
-      </View> : <AppButton title='Hacer una prueba' onPress={restart}></AppButton>) : null}
+      </View> : <AppButton style={styles.button} title='Hacer una prueba' onPress={restart}></AppButton>) : null}
       <Text style={{fontSize: 80, color: correct? 'green': 'red'}}>{done? correct? '✔' : '✕' : ''}</Text>
-      {done? <AppButton title={correct? 'Comenzar' : 'Reintentar'} onPress={correct? showCrossAndBegin : restart}></AppButton> : null}
-      {(done && correct)? <Text style={{color: 'white', fontSize: 19}}>Ahora aparecerá una cruz en el centro de la pantalla. Por favor, preste atención a la cruz.</Text> : null}
+      {done? <AppButton style={styles.button} title={correct? 'Comenzar' : 'Reintentar'} onPress={correct? showCrossAndBegin : restart}></AppButton> : null}
+      {(done && correct)? <Text style={styles.tip}>Ahora aparecerá una cruz en el centro de la pantalla. Por favor, preste atención a la cruz.</Text> : null}
     </View>) :
     (<View style={{width: '100%', height: '100%', backgroundColor: 'black', padding: 32, alignItems: 'center', justifyContent: 'space-evenly'}}>
       <Text style={{fontSize: 160, color: 'white'}}>✕</Text>
     </View>)
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    color: colors.title,
+    fontSize: 32
+  },
+  description: {
+    color: colors.black,
+    fontSize: 24,
+    paddingHorizontal: 30,
+    textAlign: 'center'
+  },
+  tip: {
+    color: colors.black,
+    fontSize: 19
+  },
+  button: {
+    width: 200,
+    color: colors.white
+  }
+})

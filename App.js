@@ -20,7 +20,6 @@ import * as MediaLibrary from 'expo-media-library';
 
 import DropDownPicker from "react-native-dropdown-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useState } from 'react';
 import {Provider} from 'react-redux';
 import { applyMiddleware } from 'redux';
 import { configureStore } from "@reduxjs/toolkit";
@@ -28,7 +27,7 @@ import { combineReducers } from "redux";
 import thunk from 'redux-thunk';
 import userReducer from './redux/reducers/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import storage from 'redux-persist/lib/storage';
+// import storage from 'redux-persist/lib/storage';
 import {
   persistReducer,
   FLUSH,
@@ -40,6 +39,8 @@ import {
 } from 'redux-persist';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
+import colors from './config/colors';
+import AppButton from './components/AppButton';
 
 const rootReducer = combineReducers({
   userReducer
@@ -48,7 +49,7 @@ const store = configureStore({
   reducer: persistReducer(
     {
       key: 'root',
-      storage
+      storage: AsyncStorage
     },
     rootReducer
   ),
@@ -195,66 +196,79 @@ function DownloadsTab() {
   return (
     <View 
       style={{
-        padding:30, 
-        display: 'flex',
-        alignItems: 'center',
+        paddingHorizontal:75,
+        paddingTop: 30
       }}>
       <Text style={{
-        fontSize: 20,
-        fontWeight: 'bold',
         marginTop: 20,
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        color: colors.title,
+        fontSize: 30,
+        fontWeight: 'bold'
       }}>Descargas</Text>
-      <Text>Prueba</Text>
-      <DropDownPicker
-          containerStyle={{
-            marginTop: 15,
-            marginBottom:30,
-            width: 300
-          }}
-          open={testsDropdownOpen}
-          value={selectedTestValue}
-          items={[
-            {label: 'Pirámides y palmeras', value: 'piramides'},
-            {label: 'Campanas', value: 'campanas'},
-            {label: 'Hanoi', value: 'hanoi'},
-            {label: 'Corsi', value: 'corsi'},
-            {label: 'Camellos', value: 'camellos'},
-            {label: 'Cartas', value: 'cartas'},
-            {label: 'Prueba de color', value: 'color'},
-          ]}
-          setOpen={setTestsDropdownOpen}
-          setValue={setSelectedTestValue}
-          placeholder='Seleccione una prueba'
-      />
-      <Text>Desde</Text>
-      <DateTimePicker
+      <View style={{
+        alignSelf: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: colors.white,
+        width: 600,
+        paddingVertical: 40,
+        borderRadius: 20,
+        marginTop: 60
+      }}>
+        <Text>Seleccione la prueba</Text>
+        <DropDownPicker
+            containerStyle={{
+              marginTop: 15,
+              marginBottom:30,
+              width: 300
+            }}
+            open={testsDropdownOpen}
+            value={selectedTestValue}
+            items={[
+              {label: 'Pirámides y palmeras', value: 'piramides'},
+              {label: 'Campanas', value: 'campanas'},
+              {label: 'Hanoi', value: 'hanoi'},
+              {label: 'Corsi', value: 'corsi'},
+              {label: 'Camellos', value: 'camellos'},
+              {label: 'Cartas', value: 'cartas'},
+              {label: 'Prueba de color', value: 'color'},
+            ]}
+            setOpen={setTestsDropdownOpen}
+            setValue={setSelectedTestValue}
+            placeholder='Seleccione una prueba'
+        />
+        <Text>Desde</Text>
+        <DateTimePicker
+            style={{
+              height: 60
+            }}
+            maximumDate={new Date()}
+            value={fromDate}
+            mode={'date'}
+            onChange={onChangeFromDate}
+          />
+        <Text>Hasta</Text>
+        <DateTimePicker
+            style={{
+              height: 60,
+              marginBottom: 20
+            }}
+            maximumDate={new Date()}
+            value={toDate}
+            mode={'date'}
+            onChange={onChangeToDate}
+          />
+        <AppButton 
           style={{
-            height: 60
+            width: 300,
+            marginTop: 20
           }}
-          maximumDate={new Date()}
-          value={fromDate}
-          mode={'date'}
-          onChange={onChangeFromDate}
-        />
-      <Text>Hasta</Text>
-      <DateTimePicker
-          style={{
-            height: 60,
-            marginBottom: 20
-          }}
-          maximumDate={new Date()}
-          value={toDate}
-          mode={'date'}
-          onChange={onChangeToDate}
-        />
-      <Button 
-        style={{
-          width: 300,
-        }}
-        title="Descargar"
-        onPress={download}
-        />
+          color={colors.button}
+          title="Descargar"
+          onPress={download}
+          />
+      </View>
     </View>
   );
 

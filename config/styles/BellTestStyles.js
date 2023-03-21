@@ -86,7 +86,7 @@ const instructions = StyleSheet.create({
     },
     messageContainer: {
         flex: 0.5,
-        justifyContent: 'end',
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
     message: {
