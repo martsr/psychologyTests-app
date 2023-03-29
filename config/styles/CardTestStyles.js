@@ -33,6 +33,7 @@ const CardsConfig = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:"#F6F3F5",
+        padding: 20
     },
     textContainer: {
         flex: 1,
@@ -41,7 +42,8 @@ const CardsConfig = StyleSheet.create({
         marginTop: 60,
         width: "80%",
         marginHorizontal: "10%",
-        backgroundColor:"#F6F3F5"
+        backgroundColor:"#F6F3F5",
+        padding: 20
     },
     title: {
         fontSize: 28,

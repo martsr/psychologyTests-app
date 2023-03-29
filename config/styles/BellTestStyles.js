@@ -55,13 +55,7 @@ const instructions = StyleSheet.create({
         alignItems: 'center'
     },
     button: {
-        flex:1,
-        flexDirection: "row",
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 15,
-        backgroundColor: colors.button,
-        padding: 10
+        width: 200
     },
     buttonText: {
         fontSize: 30,
@@ -71,12 +65,9 @@ const instructions = StyleSheet.create({
         marginLeft: 15,
     },
     emptyButton: {
-        flex:1,
-        borderRadius: 15,
-        borderColor: colors.button,
-        borderWidth: 2,
-        boorderStyle: 'solid',
-        padding: 10,
+        width: 200,
+        color: colors.primary,
+        backgroundColor: 'transparent'
     },
     emptyButtonText: {
         paddingTop: 15,
