@@ -17,6 +17,7 @@ import HanoiObject from '../../components/Hanoi/HanoiObject.js'
 import {Dimensions } from "react-native";
 import ReturnHomeComponent from '../../components/ReturnHomeComponent'
 import reactDom from 'react-dom';
+import AppButton from '../../components/AppButton';
 
 const WIDTH = Math.round(Dimensions.get('window').width);
 export default class HanoiTest extends React.Component {
@@ -148,9 +149,7 @@ render(){
                 <Text style={styles.text}>1. Solo se puede mover un disco cada vez</Text>
                 <Text style={styles.text}>2. Un disco de mayor tamaño no puede estar sobre uno más pequeño que él mismo.</Text>
                 <Text style={styles.text}>3. Solo se puede desplazar el disco que se encuentre arriba en cada region.</Text>
-                <TouchableOpacity style={styles.button} onPress={this.hideComponent}>
-                  <Text>Entendido</Text>
-                </TouchableOpacity>
+                <AppButton onPress={this.hideComponent} title="Entendido" style={{width: 200, marginTop: 30, marginLeft: 75}}></AppButton>
               </View>
             </View>): null}
             {this.state.instructionTwoVisible? (<View style={styles.textContainer}>
@@ -164,9 +163,7 @@ render(){
               <View>
                 <Text style={styles.text}>Es ahora tu turno de trasladar toda la pila hacia otra de las zonas</Text>
                 <Text style={styles.text}>¡No existe una sola solucion!</Text>
-                <TouchableOpacity style={styles.button} onPress={this.endTutorial}>
-                  <Text>Comenzar</Text>
-                </TouchableOpacity>
+                <AppButton onPress={this.endTutorial} title="Comenzar" style={{width: 200, marginTop: 30, marginLeft: 75}}></AppButton>
               </View>
             </View>): null}
 
@@ -221,9 +218,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
+    marginLeft: 75,
+    marginVertical: 30
   },
   text: {
-    fontSize: 28,
+    fontSize: 24,
+    marginLeft: 75
   },
   button: {
     marginTop: 20,

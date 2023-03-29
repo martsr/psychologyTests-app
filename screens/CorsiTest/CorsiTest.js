@@ -34,8 +34,9 @@ export default function CorsiTest({navigation, route}) {
 
   useEffect(() => {
     if (inverted && turn == boxes.length - 1) {
-      DatabaseService.instance().saveCorsiTestResult(patientNumber, results);
-      navigation.navigate('HomeScreen');
+      DatabaseService.instance().saveCorsiTestResult(patientNumber, results).then(() => {
+        navigation.navigate('HomeScreen');
+      });
     }
   }, [results.length])
 
@@ -63,7 +64,7 @@ export default function CorsiTest({navigation, route}) {
         }
       </View>
       <View style={{ height: 70 }}>
-        {numberOfPressedBoxes > 0 ? <AppButton title='✔' onPress={nextLevel}></AppButton> : null}
+        {numberOfPressedBoxes > 0 ? <AppButton style={{width: 200, marginLeft: 'auto', marginRight: 'auto'}} title='Ok' onPress={nextLevel}></AppButton> : null}
       </View>
     </View>
   ) : (<Instructions inverted={inverted} onStartPress={() => setStart(true)} />);

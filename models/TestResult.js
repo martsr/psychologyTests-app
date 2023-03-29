@@ -1,8 +1,10 @@
 
 export default class TestResult {
-  constructor(aPatientNumber, aDate, aResult) {
-    this.aPatientNumber = aPatientNumber;
+  constructor(aPatientNumber, aProfessionalNumber, aDate, aResult) {
+    this.patientNumber = aPatientNumber;
     this.date = aDate;
     this.result = aResult;
+    this.professionalNumber = aProfessionalNumber;
   }
 }
+
