@@ -4,6 +4,7 @@ import {
   Modal,
   TouchableOpacity,
   Text,
+  StyleSheet,
 } from 'react-native';
 
 import { CardsConfig, instructions } from '../../config/styles/CardTestStyles';
@@ -11,6 +12,7 @@ import { Fontisto, AntDesign, MaterialCommunityIcons, FontAwesome } from '@expo/
 import CardContainer from './CardContainer';
 import { general, mainPage } from '../../config/styles/GeneralStyles';
 import colors from '../../config/colors';
+import AppButton from '../../components/AppButton';
 
 function generateCards(){
     const iconsList=['rabbit','ship']
@@ -133,12 +135,8 @@ export default class CardTest extends React.Component {
                 <Text style={instructions.text}>Comencemos agrupando por {this.state.evaluation}.</Text>
             </View>
             <View style={instructions.buttonContainer}>
-                <TouchableOpacity style={instructions.emptyButton}>
-                    <Text style={instructions.emptyButtonText}>Cancelar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={instructions.button} onPress={() => this.setState({ startedTutorial : true })}>
-                    <Text style={instructions.buttonText}>Empezar tutorial</Text>
-                </TouchableOpacity>
+                <AppButton title={'Cancelar'} textColor={colors.primary} style={styles.emptyButton}></AppButton>
+                <AppButton title={'Empezar Tutorial'} style={styles.button} onPress={() => this.setState({ startedTutorial : true })}></AppButton>
             </View>
             </Modal>
             <Modal transparent="true" visible={this.state.responseModalVisible}>
@@ -206,6 +204,18 @@ export default class CardTest extends React.Component {
         );
     }
 };
+
+const styles = StyleSheet.create({
+    button: {
+        width: 200,
+        marginHorizontal: 20
+    },
+    emptyButton: {
+        width: 200,
+        backgroundColor: 'transparent',
+        marginHorizontal: 20
+    }
+});
 
  /*<>
         <Modal transparent="true" visible={this.state.responseModalVisible}>

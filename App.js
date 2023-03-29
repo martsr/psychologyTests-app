@@ -41,6 +41,7 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import colors from './config/colors';
 import AppButton from './components/AppButton';
+import TestsNames from './Helpers/TestsNames';
 
 const rootReducer = combineReducers({
   userReducer
@@ -107,30 +108,37 @@ function TestsTab() {
       <Stack.Screen
         name='pyramidAndPalmTreesTest'
         component={PyramidAndPalmTreesTest}
+        options={{ title: TestsNames.pyramidAndPalmTreesTest }}
       />
       <Stack.Screen
         name='bellTest'
         component={BellTest}
+        options={{ title: TestsNames.bellTest }}
       />
       <Stack.Screen
         name='hanoiTest'
         component={HanoiTest}
+        options={{ title: TestsNames.hanoiTest }}
       />
       <Stack.Screen
         name='corsiTest'
         component={CorsiTest}
+        options={{ title: TestsNames.corsiTest }}
       />
       <Stack.Screen
         name='camelTest'
         component={CamelTest}
+        options={{ title: TestsNames.camelTest }}
       />
       <Stack.Screen
         name='cardTest'
         component={CardTest}
+        options={{ title: TestsNames.cardTest }}
       />
       <Stack.Screen
         name='colorTrailsTest'
         component={ColorTrailsTest}
+        options={{ title: TestsNames.colorTrailsTest }}
       />
     </Stack.Navigator>
   );
