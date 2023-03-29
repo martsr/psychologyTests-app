@@ -17,6 +17,7 @@ import AppButton from '../../components/AppButton';
 import TestsNames from '../../Helpers/TestsNames';
 import { connect} from 'react-redux';
 import { setUser,setInterviewer } from '../../redux/actions/user';
+import { ScrollView } from 'react-native';
 
 const mapStateToProps = (state) => {
   return {
@@ -68,211 +69,84 @@ class HomeScreen extends React.Component{
   render(){
     return (
       <SafeAreaView>
-        <View style={styles.header}>
-          <View style={{flex: 1, marginLeft: 75}}>
-            <Text style={styles.headerText}>Seleccione una prueba para comenzar</Text>
-          </View>
-          <View style={{justifyContent:"flex-end", height:120, width: 160, marginRight: 75} }>
-            <Image style={styles.logo} source={require('../../assets/logoUca.png')}/> 
-          </View>
+        <View style={{ position: 'absolute', right: 100, justifyContent:"flex-end", height:160, width: 230} }>
+          <Image style={styles.logo} source={require('../../assets/logoUca.png')}/> 
         </View>
-        <View style={styles.identificationsContainer}>
-          <View style={styles.imageAndIdContainer}>
-            <Ionicons name="person" size={30} color="black" />
-            <TextInput
-              style={styles.patientModal.input}
-              value={this.state.interviewerNumber}
-              onChangeText={(interviewerNumber) => this.setState({ interviewerNumber })}
-              placeholder='Número de entrevistador'
-              keyboardType='numeric'
-              //disabled = 'true'
-            ></TextInput>
-            <Text>{this.state.patientError}</Text>
-            <MaterialCommunityIcons name="pencil" size={30} color="black" />
+        <ScrollView>
+          <View style={styles.identificationsContainer}>
+            <Text style={styles.identificationsTitle}>Ingrese número de profesional y paciente</Text>
+            <View style={styles.imageAndIdContainer}>
+              <Ionicons name="person" size={30} color="black" />
+              <TextInput
+                style={styles.patientModal.input}
+                value={this.state.interviewerNumber}
+                onChangeText={(interviewerNumber) => this.setState({ interviewerNumber })}
+                placeholder='Número de profesional'
+                keyboardType='numeric'
+                //disabled = 'true'
+              ></TextInput>
+              <Text>{this.state.patientError}</Text>
+              <MaterialCommunityIcons name="pencil" size={25} color="black" />
+            </View>
+            <View style={styles.imageAndIdContainer}>
+              <FontAwesome name="image" size={30} color="black"/>
+              <TextInput
+                style={styles.patientModal.input}
+                value={this.state.patientNumber}
+                onChangeText={(patientNumber) => this.setState({ patientNumber })}
+                placeholder='Número de paciente'
+                keyboardType='numeric'
+                //disabled = 'true'
+              ></TextInput>
+              <Text>{this.state.interviewerError}</Text>
+              <MaterialCommunityIcons name="pencil" size={25} color="black" />
+            </View>
+            <AppButton title={'Guardar'} color={colors.button} textColor={colors.white} style={styles.patientModal.button} onPress={()=>
+              {this.props.setUser(this.state.patientNumber)
+              this.props.setInterviewer(this.state.interviewerNumber)}}></AppButton>
           </View>
-          <View style={styles.imageAndIdContainer}>
-            <FontAwesome name="image" size={30} color="black"/>
-            <TextInput
-              style={styles.patientModal.input}
-              value={this.state.patientNumber}
-              onChangeText={(patientNumber) => this.setState({ patientNumber })}
-              placeholder='Número de paciente'
-              keyboardType='numeric'
-              //disabled = 'true'
-            ></TextInput>
-            <Text>{this.state.interviewerError}</Text>
-            <MaterialCommunityIcons name="pencil" size={30} color="black" />
+          <View style={styles.header}>
+            <View style={{flex: 1, marginLeft: 80}}>
+              <Text style={styles.headerText}>Seleccione una prueba para comenzar</Text>
+            </View>
           </View>
-          <AppButton title={'Guardar'} color={colors.button} textColor={colors.white} style={styles.patientModal.button} onPress={()=>
-            {this.props.setUser(this.state.patientNumber)
-            this.props.setInterviewer(this.state.interviewerNumber)}}></AppButton>
-        </View>
-        <View style={styles.itemsContainer}>
-          <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => this.selectTest('pyramidAndPalmTreesTest')} delayPressIn={0}>
-            <MaterialCommunityIcons name="pyramid" size={60} color={colors.white}/>
-            <Text style={general.textStyle}>{TestsNames.pyramidAndPalmTreesTest}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('bellTest')} delayPressIn={0}>
-            <FontAwesome name="bell-o" size={60} color={colors.white}/>
-            <Text style={general.textStyle}>{TestsNames.bellTest}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('hanoiTest')} delayPressIn={0}>
-            <FontAwesome name="image" size={60} color={colors.white}/>
-            <Text style={general.textStyle}>{TestsNames.hanoiTest}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('corsiTest')} delayPressIn={0}>
-            <FontAwesome name="cube" size={60} color={colors.white}/>
-            <Text style={general.textStyle}>{TestsNames.corsiTest}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('camelTest')} delayPressIn={0}>
-            <FontAwesome name="image" size={60} color={colors.white}/>
-            <Text style={general.textStyle}>{TestsNames.camelTest}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('cardTest')} delayPressIn={0}>
-          <MaterialCommunityIcons name="cards" size={60} color={colors.white}/>
-            <Text style={general.textStyle}>{TestsNames.cardTest}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('colorTrailsTest')} delayPressIn={0}>
-            <FontAwesome name="image" size={60} color={colors.white}/>
-            <Text style={general.textStyle}>{TestsNames.colorTrailsTest}</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.itemsContainer}>
+            <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => this.selectTest('pyramidAndPalmTreesTest')} delayPressIn={0}>
+              <MaterialCommunityIcons name="pyramid" size={35} color={colors.white}/>
+              <Text style={general.textStyle}>{TestsNames.pyramidAndPalmTreesTest}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('bellTest')} delayPressIn={0}>
+              <FontAwesome name="bell-o" size={35} color={colors.white}/>
+              <Text style={general.textStyle}>{TestsNames.bellTest}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('hanoiTest')} delayPressIn={0}>
+              <FontAwesome name="image" size={35} color={colors.white}/>
+              <Text style={general.textStyle}>{TestsNames.hanoiTest}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('corsiTest')} delayPressIn={0}>
+              <FontAwesome name="cube" size={35} color={colors.white}/>
+              <Text style={general.textStyle}>{TestsNames.corsiTest}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('camelTest')} delayPressIn={0}>
+              <FontAwesome name="image" size={35} color={colors.white}/>
+              <Text style={general.textStyle}>{TestsNames.camelTest}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('cardTest')} delayPressIn={0}>
+            <MaterialCommunityIcons name="cards" size={35} color={colors.white}/>
+              <Text style={general.textStyle}>{TestsNames.cardTest}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('colorTrailsTest')} delayPressIn={0}>
+              <FontAwesome name="image" size={35} color={colors.white}/>
+              <Text style={general.textStyle}>{TestsNames.colorTrailsTest}</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
   
       </SafeAreaView>
       );
   }
 
 }
-/*
-function HomeScreen({navigation}) {
-
-  const [selectedTest, setSelectedTest] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [patientNumber, setPatientNumber] = useState(undefined);
-  const [intrviewerNumber, setInterviewerNumber] = useState(undefined);
-  const [patientError, setPatientError] = useState(null);
-  const [interviewerError, setInterviewerError] = useState(null);
-
-  return (
-    <SafeAreaView>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-       <View style={styles.patientModal}>
-          <View style={styles.patientModal.modalView}>
-            <Text style={styles.patientModal.title}>{TestsNames[selectedTest]}</Text>
-            <TextInput
-              style={styles.patientModal.input}
-              onChangeText={setPatientNumber}
-              placeholder='Número de paciente'
-              keyboardType='numeric'
-            ></TextInput>
-            <Text>{patientError}</Text>
-            <View style={styles.patientModal.buttonContainer}>
-              <AppButton title={'Cancelar'} color={colors.white} textColor={colors.button} borderColor={colors.button} style={styles.patientModal.button} onPress={() => cancel()}></AppButton>
-              <AppButton title={'Comenzar'} color={colors.button} textColor={colors.white} style={styles.patientModal.button} onPress={() => openTest()}></AppButton>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-      <View style={styles.header}>
-        <View style={{flex: 1, marginLeft: 75}}>
-          <Text style={styles.headerText}>Seleccione una prueba para comenzar</Text>
-        </View>
-        <View style={{justifyContent:"flex-end", height:120, width: 160, marginRight: 75} }>
-          <Image style={styles.logo} source={require('../../assets/logoUca.png')}/> 
-        </View>
-      </View>
-      <View style={styles.identificationsContainer}>
-        <View style={styles.imageAndIdContainer}>
-          <Ionicons name="person" size={30} color="black" />
-          <TextInput
-            style={styles.patientModal.input}
-            onChangeText={setInterviewerNumber}
-            placeholder='Número de entrevistador'
-            keyboardType='numeric'
-            //disabled = 'true'
-          ></TextInput>
-          <Text>{patientError}</Text>
-          <MaterialCommunityIcons name="pencil" size={30} color="black" />
-        </View>
-        <View style={styles.imageAndIdContainer}>
-          <FontAwesome name="image" size={30} color="black"/>
-          <TextInput
-            style={styles.patientModal.input}
-            onChangeText={setPatientNumber}
-            placeholder='Número de paciente'
-            keyboardType='numeric'
-            //disabled = 'true'
-          ></TextInput>
-          <Text>{interviewerError}</Text>
-          <MaterialCommunityIcons name="pencil" size={30} color="black" />
-        </View>
-      </View>
-      <View style={styles.itemsContainer}>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]}  onPress={() => selectTest('pyramidAndPalmTreesTest')} delayPressIn={0}>
-          <MaterialCommunityIcons name="pyramid" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>{TestsNames.pyramidAndPalmTreesTest}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('bellTest')} delayPressIn={0}>
-          <FontAwesome name="bell-o" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>{TestsNames.bellTest}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('hanoiTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>{TestsNames.hanoiTest}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('corsiTest')} delayPressIn={0}>
-          <FontAwesome name="cube" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>{TestsNames.corsiTest}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('camelTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>{TestsNames.camelTest}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('cardTest')} delayPressIn={0}>
-        <MaterialCommunityIcons name="cards" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>{TestsNames.cardTest}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => selectTest('colorTrailsTest')} delayPressIn={0}>
-          <FontAwesome name="image" size={60} color={colors.white}/>
-          <Text style={general.textStyle}>{TestsNames.colorTrailsTest}</Text>
-        </TouchableOpacity>
-      </View>
-
-    </SafeAreaView>
-    );
-
-    function selectTest(testName) {
-      setPatientNumber(null);
-      setSelectedTest(testName);
-      navigation.navigate(testName, {patientNumber});
-    }
-
-    function cancel() {
-      setPatientNumber(null);
-      setInterviewerNumber(null);
-    }
-
-    function openTest() {
-      if (!patientNumber) {
-        setPatientError('Por favor ingresa un número de paciente.');
-        return;
-      }
-      if (!intrviewerNumber) {
-        setInterviewerError('Por favor ingresa un número de entrevistador.');
-        return;
-      }
-      /*setModalVisible(!modalVisible);
-      navigation.navigate(selectedTest, {patientNumber});*/
-    //}
-  //};
   
   const styles = StyleSheet.create({
     patientModal: {
@@ -319,29 +193,38 @@ function HomeScreen({navigation}) {
         width:150
       },
       button: {
-        marginLeft: 25,
-        marginRight: 25,
-        height: 30,
+        marginTop: 20,
+        marginRight: 'auto',
         width: 150,
       }
     },
     identificationsContainer:{
-      height:150, 
-      width:450, 
+      width: 550, 
       backgroundColor:"white",
       marginLeft:75,
       borderRadius:15,
       flexDirection:"column",
       alignItems:"center",
-      padding:10
+      paddingVertical: 30,
+      paddingHorizontal: 40,
+      marginTop: 40
+    },
+    identificationsTitle: {
+      color: colors.title,
+      alignSelf: 'flex-start',
+      marginBottom: 20,
+      fontSize: 16
     },
     imageAndIdContainer:{
-      flex:1,
+      display:'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 10,
       flexDirection:"row",
-      width: "90%"
+      width: '80%',
     },
     itemsContainer: {
-      margin:60,
+      margin: 50,
       marginTop:10,
       flex:1,
       justifyContent: "flex-start",
@@ -358,12 +241,16 @@ function HomeScreen({navigation}) {
       flex: 1,
       borderBottomStartRadius: 15,
       borderBottomEndRadius: 15,
+      width: 230,
+      height: 160
     },
     headerItem: {
       flex: 1,
     },
     headerText: {
       color: colors.title,
+      marginTop: 50,
+      marginBottom: 10,
       fontSize: 30,
       fontWeight: 'bold'
     }

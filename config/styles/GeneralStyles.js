@@ -19,17 +19,17 @@ const mainPage = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.homeButton,
     color: colors.white,
-    padding: 15,
+    paddingHorizontal: 25,
     height: 100,
     width: '30%',
-    marginTop: 30,
     marginBottom: 30,
     marginLeft: 30,
-    borderRadius: 15
+    borderRadius: 15,
+    overflow: "hidden"
   },
   image: {
-    width: 50,
-    height:50,
+    width: 40,
+    height:40,
     overflow: 'hidden',
     backgroundColor: '#000',
     alignItems:'center',

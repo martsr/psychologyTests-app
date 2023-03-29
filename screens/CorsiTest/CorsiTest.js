@@ -33,9 +33,10 @@ export default function CorsiTest({navigation, route}) {
   }, [start, turn]);
 
   useEffect(() => {
-    if (inverted && turn == boxes.length - 1) {
-      DatabaseService.instance().saveCorsiTestResult(patientNumber, results);
-      navigation.navigate('HomeScreen');
+    if (inverted && turn == boxes[0].invertedSequenceOrder.length) {
+      DatabaseService.instance().saveCorsiTestResult(patientNumber, results).then(() => {
+        navigation.navigate('HomeScreen');
+      });
     }
   }, [results.length])
 
@@ -63,7 +64,7 @@ export default function CorsiTest({navigation, route}) {
         }
       </View>
       <View style={{ height: 70 }}>
-        {numberOfPressedBoxes > 0 ? <AppButton title='✔' onPress={nextLevel}></AppButton> : null}
+        {numberOfPressedBoxes > 0 ? <AppButton style={{width: 200, marginLeft: 'auto', marginRight: 'auto'}} title='Ok' onPress={nextLevel}></AppButton> : null}
       </View>
     </View>
   ) : (<Instructions inverted={inverted} onStartPress={() => setStart(true)} />);
@@ -100,7 +101,14 @@ export default function CorsiTest({navigation, route}) {
     setNumberOfCorrects(0);
     setTurn((prevTurn) => prevTurn + 1);
     setBoxOrderToBePressed(1);
-    setAmountOfBoxesToBePressed((prev) => prev + 1);
+    const newAmountOfBoxes = boxes.reduce((amount, box) => {
+      if (!inverted) {
+        return amount + (box.sequenceOrder[turn + 1] > 0 ? 1 : 0);
+      } else {
+        return amount + (box.invertedSequenceOrder[turn + 1] > 0 ? 1 : 0);
+      }
+    }, 0);
+    setAmountOfBoxesToBePressed((prev) => newAmountOfBoxes);
     setBoxes((prevBoxes) => {
       return prevBoxes.map((aBox) => {
         aBox.color = 'blue';
@@ -108,7 +116,7 @@ export default function CorsiTest({navigation, route}) {
       });
     });
     console.log(results);
-    if (!inverted && turn == boxes.length - 2) {
+    if (!inverted && turn == boxes[0].sequenceOrder.length - 1) {
       setInverted(true);
       showInstructions();
       setTurn(0);

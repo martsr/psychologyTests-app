@@ -1,4 +1,6 @@
-import TestResult from "../models/TestResult";
+import CorsiTestResult from "../models/CorsiTestResult";
+import { Database } from "./Database";
+import * as Promise from "bluebird"
 
 export default class DatabaseService {
   static instance() {
@@ -12,21 +14,54 @@ export default class DatabaseService {
 
   constructor() {
     this.corsiResults = [];
+    this._db = new Database('test');
   }
 
-  saveCorsiTestResult(patientNumber, corsiResult) {
-    this.corsiResults.push(new TestResult(patientNumber, new Date(), corsiResult));
+  async saveCorsiTestResult(patientNumber, corsiResult) {
+    const testResult = new CorsiTestResult(patientNumber, 0, new Date(), corsiResult);
+    await this.createCorsiTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
   }
 
-  getCorsiTestResults() {
-    return this.corsiResults;
+  async createCorsiTable() {
+    await this._db.execute(`create table if not exists corsiTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      inverted text,
+      amountOfBoxes number,
+      correct text,
+      timeInMs number);`);
   }
 
-  getResults() {
-    return {
-      corsiTest: this.getCorsiTestResults(),
+  async getCorsiTestCSVResults(fromDate, toDate) {
+    await this.createCorsiTable();
+    const dbResults = await this._db.execute(`select * from corsiTest`);
+    const header = 'patientNumber,professionalNumber,date,inverted,amountOfBoxes,correct,timeInMs\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.inverted},${row.amountOfBoxes},${row.correct},${row.timeInMs}\n`
+    }).join('');
+    return `${header}${data}`;
+  }
+
+  async getCSVResults(test, fromDate, toDate) {
+    if (test == 'corsi') {
+      return this.getCorsiTestCSVResults(fromDate, toDate);
+    } else if (test == 'piramides') {
+      return this.getCorsiTestCSVResults(fromDate, toDate);
+    } else {
+      throw new Error('No existe el test');
     }
   }
+
 
 
 }

@@ -18,8 +18,8 @@ const InstructionsModal = ({instructions='', conditions='', visible, onPressAcce
             <Text style={styles.text}>{conditions}</Text>
         </View>
         <View style={styles.buttonContainer}>
-            <AppButton title={'Cancelar'} color={colors.white} textColor={colors.button} borderColor={colors.button} style={styles.button} onPress={onPressCancel}></AppButton>
-            <AppButton title={'Empezar Tutorial'} color={colors.button} textColor={colors.white} style={styles.button} onPress={onPressAccept}></AppButton>
+            <AppButton title={'Cancelar'} textColor={colors.primary} style={styles.emptyButton} onPress={onPressCancel}></AppButton>
+            <AppButton title={'Empezar Tutorial'} style={styles.button} onPress={onPressAccept}></AppButton>
         </View>
     </Modal>
 }
@@ -61,14 +61,14 @@ const styles = StyleSheet.create({
         marginHorizontal: "10%"
     },
     button: {
-        flex:1,
-        flexDirection: "row",
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 8,
-        width: "80%",
-        marginHorizontal: "10%"
+        width: 200,
+        marginHorizontal: 20
     },
+    emptyButton: {
+        width: 200,
+        backgroundColor: 'transparent',
+        marginHorizontal: 20
+    }
 });
 
 export default InstructionsModal;
