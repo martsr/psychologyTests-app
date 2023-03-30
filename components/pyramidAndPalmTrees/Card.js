@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
   },
   mainImage: {
     flex: 1,
+    height: '100%',
+    width: undefined,
     overflow: 'hidden',
     backgroundColor: '#000',
     alignItems:'center',

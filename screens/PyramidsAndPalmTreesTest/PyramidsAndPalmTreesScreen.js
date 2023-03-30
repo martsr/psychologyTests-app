@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { Modal, View, StyleSheet } from "react-native";
 
 import Text from "../../components/Text";
 import colors from "../../config/colors";
@@ -8,6 +8,7 @@ import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native";
 import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 import InstructionsModal from "../../components/InstructionsModal";
+import ReturnHomeComponent from "../../components/ReturnHomeComponent";
 
 function PyramidAndPalmTreesTest(props) {
   const [testId, setTestId] = useState(0);
@@ -67,6 +68,9 @@ function PyramidAndPalmTreesTest(props) {
   return ( start
     ? <View style={styles.detailsContainer}>
           {showTest()}
+        <Modal animationType="slide" visible={testCompleted}>
+          <ReturnHomeComponent navigation={props.navigation}/>
+        </Modal>
         <View style={styles.navigation}>
           <View style={styles.buttonsContainer}>
             {/* {(testId > 0) && <TouchableOpacity style={styles.button} Text={"BACK"} onPress={hadleBackButton} disabled={backButtonDisable}>
