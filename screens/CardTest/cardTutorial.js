@@ -195,7 +195,7 @@ export default class CardTest extends React.Component {
                             <MaterialCommunityIcons style={{alignSelf: "center"}} name="rabbit" size={150} color={this.state.rabbitColor} />
                         </View>
                         <View style={CardsConfig.box}>
-                            <Fontisto style={{alignSelf: "center"}}name="ship" size={130} color={this.state.shipColor} />
+                            <Fontisto style={{alignSelf: "center"}}name="ship" size={120} color={this.state.shipColor} />
                         </View>
                     </View>
                 </View>
