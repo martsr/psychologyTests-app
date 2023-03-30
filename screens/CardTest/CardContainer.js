@@ -55,7 +55,7 @@ export default class CardContainer extends React.Component {
                         <MaterialCommunityIcons style={{alignSelf: "center"}} name={this.props.name} size={150} color={this.props.color} />
                     </View>:
                     <View style={CardsConfig.box}>
-                        <Fontisto style={{alignSelf: "center"}}name={this.props.name} size={130} color={this.props.color} />
+                        <Fontisto style={{alignSelf: "center"}}name={this.props.name} size={120} color={this.props.color} />
                     </View>}
             </Animated.View>
         );
