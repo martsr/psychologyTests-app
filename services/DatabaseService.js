@@ -1,6 +1,8 @@
 import CorsiTestResult from "../models/CorsiTestResult";
+import TestsNames from "../Helpers/TestsNames";
 import { Database } from "./Database";
 import * as Promise from "bluebird"
+import PyramidAndPalmTreesTestResult from "../models/PyramidAndPalmtreesTestResult";
 
 export default class DatabaseService {
   static instance() {
@@ -25,6 +27,14 @@ export default class DatabaseService {
     });
   }
 
+  async savePyramidsAndPalmtreesTestResult(patientNumber, result) {
+    const testResult = new PyramidAndPalmTreesTestResult(patientNumber, 0, new Date(), result);
+    await this.createPyramidsAndPalmtreesTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
+
   async createCorsiTable() {
     await this._db.execute(`create table if not exists corsiTest (
       id integer primary key not null, 
@@ -35,6 +45,18 @@ export default class DatabaseService {
       amountOfBoxes number,
       correct text,
       timeInMs number);`);
+  }
+
+  async createPyramidsAndPalmtreesTable() {
+    await this._db.execute(`create table if not exists pyramidsAndPalmtreesTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      testName text,
+      timeSpend number,
+      isCorrect text,
+      isAnimated text);`);
   }
 
   async getCorsiTestCSVResults(fromDate, toDate) {
@@ -53,12 +75,15 @@ export default class DatabaseService {
   }
 
   async getCSVResults(test, fromDate, toDate) {
-    if (test == 'corsi') {
-      return this.getCorsiTestCSVResults(fromDate, toDate);
-    } else if (test == 'piramides') {
-      return this.getCorsiTestCSVResults(fromDate, toDate);
-    } else {
-      throw new Error('No existe el test');
+    switch(test){
+      case TestsNames.corsiTest:
+        this.getCorsiTestCSVResults(fromDate, toDate);
+        break;
+      case TestsNames.pyramidAndPalmTreesTest:
+        this.getCorsiTestCSVResults(fromDate, toDate);
+        break
+      default:
+        throw new Error('No existe el test');
     }
   }
 

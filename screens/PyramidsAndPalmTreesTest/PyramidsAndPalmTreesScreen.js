@@ -10,7 +10,7 @@ import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Test
 import InstructionsModal from "../../components/InstructionsModal";
 import ReturnHomeComponent from "../../components/ReturnHomeComponent";
 
-function PyramidAndPalmTreesTest(props) {
+function PyramidAndPalmTreesTest({navigation, route}) {
   const [testId, setTestId] = useState(0);
   // const [backButtonDisable, setbackButtonDisable] = useState(false);
   const [nextButtonDisable, setNextButtonDisable] = useState(true);
@@ -19,6 +19,7 @@ function PyramidAndPalmTreesTest(props) {
   const [showInstructions, setShowInstructions] = useState(true);
   const [testCompleted, setTestCompleted] = useState(false)
   //TODO: enable and disable back and next buttons
+  const {patientNumber} = route.params;
 
   const showTest = ()=> {
     return(
@@ -30,9 +31,10 @@ function PyramidAndPalmTreesTest(props) {
     )
   }
 
-  const hadleNextButton = () =>{
+  const handleNextButton = () =>{
     setNextButtonDisable(true)
     if( tests.length === (testId + 1) ){ //check if you are in the last test
+      //TODO: integrate to downloads, persist data
       setTestCompleted(true)
     } else {
       setTestId(testId+1)
@@ -40,22 +42,21 @@ function PyramidAndPalmTreesTest(props) {
     }
   }
 
-  const hadleBackButton = () =>{
-    if( testId > 0){
-      setTestId(testId-1)
-    } else {
-      //TODO: disable back button
-    }
-  }
+  // const hadleBackButton = () =>{
+  //   if( testId > 0){
+  //     setTestId(testId-1)
+  //   } else {
+  //     //TODO: disable back button
+  //   }
+  // }
 
   const handleOnSelect = (card) =>{
     const now = Date.now()
-    const timeSpend = tests[testId]?.results?.timeSpend
-    const totalTimeSpend = (now - startTime) + (timeSpend? timeSpend : 0)
+    const totalTimeSpend = (now - startTime)
     setNextButtonDisable(false)
 
-    tests[testId].results = {timeSpend: totalTimeSpend, isCorrect: card.isCorrect, isAnimated: tests[testId].isAnimated}
-    console.log("TEST NUM "+ testId + ": ", tests[testId].results)
+    tests[testId].results = {testName: tests[testId].name, timeSpend: totalTimeSpend, isCorrect: card.isCorrect, isAnimated: tests[testId].isAnimated}
+    console.log("TEST NUM "+ testId + ": ", tests[testId].results )
   }
 
   const initiateTest = () =>{
@@ -69,7 +70,7 @@ function PyramidAndPalmTreesTest(props) {
     ? <View style={styles.detailsContainer}>
           {showTest()}
         <Modal animationType="slide" visible={testCompleted}>
-          <ReturnHomeComponent navigation={props.navigation}/>
+          <ReturnHomeComponent navigation={navigation}/>
         </Modal>
         <View style={styles.navigation}>
           <View style={styles.buttonsContainer}>
@@ -77,7 +78,7 @@ function PyramidAndPalmTreesTest(props) {
                 <Text style={styles.buttonText}>BACK</Text>
               </TouchableOpacity>
             } */}
-            {!nextButtonDisable? <TouchableOpacity style={styles.button} onPress={hadleNextButton}>
+            {!nextButtonDisable? <TouchableOpacity style={styles.button} onPress={handleNextButton}>
               <Text style={styles.buttonText}>{isTheLastTest()? 'FINISH':'NEXT'}</Text>
             </TouchableOpacity> : null}
           </View>
