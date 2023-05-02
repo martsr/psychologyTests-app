@@ -239,8 +239,6 @@ class HomeScreen extends React.Component{
     },
     logo: {
       flex: 1,
-      borderBottomStartRadius: 15,
-      borderBottomEndRadius: 15,
       width: 230,
       height: 160
     },

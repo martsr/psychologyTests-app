@@ -3,7 +3,7 @@
     "name": "psychologyTests",
     "slug": "psychologyTests",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -22,7 +22,8 @@
       "bundleIdentifier": "com.uca.tpf2023",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Your description here"
-      }
+      },
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {
@@ -40,6 +41,14 @@
       "eas": {
         "projectId": "19cbe40c-796b-4ece-9173-26d451c29ca5"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "LANDSCAPE"
+        }
+      ]
+    ]
   }
 }
