@@ -15,6 +15,7 @@ import { connect} from 'react-redux';
 import {Dimensions } from "react-native";
 import Circle from '../../components/ColorTrails/Circle.js';
 import ReturnHomeComponent from '../../components/ReturnHomeComponent';
+import ColorTrailInstructions from './ColorTrailInstructions';
 
 const mapStateToProps = (state) => {
   return {
@@ -28,6 +29,7 @@ const HEIGHT = Math.round(Dimensions.get('window').height) - 250;
 const OFFSET = 100;
 const N = 8;
 const circles = Array.from({length: N}, (_, index) => index + 1);
+
 class ColorTrailsTest extends React.Component {
   constructor(props){
     super(props);
@@ -41,7 +43,8 @@ class ColorTrailsTest extends React.Component {
     this.invalidMovements = 0;
     this.state = {
       visibleFinished: false,
-      timerVisible: true
+      timerVisible: true,
+      testVisible: true
     }
   }
   createPosition(){
@@ -81,13 +84,17 @@ class ColorTrailsTest extends React.Component {
         this.lastInvalidNumber = number;
       }
       response = {"pathLength": N, "validMovements": this.validMovements, "invalidMovements": this.invalidMovements};
-      console.log(response);
       if(this.validMovements == N){
         var time = this.stopTimer.current.state.time;
         this.stopTimer.current.stop();
+        this.setState({testVisible: false});
         this.setState({visibleFinished: true});
-        console.log("INFORMATION TO DB:")
-        console.log({"pathLength": N, "validMovements": this.validMovements, "invalidMovements": this.invalidMovements, "timeElapsed": time});
+        console.log({"patient": this.props.user, 
+          "interviewer": this.props.interviewer, 
+          "pathLength": N, 
+          "validMovements": this.validMovements, 
+          "invalidMovements": this.invalidMovements, 
+          "timeElapsed": time});
       }
     }
     redCircles = circles.map((num, index) => (
@@ -110,16 +117,17 @@ class ColorTrailsTest extends React.Component {
     ));
     return (
       <SafeAreaView style={styles.container}>
+        <ColorTrailInstructions/>
         <Modal animationType="slide" visible={this.state.visibleFinished}>
           <ReturnHomeComponent navigation={this.props.navigation}/>
         </Modal>
         <View style={styles.timer}>
           {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
         </View>
-        <View>
+        {this.state.testVisible? (<View>
           {redCircles}
           {yellowCircles}
-        </View>
+        </View>): null}
       </SafeAreaView>
       );
   }
