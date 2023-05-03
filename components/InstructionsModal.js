@@ -11,7 +11,7 @@ import colors from '../config/colors'
 const InstructionsModal = ({instructions='', conditions='', visible, onPressAccept, onPressCancel}) => { 
 
 
-    return  <Modal style={styles.container} transparent="true" animationType="slide" visible={visible}>
+    return  <Modal style={styles.container} transparent={true} animationType="slide" visible={visible}>
         <View style={styles.textContainer}>
             <Text style={styles.title}>Instrucciones</Text>
             <Text style={styles.text}>{instructions}</Text>

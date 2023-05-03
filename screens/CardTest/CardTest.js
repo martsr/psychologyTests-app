@@ -113,7 +113,7 @@ export default class CardTest extends React.Component {
           <ReturnHomeComponent navigation={this.props.navigation}/>
         </Modal>
         {!this.state.finishedTutorial ?<CardTutorial finishTutorial={this.finishTutorial}></CardTutorial>:<>
-        <Modal transparent="true" animationType="slide" visible={this.state.visible}>
+        <Modal transparent={true} animationType="slide" visible={this.state.visible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center',backgroundColor:"#F6F3F5"}}>
                 <Text style={instructions.text}>criterio : {this.state.evaluation}</Text>
                 <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
@@ -121,7 +121,7 @@ export default class CardTest extends React.Component {
                 </TouchableOpacity>
             </View>
         </Modal>
-        <Modal transparent="true" visible={this.state.responseModalVisible}>
+        <Modal transparent={true} visible={this.state.responseModalVisible}>
             <View style={instructions.popupModalContainer}>
                 {this.state.lastEvent == "catch" ?
                     <View style ={instructions.popupModalCorrectContainer}>
@@ -168,7 +168,7 @@ export default class CardTest extends React.Component {
 };
 
 /*<>
-        <Modal transparent="true" animationType="slide" visible={this.state.visible}>
+        <Modal transparent={true} animationType="slide" visible={this.state.visible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center',backgroundColor:"#F6F3F5"}}>
                 <Text style={general.textStyle}>criterio : {this.state.evaluation}</Text>
                 <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
@@ -176,7 +176,7 @@ export default class CardTest extends React.Component {
                 </TouchableOpacity>
             </View>
         </Modal>
-        <Modal transparent="true" visible={this.state.responseModalVisible}>
+        <Modal transparent={true} visible={this.state.responseModalVisible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
                 {this.state.lastEvent == "catch" ?
                     <View style ={{backgroundColor: "#b5d7c4", opacity:0.7, width:500, height:200, borderRadius:15}}>

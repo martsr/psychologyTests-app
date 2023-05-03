@@ -38,7 +38,7 @@ export default class BellTestInstructions extends React.Component {
 
 render(){
     return (
-        <Modal transparent="true" animationType="slide" visible={this.state.visible} >
+        <Modal transparent={true} animationType="slide" visible={this.state.visible} >
           <View style={instructions.container}>
             <View style={instructions.textContainer}>
               <Text style={instructions.title}>Instrucciones</Text>
