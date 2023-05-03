@@ -22,7 +22,6 @@ export default class ColorTrailInstructions extends React.Component {
     }
     setInvisible =()=>{
       this.setState({ visible : false});
-      this.props.callback();
     }
 
 render(){

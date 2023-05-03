@@ -12,7 +12,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import colors from '../config/colors'
 
 const AnswerFeedbackModal = ({correctAnswer , visible, onPressAccept, answerText}) => { 
-    return <Modal transparent="true" visible={visible}>
+    return <Modal transparent={true} visible={visible}>
         <View style={styles.modal}>
             { correctAnswer ?
                 <View style ={styles.modalCorrectAnswerContainer}>
