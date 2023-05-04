@@ -192,6 +192,9 @@ function DownloadsTab() {
     setFromDateShow(false);
     setFromDate(currentDate);
   };
+  const showFromDate = () => {
+    setFromDateShow(true)
+  }
 
   const [toDate, setToDate] = useState(new Date());
   const [toDateShow, setToDateShow] = useState(false);
@@ -200,6 +203,9 @@ function DownloadsTab() {
     setToDateShow(false);
     setToDate(currentDate);
   };
+  const showToDate = () => {
+    setToDateShow(true)
+  }
 
   return (
     <View 
@@ -208,7 +214,7 @@ function DownloadsTab() {
         paddingTop: 30
       }}>
       <Text style={{
-        marginTop: 20,
+        marginTop: 10,
         alignSelf: 'flex-start',
         color: colors.title,
         fontSize: 30,
@@ -222,14 +228,15 @@ function DownloadsTab() {
         width: 600,
         paddingVertical: 40,
         borderRadius: 20,
-        marginTop: 60
+        marginTop: 20
       }}>
         <Text>Seleccione la prueba</Text>
         <DropDownPicker
             containerStyle={{
               marginTop: 15,
               marginBottom:30,
-              width: 300
+              width: 300,
+              zIndex: 999
             }}
             open={testsDropdownOpen}
             value={selectedTestValue}
@@ -246,8 +253,9 @@ function DownloadsTab() {
             setValue={setSelectedTestValue}
             placeholder='Seleccione una prueba'
         />
-        <Text>Desde</Text>
-        <DateTimePicker
+        <Text style={{textDecorationLine:"underline", color:"blue"}} onPress={showFromDate}>Seleccionar fecha desde</Text>
+        <Text>{fromDate.toLocaleString("es-ES").split(',')[0]}</Text>
+        {fromDateShow && <DateTimePicker
             style={{
               height: 60
             }}
@@ -255,9 +263,10 @@ function DownloadsTab() {
             value={fromDate}
             mode={'date'}
             onChange={onChangeFromDate}
-          />
-        <Text>Hasta</Text>
-        <DateTimePicker
+          />}
+        <Text style={{textDecorationLine:"underline", color:"blue"}} onPress={showToDate}>Seleccionar fecha hasta</Text>
+        <Text>{toDate.toLocaleString("es-ES").split(',')[0]}</Text>
+        {toDateShow && <DateTimePicker
             style={{
               height: 60,
               marginBottom: 20
@@ -266,7 +275,7 @@ function DownloadsTab() {
             value={toDate}
             mode={'date'}
             onChange={onChangeToDate}
-          />
+          />}
         <AppButton 
           style={{
             width: 300,

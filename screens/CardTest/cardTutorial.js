@@ -127,7 +127,7 @@ export default class CardTest extends React.Component {
         const listado = this.state.cards.map( (item) => <CardContainer key={item.id} id={item.id} name={item.name} color={item.color} addEvent={this.addEvent}/> );
         return (
             <>
-            <Modal style={instructions.container} transparent="true" animationType="slide" visible={!this.state.startedTutorial}>
+            <Modal style={instructions.container} transparent={true} animationType="slide" visible={!this.state.startedTutorial}>
             <View style={instructions.textContainer}>
                 <Text style={instructions.title}>Instrucciones</Text>
                 <Text style={instructions.text}>En este test usted deberá agrupar las cartas por forma o por color,
@@ -139,7 +139,7 @@ export default class CardTest extends React.Component {
                 <AppButton title={'Empezar Tutorial'} style={styles.button} onPress={() => this.setState({ startedTutorial : true })}></AppButton>
             </View>
             </Modal>
-            <Modal transparent="true" visible={this.state.responseModalVisible}>
+            <Modal transparent={true} visible={this.state.responseModalVisible}>
                 <View style={instructions.popupModalContainer}>
                     {this.state.lastEvent == "catch" ?
                         <View style ={instructions.popupModalCorrectContainer}>
@@ -168,7 +168,7 @@ export default class CardTest extends React.Component {
                     }
                 </View>
             </Modal>
-            <Modal transparent="true" visible={this.state.nextStepVisible}>
+            <Modal transparent={true} visible={this.state.nextStepVisible}>
                 <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', backgroundColor:"#F6F3F5"}}>
                     <Text style={instructions.text}>Excelente!! ahora vamos a agrupar por color</Text>
                     <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setNextStepModalInvisible}>
@@ -176,7 +176,7 @@ export default class CardTest extends React.Component {
                     </TouchableOpacity>
                 </View>
             </Modal>
-            <Modal transparent="true" visible={this.state.endVisible}>
+            <Modal transparent={true} visible={this.state.endVisible}>
                 <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', backgroundColor:"#F6F3F5"}}>
                     <Text style={instructions.text}>Tutorial terminado</Text>
                     <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setendInvisible}>
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
 });
 
  /*<>
-        <Modal transparent="true" visible={this.state.responseModalVisible}>
+        <Modal transparent={true} visible={this.state.responseModalVisible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
                 {this.state.lastEvent == "catch" ?
                     <View style ={{backgroundColor: "#b5d7c4", opacity:0.7, width:500, height:200, borderRadius:15}}>
