@@ -5,7 +5,7 @@ import AppButton from '../../components/AppButton';
 import Text from "../../components/Text";
 import colors from "../../config/colors";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
-import { TouchableOpacity } from "react-native-web";
+import { TouchableOpacity } from "react-native";
 import { demoTest } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 import AnswerFeedbackModal from "../../components/AnswerFeedbackModal";
 
@@ -42,7 +42,7 @@ function DemoScreen({ onStartPress }) {
     }
   };
   
-  const onNextButton = () =>{
+  const onNextButton = () => {
     setShowButton(false)
     if( !(demoTest.length === (testId + 1)) ){ //check if you are in the last test of the demo
       setTestId(testId+1)
@@ -70,8 +70,8 @@ function DemoScreen({ onStartPress }) {
       <AnswerFeedbackModal
         correctAnswer={isCorrect}
         visible={modalVisible}
-        answerText={modalMessage}
         onPressAccept={handleModalOnPress}
+        answerText={modalMessage}
       >
       </AnswerFeedbackModal>
       <View style={styles.navigation}>
@@ -87,7 +87,7 @@ function DemoScreen({ onStartPress }) {
         
   ) : (
     <View style={styles.crossView}>
-      <Text style={{ color: colors.white, fontSize: "10rem" }}>✕</Text>
+      <Text style={{ color: colors.white, fontSize: 10 }}>✕</Text>
     </View>
   );
 }

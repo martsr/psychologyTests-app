@@ -16,7 +16,7 @@ const AnswerFeedbackModal = ({correctAnswer , visible, onPressAccept, answerText
         <View style={styles.modal}>
             { correctAnswer ?
                 <View style ={styles.modalCorrectAnswerContainer}>
-                    <Text style={[styles.buttonText,{alignSelf:"center"}]}>{answerText ?? "Jugada correcta"}</Text>
+                    <Text style={{...styles.buttonText,alignSelf:"center"}}>{answerText ?? "Jugada correcta"}</Text>
                     <View style={{alignSelf:"center", margin:10}}>
                         <FontAwesome name="check-circle" size={50} color={colors.homeButton} />
                     </View>

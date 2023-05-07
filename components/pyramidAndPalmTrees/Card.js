@@ -29,14 +29,14 @@ function Card({ image, isMain, onPress, selected }) {
 
 const styles = StyleSheet.create({
   card: {
-    height: 155,
+    height: 100,
     width: undefined,
     borderRadius: 15,
-    marginBottom: 20,
+    marginBottom: 10,
     overflow: "hidden",
     backgroundColor: colors.black,
-    margin: 45,
-    flex: 1,
+    margin: 20,
+    // flex: 1,
     flexDirection: "row",
     overflow: "hidden",
     justifyContent:'center',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     width: undefined,
     borderRadius: 15,
     backgroundColor: colors.white,
-    margin: 20,
+    margin: 10,
     flex: 1,
     flexDirection: "row", 
     overflow: "hidden",
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1/1,
   },
   image: {
-    width: 155,
+    width: 100,
     flex: 1,
     overflow: 'hidden',
     backgroundColor: '#000',

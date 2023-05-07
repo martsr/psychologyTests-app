@@ -25,7 +25,7 @@ export default function CardsSetTest ({cards, numberOfColumns, handleOnSelect}) 
 
   const showOptionCards = () => {
     return (
-      <View>
+      <View style={styles.cardsContainer}>
         <FlatList 
           style={styles.optionCards}
           data={getCardsOptions()}
@@ -91,6 +91,12 @@ const styles = StyleSheet.create({
       alignItems:'center',
       justifyContent: 'center',
       backgroundColor:"lightgreen",
+    },
+    cardsContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor:"lightgreen",
+      maxHeight: 300,
     },
     subTitle: {
       color: colors.secondary,
