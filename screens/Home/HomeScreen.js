@@ -69,7 +69,7 @@ class HomeScreen extends React.Component{
   render(){
     return (
       <SafeAreaView>
-        <View style={{ position: 'absolute', right: 100, justifyContent:"flex-end", height:160, width: 230} }>
+        <View style={{ position: 'absolute', right: 60, justifyContent:"flex-end", height:150, width: 200} }>
           <Image style={styles.logo} source={require('../../assets/logoUca.png')}/> 
         </View>
         <ScrollView>
@@ -224,7 +224,7 @@ class HomeScreen extends React.Component{
       width: '80%',
     },
     itemsContainer: {
-      margin: 50,
+      margin: 45,
       marginTop:10,
       flex:1,
       justifyContent: "flex-start",
