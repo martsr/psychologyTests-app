@@ -87,7 +87,7 @@ function DemoScreen({ onStartPress }) {
         
   ) : (
     <View style={styles.crossView}>
-      <Text style={{ color: colors.white, fontSize: 10 }}>✕</Text>
+      <Text style={{ color: colors.white, fontSize: 100 }}>✕</Text>
     </View>
   );
 }
@@ -124,12 +124,12 @@ const styles = StyleSheet.create({
   crossView: {
     flex: 1,
     backgroundColor: "black",
-    padding: "2em",
+    padding: 2,
     alignItems: "center",
     justifyContent: "space-evenly",
   },
   text: {
-    fontSize: "1.2rem",
+    fontSize: 1.2,
     color: "black",
   },
 });
