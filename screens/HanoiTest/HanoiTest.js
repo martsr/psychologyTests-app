@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { general } from '../../config/styles/GeneralStyles';
 import { FontAwesome } from '@expo/vector-icons';
-import HanoiTestInstructions from './HanoiTestInstructions'
 import Timer from '../../components/Hanoi/Timer.js';
 import HanoiObject from '../../components/Hanoi/HanoiObject.js'
 import {Dimensions } from "react-native";
