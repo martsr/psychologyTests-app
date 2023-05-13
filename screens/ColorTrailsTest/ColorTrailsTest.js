@@ -13,6 +13,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import Timer from '../../components/Hanoi/Timer.js';
 import { connect} from 'react-redux';
 import {Dimensions } from "react-native";
+import DatabaseService from '../../services/DatabaseService';
 import Circle from '../../components/ColorTrails/Circle.js';
 import ReturnHomeComponent from '../../components/ReturnHomeComponent';
 import ColorTrailInstructions from './ColorTrailInstructions';
@@ -25,9 +26,9 @@ const mapStateToProps = (state) => {
 }
 
 const WIDTH = Math.round(Dimensions.get('window').width) - 100;
-const HEIGHT = Math.round(Dimensions.get('window').height) - 250;
-const OFFSET = 100;
-const N = 8;
+const HEIGHT = Math.round(Dimensions.get('window').height) - 300;
+const OFFSET = 0;
+const N = 2;
 const circles = Array.from({length: N}, (_, index) => index + 1);
 
 class ColorTrailsTest extends React.Component {
@@ -83,18 +84,18 @@ class ColorTrailsTest extends React.Component {
         this.lastInvalidColor = color;
         this.lastInvalidNumber = number;
       }
-      response = {"pathLength": N, "validMovements": this.validMovements, "invalidMovements": this.invalidMovements};
       if(this.validMovements == N){
         var time = this.stopTimer.current.state.time;
         this.stopTimer.current.stop();
         this.setState({testVisible: false});
         this.setState({visibleFinished: true});
-        console.log({"patient": this.props.user, 
-          "interviewer": this.props.interviewer, 
-          "pathLength": N, 
-          "validMovements": this.validMovements, 
-          "invalidMovements": this.invalidMovements, 
-          "timeElapsed": time});
+        results = [{
+          "pathLength": N,
+          "validMovements": this.validMovements,
+          "invalidMovements": this.invalidMovements,
+          "timeElapsed": time
+        }]
+        DatabaseService.instance().saveColorTrailsTestResult(this.props.user, this.props.interviewer, results);
       }
     }
     redCircles = circles.map((num, index) => (

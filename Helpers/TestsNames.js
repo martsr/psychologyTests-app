@@ -5,7 +5,7 @@ const TestsNames = {
     corsiTest: "Corsi",
     camelTest: "Camellos",
     cardTest: "Cartas",
-    colorTrailsTest: "Prueba de Color",
+    colorTrailsTest: "Color Trails",
 }
 
 export default TestsNames;
