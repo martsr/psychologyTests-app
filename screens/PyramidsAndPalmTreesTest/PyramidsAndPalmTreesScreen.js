@@ -9,6 +9,7 @@ import { TouchableOpacity } from "react-native";
 import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 import InstructionsModal from "../../components/InstructionsModal";
 import ReturnHomeComponent from "../../components/ReturnHomeComponent";
+import DatabaseService from '../../services/DatabaseService';
 
 function PyramidAndPalmTreesTest({navigation, route}) {
   const [testId, setTestId] = useState(0);
@@ -18,6 +19,8 @@ function PyramidAndPalmTreesTest({navigation, route}) {
   const [start, setStart] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
   const [testCompleted, setTestCompleted] = useState(false)
+  const [testResults, setTestResults] = useState([])
+  const [testsExercies, setTestsExercies] = useState(tests)
   //TODO: enable and disable back and next buttons
   const {patientNumber} = route.params;
 
@@ -33,9 +36,14 @@ function PyramidAndPalmTreesTest({navigation, route}) {
 
   const handleNextButton = () =>{
     setNextButtonDisable(true)
+    console.log("## # ADDING RESULT: ", tests[testId].results)
+    setTestResults([...testResults, tests[testId].results])
+    
+    testResults.forEach(test => console.log(testResults.indexOf(test)," (",tests.length - 1, "): " ,test))
+    
     if( tests.length === (testId + 1) ){ //check if you are in the last test
-      //TODO: integrate to downloads, persist data
       setTestCompleted(true)
+      DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, testResults)
     } else {
       setTestId(testId+1)
       setStartTime(Date.now())
@@ -56,7 +64,7 @@ function PyramidAndPalmTreesTest({navigation, route}) {
     setNextButtonDisable(false)
 
     tests[testId].results = {testName: tests[testId].name, timeSpend: totalTimeSpend, isCorrect: card.isCorrect, isAnimated: tests[testId].isAnimated}
-    console.log("TEST NUM "+ testId + ": ", tests[testId].results )
+    // console.log("TEST NUM "+ testId + ": ", tests[testId].results )
   }
 
   const initiateTest = () =>{

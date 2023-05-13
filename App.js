@@ -241,7 +241,7 @@ function DownloadsTab() {
             open={testsDropdownOpen}
             value={selectedTestValue}
             items={[
-              {label: 'Pirámides y palmeras', value: 'piramides'},
+              {label: 'Pirámides y palmeras', value: TestsNames.pyramidAndPalmTreesTest},
               {label: 'Campanas', value: 'campanas'},
               {label: 'Hanoi', value: 'hanoi'},
               {label: 'Corsi', value: 'corsi'},
@@ -291,9 +291,13 @@ function DownloadsTab() {
 
   async function download() {
     const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
+    console.log("#  #  # LLEGA HASTA ACA #  #  #")
     try {
-      saveFile(csvResult).then((fileUri) => shareFile(fileUri));
+      saveFile(csvResult).then((fileUri) => {
+        console.log("##### CSV RESULT: ", csvResult)
+        return shareFile(fileUri)});
     } catch(e) {
+      console.log("##### ERROR: ", e)
       alert(e.message)
     }
   }

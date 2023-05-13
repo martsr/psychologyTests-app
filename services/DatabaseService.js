@@ -74,19 +74,33 @@ export default class DatabaseService {
     return `${header}${data}`;
   }
 
+  async getPyramidTestCSVResults(fromDate, toDate) {
+    await this.createPyramidsAndPalmtreesTable();
+    const dbResults = await this._db.execute(`select * from pyramidsAndPalmtreesTest`);
+    const header = 'patientNumber,professionalNumber,date,testName,timeSpend,isCorrect,isAnimated\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.testName},${row.timeSpend},${row.isCorrect},${row.isAnimated}\n`
+    }).join('');
+
+    console.log("&&&&&&&&&&&&&&& DATA: ", data)
+    return `${header}${data}`;
+  }
+
   async getCSVResults(test, fromDate, toDate) {
     switch(test){
       case TestsNames.corsiTest:
         this.getCorsiTestCSVResults(fromDate, toDate);
         break;
       case TestsNames.pyramidAndPalmTreesTest:
-        this.getCorsiTestCSVResults(fromDate, toDate);
+        this.getPyramidTestCSVResults(fromDate, toDate);
         break
       default:
         throw new Error('No existe el test');
     }
   }
-
-
 
 }

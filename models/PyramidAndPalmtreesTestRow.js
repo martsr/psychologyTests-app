@@ -6,7 +6,7 @@ export default class PyramidAndPalmtreesTestRow {
       testName,
       timeSpend,
       isCorrect,
-      isAnimated,) {
+      isAnimated) {
         this.patientNumber = aPatientNumber;
         this.professionalNumber = aProfessionalNumber; 
         this.date = aDate; 
@@ -17,7 +17,7 @@ export default class PyramidAndPalmtreesTestRow {
       }
   
       sqlInsertText() {
-        return `insert into corsiTest (
+        return `insert into pyramidsAndPalmtreesTest (
                   patientNumber,
                   professionalNumber,
                   date,
