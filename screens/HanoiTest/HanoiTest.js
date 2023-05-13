@@ -16,7 +16,15 @@ import HanoiObject from '../../components/Hanoi/HanoiObject.js'
 import {Dimensions } from "react-native";
 import ReturnHomeComponent from '../../components/ReturnHomeComponent'
 import reactDom from 'react-dom';
+import DatabaseService from '../../services/DatabaseService';
 import AppButton from '../../components/AppButton';
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer.user,
+    interviewer: state.userReducer.interviewer
+  }
+}
 
 const WIDTH = Math.round(Dimensions.get('window').width);
 export default class HanoiTest extends React.Component {
@@ -83,6 +91,13 @@ render(){
       if(this.state.centerTower.lastIndexOf(0) == -1 || this.state.rightTower.lastIndexOf(0) == -1){
         this.stopTimer.current.stop();
         this.setState({visibleFinished: true});
+        console.log("Test Ended");
+        results = [{
+          "validMovements": 15,
+          "invalidMovements": 3,
+          "timeElapsed": 67
+        }]
+        DatabaseService.instance().saveHanoiTestResult(this.props.user, this.props.interviewer, results);
       }
     }
     const removeElementFromOldTower = (tower, width) => {
