@@ -62,7 +62,7 @@ export default class DatabaseService {
     } else if (test == 'color'){
       return this.getColorTrailsTestCSVResults(fromDate, toDate);
     } else if (test == 'hanoi'){
-      return this.getColorTrailsTestCSVResults(fromDate, toDate);
+      return this.getHanoiTestCSVResults(fromDate, toDate);
     } else {
       throw new Error('No existe el test');
     }

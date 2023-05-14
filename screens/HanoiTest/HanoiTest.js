@@ -15,6 +15,7 @@ import Timer from '../../components/Hanoi/Timer.js';
 import HanoiObject from '../../components/Hanoi/HanoiObject.js'
 import {Dimensions } from "react-native";
 import ReturnHomeComponent from '../../components/ReturnHomeComponent'
+import { connect } from 'react-redux';
 import reactDom from 'react-dom';
 import DatabaseService from '../../services/DatabaseService';
 import AppButton from '../../components/AppButton';
@@ -27,11 +28,13 @@ const mapStateToProps = (state) => {
 }
 
 const WIDTH = Math.round(Dimensions.get('window').width);
-export default class HanoiTest extends React.Component {
+class HanoiTest extends React.Component {
   
   constructor(props){
     super(props);
     this.stopTimer = React.createRef();
+    this.validMovements = 0;
+    this.invalidMovements = 0;
     this.state = {
         leftTower: [0.05*WIDTH, 0.08*WIDTH, 0.15*WIDTH, 0.23*WIDTH, 0.3*WIDTH],
         centerTower: [0, 0, 0, 0, 0],
@@ -89,17 +92,19 @@ render(){
         }
       }
       if(this.state.centerTower.lastIndexOf(0) == -1 || this.state.rightTower.lastIndexOf(0) == -1){
+        var time = this.stopTimer.current.state.time;
         this.stopTimer.current.stop();
         this.setState({visibleFinished: true});
-        console.log("Test Ended");
         results = [{
-          "validMovements": 15,
-          "invalidMovements": 3,
-          "timeElapsed": 67
+          "validMovements": this.validMovements,
+          "invalidMovements": this.invalidMovements,
+          "timeElapsed": time
         }]
         DatabaseService.instance().saveHanoiTestResult(this.props.user, this.props.interviewer, results);
       }
     }
+    console.log(this.props.user);
+    console.log(this.props.interviewer);
     const removeElementFromOldTower = (tower, width) => {
       if(tower == 'l'){
         //We need to find where is the element to be removed
@@ -123,12 +128,20 @@ render(){
         this.setState({rightTower: newTower})
       }
     }
+    const increaseValidMovement = () => {
+      this.validMovements++;
+    }
+    const increaseInvalidMovement = () => {
+      this.invalidMovements++;
+    }
     leftObjects = this.state.leftTower.map((w, index) => (
       <HanoiObject 
         key={"l"+w+index} 
         width={w}
         window={WIDTH} 
-        sendElementToNewTower={sendElementToNewTower} 
+        sendElementToNewTower={sendElementToNewTower}
+        increaseValidMovement={increaseValidMovement}
+        increaseInvalidMovement={increaseInvalidMovement} 
         removeElementFromOldTower={removeElementFromOldTower}
         towers={this.state}
         id={index}/>
@@ -138,6 +151,8 @@ render(){
         key={"c"+w+index} 
         width={w} 
         sendElementToNewTower={sendElementToNewTower}
+        increaseValidMovement={increaseValidMovement}
+        increaseInvalidMovement={increaseInvalidMovement} 
         window={WIDTH}
         removeElementFromOldTower={removeElementFromOldTower}
         towers={this.state}
@@ -149,6 +164,8 @@ render(){
         width={w}
         window={WIDTH} 
         sendElementToNewTower={sendElementToNewTower}
+        increaseValidMovement={increaseValidMovement}
+        increaseInvalidMovement={increaseInvalidMovement} 
         removeElementFromOldTower={removeElementFromOldTower}
         towers={this.state}
         id={index}/>
@@ -251,3 +268,4 @@ const styles = StyleSheet.create({
     width: 200
   }
 });
+export default connect(mapStateToProps)(HanoiTest);
