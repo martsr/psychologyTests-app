@@ -27,8 +27,8 @@ const mapStateToProps = (state) => {
 
 const WIDTH = Math.round(Dimensions.get('window').width) - 100;
 const HEIGHT = Math.round(Dimensions.get('window').height) - 300;
-const OFFSET = 0;
-const N = 2;
+const OFFSET = 10;
+const N = 8;
 const circles = Array.from({length: N}, (_, index) => index + 1);
 
 class ColorTrailsTest extends React.Component {
