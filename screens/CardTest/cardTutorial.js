@@ -127,7 +127,8 @@ export default class CardTest extends React.Component {
         const listado = this.state.cards.map( (item) => <CardContainer key={item.id} id={item.id} name={item.name} color={item.color} addEvent={this.addEvent}/> );
         return (
             <>
-            <Modal style={instructions.container} transparent={true} animationType="slide" visible={!this.state.startedTutorial}>
+            <Modal transparent={true} animationType="slide" visible={!this.state.startedTutorial}>
+            <View style={instructions.container}>
             <View style={instructions.textContainer}>
                 <Text style={instructions.title}>Instrucciones</Text>
                 <Text style={instructions.text}>En este test usted deberá agrupar las cartas por forma o por color,
@@ -137,6 +138,7 @@ export default class CardTest extends React.Component {
             <View style={instructions.buttonContainer}>
                 <AppButton title={'Cancelar'} textColor={colors.primary} style={styles.emptyButton}></AppButton>
                 <AppButton title={'Empezar Tutorial'} style={styles.button} onPress={() => this.setState({ startedTutorial : true })}></AppButton>
+            </View>
             </View>
             </Modal>
             <Modal transparent={true} visible={this.state.responseModalVisible}>

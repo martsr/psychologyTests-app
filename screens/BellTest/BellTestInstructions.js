@@ -67,15 +67,8 @@ render(){
             </View>
             <View style={instructions.buttonContainer}>
               {this.state.testApproved ?
-                // <TouchableOpacity style = {instructions.button} onPress={this.setInvisible}>
-                //   <Text style={instructions.buttonText}>Comenzar test</Text>
-                //   <FontAwesome style={instructions.buttonIcon} name={"forward"} color={"#ffffff"} size={50}/>
-                // </TouchableOpacity>
                 <AppButton style = {instructions.button} title={'Comenzar'} onPress={this.setInvisible}></AppButton>
               :
-              // <TouchableOpacity style = {instructions.emptyButton} onPress={this.showValidationMessage}>
-              //   <Text style={instructions.emptyButtonText}>Comenzar test</Text>
-              // </TouchableOpacity>
               <AppButton textColor={colors.primary} style = {instructions.emptyButton} title={'Comenzar'} onPress={this.showValidationMessage}></AppButton>}
             </View>
           </View>
