@@ -108,10 +108,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   navigation: {
-    position:"absolute",
-    bottom:0,
-    height:50,
-    width:"100%"
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    height: 50,
+    width: 200,
   },
   buttonsContainer:{
     flexDirection: 'row',
