@@ -83,7 +83,13 @@ const instructions = StyleSheet.create({
     message: {
         color: "#EE5555",
         fontSize: 28,
-    }
+    },
+    timer: {
+        marginTop: 15,
+        alignItems: 'flex-end',
+        paddingTop: 5,
+        paddingBottom: 5
+      }
 });
 
 export {instructions}

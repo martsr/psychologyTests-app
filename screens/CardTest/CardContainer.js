@@ -11,7 +11,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 
 const deltaX = 100 + (150/2) //gap + (width of box /2)
-const deltaY = (Dimensions.get('window').height-115) /2
+const deltaY = (Dimensions.get('window').height-115-150) /2
 
 export default class CardContainer extends React.Component {
     constructor(props){

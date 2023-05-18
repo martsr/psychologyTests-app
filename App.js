@@ -246,7 +246,6 @@ function DownloadsTab() {
               {label: 'Campanas', value: 'campanas'},
               {label: 'Hanoi', value: 'hanoi'},
               {label: 'Corsi', value: 'corsi'},
-              {label: 'Camellos', value: 'camellos'},
               {label: 'Cartas', value: 'cartas'},
             ]}
             setOpen={setTestsDropdownOpen}
@@ -291,6 +290,7 @@ function DownloadsTab() {
 
   async function download() {
     const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
+    console.log(selectedTestValue)
     try {
       saveFile(csvResult).then((fileUri) => shareFile(fileUri));
     } catch(e) {
