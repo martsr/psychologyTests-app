@@ -25,11 +25,13 @@ export default class HanoiObject extends React.Component {
 
             onPanResponderRelease: (e, gesture) => {
                 if(this.isValid(gesture)){
+                    this.increaseValidMovement();
                     this.removeElementFromOldTower(gesture);
                     this.sendElementToNewTower(gesture);
                 }
                 else{
-                    this.restoreToOriginalPosition();
+                    this.increaseInvalidMovement();
+                    this.restoreToOriginalPosition();    
                 }
                 this.forceUpdate()
             }
@@ -40,6 +42,12 @@ export default class HanoiObject extends React.Component {
             this.state.pan,
             { toValue: { x: 0, y: 0 }, useNativeDriver: true }
         ).start();
+    }
+    increaseValidMovement() {
+        this.props.increaseValidMovement();
+    }
+    increaseInvalidMovement() {
+        this.props.increaseInvalidMovement();
     }
 
     sendElementToNewTower(gesture) {

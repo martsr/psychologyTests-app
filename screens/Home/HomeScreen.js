@@ -120,7 +120,7 @@ class HomeScreen extends React.Component{
               <Text style={general.textStyle}>{TestsNames.bellTest}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('hanoiTest')} delayPressIn={0}>
-              <FontAwesome name="image" size={35} color={colors.white}/>
+              <FontAwesome name="align-center" size={35} color={colors.white}/>
               <Text style={general.textStyle}>{TestsNames.hanoiTest}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('corsiTest')} delayPressIn={0}>
@@ -132,7 +132,7 @@ class HomeScreen extends React.Component{
               <Text style={general.textStyle}>{TestsNames.cardTest}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[mainPage.button,{flexDirection:"row"}]} onPress={() => this.selectTest('colorTrailsTest')} delayPressIn={0}>
-              <FontAwesome name="image" size={35} color={colors.white}/>
+              <FontAwesome name="dot-circle-o" size={35} color={colors.white}/>
               <Text style={general.textStyle}>{TestsNames.colorTrailsTest}</Text>
             </TouchableOpacity>
           </View>

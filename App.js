@@ -242,11 +242,11 @@ function DownloadsTab() {
             value={selectedTestValue}
             items={[
               {label: 'Pirámides y palmeras', value: 'piramides'},
+              {label: 'Color Trails', value: 'color'},
               {label: 'Campanas', value: 'campanas'},
               {label: 'Hanoi', value: 'hanoi'},
               {label: 'Corsi', value: 'corsi'},
               {label: 'Cartas', value: 'cartas'},
-              {label: 'Prueba de color', value: 'color'},
             ]}
             setOpen={setTestsDropdownOpen}
             setValue={setSelectedTestValue}

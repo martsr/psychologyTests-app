@@ -1,6 +1,8 @@
 import CorsiTestResult from "../models/CorsiTestResult";
 import CardsTestResult from "../models/CardsTestResult";
 import BellsTestResult from "../models/bellsTestResult";
+import ColorTrailsTestResult from "../models/ColorTrailsTestResult";
+import HanoiTestResult from "../models/HanoiTestResult";
 import { Database } from "./Database";
 import * as Promise from "bluebird"
 
@@ -134,15 +136,82 @@ export default class DatabaseService {
       return this.getCorsiTestCSVResults(fromDate, toDate);
     } else if (test == 'cartas') {
       return this.getCardsTestCSVResults(fromDate, toDate);
-    }
-    else if (test == 'campanas') {
+    } else if (test == 'campanas') {
       return this.getBellsTestCSVResults(fromDate, toDate);
-    }
-    else {
+    } else if (test == 'color'){
+      return this.getColorTrailsTestCSVResults(fromDate, toDate);
+    } else if (test == 'hanoi'){
+      return this.getHanoiTestCSVResults(fromDate, toDate);
+    } else {
       throw new Error('No existe el test');
     }
   }
 
+  async createColorTrailsTable() {
+    await this._db.execute(`create table if not exists ColorTrailsTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      pathLength number,
+      validMovements number,
+      invalidMovements text,
+      timeElapsed number);`);
+  }
 
+  async saveColorTrailsTestResult(patientNumber, professionalNumber, colorTrailsResult) {
+    const testResult = new ColorTrailsTestResult(patientNumber, professionalNumber, new Date(), colorTrailsResult);
+    await this.createColorTrailsTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
 
+  async getColorTrailsTestCSVResults(fromDate, toDate) {
+    await this.createColorTrailsTable();
+    const dbResults = await this._db.execute(`select * from ColorTrailsTest`);
+    const header = 'patientNumber,professionalNumber,date,pathLength,validMovements,invalidMovements,timeElapsed\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.pathLength},${row.validMovements},${row.invalidMovements},${row.timeElapsed}\n`
+    }).join('');
+    return `${header}${data}`;
+  }
+  async createHanoiTestTable() {
+    await this._db.execute(`create table if not exists HanoiTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      validMovements number,
+      invalidMovements number,
+      timeElapsed number);`);
+  }
+
+  async saveHanoiTestResult(patientNumber, professionalNumber, hanoiResult) {
+    const testResult = new HanoiTestResult(patientNumber, professionalNumber, new Date(), hanoiResult);
+    await this.createHanoiTestTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
+
+  async getHanoiTestCSVResults(fromDate, toDate) {
+    await this.createColorTrailsTable();
+    const dbResults = await this._db.execute(`select * from HanoiTest`);
+    const header = 'patientNumber,professionalNumber,date,validMovements,invalidMovements,timeElapsed\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.pathLength},${row.validMovements},${row.invalidMovements},${row.timeElapsed}\n`
+    }).join('');
+    return `${header}${data}`;
+  }
 }
