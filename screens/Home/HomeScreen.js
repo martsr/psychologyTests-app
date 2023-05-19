@@ -90,7 +90,7 @@ class HomeScreen extends React.Component{
               <MaterialCommunityIcons name="pencil" size={25} color="black" />
             </View>
             <View style={styles.imageAndIdContainer}>
-              <FontAwesome name="image" size={30} color="black"/>
+              <FontAwesome name="stethoscope" size={30} color="black"/>
               <TextInput
                 style={styles.patientModal.input}
                 value={this.state.patientNumber}
