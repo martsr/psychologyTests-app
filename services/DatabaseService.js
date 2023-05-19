@@ -1,5 +1,9 @@
 import CorsiTestResult from "../models/CorsiTestResult";
 import TestsNames from "../Helpers/TestsNames";
+import CardsTestResult from "../models/CardsTestResult";
+import BellsTestResult from "../models/bellsTestResult";
+import ColorTrailsTestResult from "../models/ColorTrailsTestResult";
+import HanoiTestResult from "../models/HanoiTestResult";
 import { Database } from "./Database";
 import * as Promise from "bluebird"
 import PyramidAndPalmTreesTestResult from "../models/PyramidAndPalmtreesTestResult";
@@ -27,9 +31,26 @@ export default class DatabaseService {
     });
   }
 
+
   async savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, result) {
     const testResult = new PyramidAndPalmTreesTestResult(patientNumber, interviewerNumber, new Date(), result);
     await this.createPyramidsAndPalmtreesTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
+
+  async saveCardsTestResult(patientNumber, professionalNumber,cardsResult) {
+    const testResult = new CardsTestResult(patientNumber, professionalNumber, new Date(), cardsResult);
+    await this.createCardsTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
+
+  async saveBellsTestResult(patientNumber, professionalNumber,bellsResult) {
+    const testResult = new BellsTestResult(patientNumber, professionalNumber, new Date(), bellsResult);
+    await this.createBellsTable();
     Promise.each(testResult.rows(), async (row) => {
       await this._db.execute(row.sqlInsertText());
     });
@@ -57,6 +78,32 @@ export default class DatabaseService {
       timeSpend number,
       isCorrect text,
       isAnimated text);`);
+  }
+
+  async createCardsTable() {
+    await this._db.execute(`create table if not exists cardsTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      criteria text,
+      catchPersistence number,
+      mistakePersistence number,
+      round number,
+      event text,
+      timeInMs number);`);
+  }
+
+  async createBellsTable() {
+    await this._db.execute(`create table if not exists bellsTest  (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      bells number,
+      mistakes number,
+      timeInMs number,
+      timeInS real);`);
   }
 
   async getCorsiTestCSVResults(fromDate, toDate) {
@@ -90,6 +137,36 @@ export default class DatabaseService {
     return `${header}${data}`;
   }
 
+  async getCardsTestCSVResults(fromDate, toDate) {
+    await this.createCardsTable();
+    const dbResults = await this._db.execute(`select * from cardsTest`);
+    const header = 'patientNumber,professionalNumber,date,criteria,catchPersistence,mistakePersistence,round,event,timeInMs\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.criteria},${row.catchPersistence},${row.mistakePersistence},${row.round},${row.event},${row.timeInMs}\n`
+    }).join('');
+    return `${header}${data}`;
+  }
+
+  async getBellsTestCSVResults(fromDate, toDate) {
+    await this.createBellsTable();
+    const dbResults = await this._db.execute(`select * from bellsTest`);
+    const header = 'patientNumber,professionalNumber,date,bells,mistakes,timeInMs,timeInS\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.bells},${row.mistakes},${row.timeInMs},${row.timeInS}\n`
+    }).join('');
+    return `${header}${data}`;
+  }
+
   async getCSVResults(test, fromDate, toDate) {
     console.log('estoy en getCSVResults')
     switch(test){
@@ -97,9 +174,85 @@ export default class DatabaseService {
         return this.getCorsiTestCSVResults(fromDate, toDate);
       case TestsNames.pyramidAndPalmTreesTest:
         return this.getPyramidTestCSVResults(fromDate, toDate);
+      case TestsNames.cardTest:
+        return this.getCardsTestCSVResults(fromDate, toDate);
+      case TestsNames.bellTest:
+        return this.getBellsTestCSVResults(fromDate, toDate);
+      case TestsNames.colorTrailsTest:
+        return this.getColorTrailsTestCSVResults(fromDate, toDate);
+      case TestsNames.hanoiTest:
+        return this.getHanoiTestCSVResults(fromDate, toDate);
       default:
         throw new Error('Selecciona un test');
     }
   }
 
+  async createColorTrailsTable() {
+    await this._db.execute(`create table if not exists ColorTrailsTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      pathLength number,
+      validMovements number,
+      invalidMovements text,
+      timeElapsed number);`);
+  }
+
+  async saveColorTrailsTestResult(patientNumber, professionalNumber, colorTrailsResult) {
+    const testResult = new ColorTrailsTestResult(patientNumber, professionalNumber, new Date(), colorTrailsResult);
+    await this.createColorTrailsTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
+
+  async getColorTrailsTestCSVResults(fromDate, toDate) {
+    await this.createColorTrailsTable();
+    const dbResults = await this._db.execute(`select * from ColorTrailsTest`);
+    const header = 'patientNumber,professionalNumber,date,pathLength,validMovements,invalidMovements,timeElapsed\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.pathLength},${row.validMovements},${row.invalidMovements},${row.timeElapsed}\n`
+    }).join('');
+    return `${header}${data}`;
+  }
+
+  async createHanoiTestTable() {
+    await this._db.execute(`create table if not exists HanoiTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      validMovements number,
+      invalidMovements number,
+      timeElapsed number);`);
+  }
+
+  async saveHanoiTestResult(patientNumber, professionalNumber, hanoiResult) {
+    const testResult = new HanoiTestResult(patientNumber, professionalNumber, new Date(), hanoiResult);
+    await this.createHanoiTestTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
+
+  async getHanoiTestCSVResults(fromDate, toDate) {
+    await this.createHanoiTestTable();
+    const dbResults = await this._db.execute(`select * from HanoiTest`);
+    const header = 'patientNumber,professionalNumber,date,validMovements,invalidMovements,timeElapsed\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      console.log('row', row)
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.pathLength},${row.validMovements},${row.invalidMovements},${row.timeElapsed}\n`
+    }).join('');
+    return `${header}${data}`;
+  }
 }

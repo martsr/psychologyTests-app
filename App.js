@@ -11,7 +11,6 @@ import HanoiTest from './screens/HanoiTest/HanoiTest';
 import CorsiTest from './screens/CorsiTest/CorsiTest';
 import CardTest from './screens/CardTest/CardTest';
 import ColorTrailsTest from './screens/ColorTrailsTest/ColorTrailsTest';
-import CamelTest from './screens/CamelTest/CamelTest';
 import DatabaseService from './services/DatabaseService';
 import { useState } from 'react';
 import * as FileSystem from 'expo-file-system';
@@ -126,11 +125,6 @@ function TestsTab() {
         options={{ title: TestsNames.corsiTest }}
       />
       <Stack.Screen
-        name='camelTest'
-        component={CamelTest}
-        options={{ title: TestsNames.camelTest }}
-      />
-      <Stack.Screen
         name='cardTest'
         component={CardTest}
         options={{ title: TestsNames.cardTest }}
@@ -242,12 +236,11 @@ function DownloadsTab() {
             value={selectedTestValue}
             items={[
               {label: 'Pirámides y palmeras', value: TestsNames.pyramidAndPalmTreesTest},
-              {label: 'Campanas', value: 'campanas'},
-              {label: 'Hanoi', value: 'hanoi'},
-              {label: 'Corsi', value: 'Corsi'},
-              {label: 'Camellos', value: 'camellos'},
-              {label: 'Cartas', value: 'cartas'},
-              {label: 'Prueba de color', value: 'color'},
+              {label: 'Campanas', value: TestsNames.bellTest},
+              {label: 'Hanoi', value: TestsNames.hanoiTest},
+              {label: 'Corsi', value: TestsNames.corsiTest},
+              {label: 'Color Trails', value: TestsNames.colorTrailsTest},
+              {label: 'Cartas', value: TestsNames.cardTest},
             ]}
             setOpen={setTestsDropdownOpen}
             setValue={setSelectedTestValue}

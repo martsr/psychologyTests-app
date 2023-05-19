@@ -3,10 +3,12 @@ import colors from "../colors";
 
 const CardsConfig = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
+      flex: 1,
+      marginTop: 60,
+      marginBottom: 60,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     optionsContainer: {
       flex: 1,

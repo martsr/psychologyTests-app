@@ -4,7 +4,7 @@ const TestsNames = {
     hanoiTest: "Torres de Hanoi",
     corsiTest: "Corsi",
     cardTest: "Cartas",
-    colorTrailsTest: "Prueba de Color",
+    colorTrailsTest: "Color Trails",
 }
 
 export default TestsNames;
