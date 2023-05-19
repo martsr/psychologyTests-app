@@ -19,16 +19,16 @@ export default class DatabaseService {
     this._db = new Database('test');
   }
 
-  async saveCorsiTestResult(patientNumber, corsiResult) {
-    const testResult = new CorsiTestResult(patientNumber, 0, new Date(), corsiResult);
+  async saveCorsiTestResult(patientNumber, interviewerNumber, corsiResult) {
+    const testResult = new CorsiTestResult(patientNumber, interviewerNumber, new Date(), corsiResult);
     await this.createCorsiTable();
     Promise.each(testResult.rows(), async (row) => {
       await this._db.execute(row.sqlInsertText());
     });
   }
 
-  async savePyramidsAndPalmtreesTestResult(patientNumber, result) {
-    const testResult = new PyramidAndPalmTreesTestResult(patientNumber, 0, new Date(), result);
+  async savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, result) {
+    const testResult = new PyramidAndPalmTreesTestResult(patientNumber, interviewerNumber, new Date(), result);
     await this.createPyramidsAndPalmtreesTable();
     Promise.each(testResult.rows(), async (row) => {
       await this._db.execute(row.sqlInsertText());
@@ -65,7 +65,7 @@ export default class DatabaseService {
     const header = 'patientNumber,professionalNumber,date,inverted,amountOfBoxes,correct,timeInMs\n';
     const data = dbResults.rows.
     filter((row) => {
-      console.log('row', row)
+      console.log('ROW: filter:',fromDate <= new Date(row.date) && toDate >= new Date(row.date), row)
       return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
     }).
     map((row) => {
@@ -91,15 +91,14 @@ export default class DatabaseService {
   }
 
   async getCSVResults(test, fromDate, toDate) {
+    console.log('estoy en getCSVResults')
     switch(test){
       case TestsNames.corsiTest:
-        this.getCorsiTestCSVResults(fromDate, toDate);
-        break;
+        return this.getCorsiTestCSVResults(fromDate, toDate);
       case TestsNames.pyramidAndPalmTreesTest:
-        this.getPyramidTestCSVResults(fromDate, toDate);
-        break
+        return this.getPyramidTestCSVResults(fromDate, toDate);
       default:
-        throw new Error('No existe el test');
+        throw new Error('Selecciona un test');
     }
   }
 

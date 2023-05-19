@@ -20,7 +20,7 @@ export default function CorsiTest({navigation, route}) {
   const [startTime, setStartTime] = useState(null);
   const [boxesDisabled, setBoxesDisabled] = useState(true);
 
-  const {patientNumber} = route.params;
+  const {patientNumber, interviewerNumber} = route.params;
 
   useEffect(() => {
     setInvertedBoxOrderToBePressed(amountOfBoxesToBePressed);
@@ -34,7 +34,7 @@ export default function CorsiTest({navigation, route}) {
 
   useEffect(() => {
     if (inverted && turn == boxes[0].invertedSequenceOrder.length) {
-      DatabaseService.instance().saveCorsiTestResult(patientNumber, results).then(() => {
+      DatabaseService.instance().saveCorsiTestResult(patientNumber, interviewerNumber, results).then(() => {
         navigation.navigate('HomeScreen');
       });
     }

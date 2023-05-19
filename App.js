@@ -150,9 +150,9 @@ function DownloadsTab() {
   const [testsDropdownOpen, setTestsDropdownOpen] = useState(false);
   const [selectedTestValue, setSelectedTestValue] = useState(null);
 
-  async function saveFile(data) {
+  async function saveFile(data, testName) {
     let directoryUri = FileSystem.documentDirectory;
-    let fileUri = directoryUri + "corsi.csv";
+    let fileUri = directoryUri + testName + ".csv";
     await FileSystem.writeAsStringAsync(fileUri, data, { encoding: FileSystem.EncodingType.UTF8 });
     return fileUri;
   };
@@ -185,10 +185,10 @@ function DownloadsTab() {
     return date;
   }
 
-  const [fromDate, setFromDate] = useState(subtractMonths(new Date(), 1));
+  const [fromDate, setFromDate] = useState(subtractMonths(new Date(new Date().setUTCHours(0,0,0,0)), 1));
   const [fromDateShow, setFromDateShow] = useState(false);
   const onChangeFromDate = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    const currentDate = new Date(selectedDate.setUTCHours(0,0,0,0));
     setFromDateShow(false);
     setFromDate(currentDate);
   };
@@ -196,10 +196,10 @@ function DownloadsTab() {
     setFromDateShow(true)
   }
 
-  const [toDate, setToDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date(new Date().setUTCHours(23,59,59,999)));
   const [toDateShow, setToDateShow] = useState(false);
   const onChangeToDate = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    const currentDate = new Date(selectedDate.setUTCHours(23,59,59,999));
     setToDateShow(false);
     setToDate(currentDate);
   };
@@ -244,7 +244,7 @@ function DownloadsTab() {
               {label: 'Pirámides y palmeras', value: TestsNames.pyramidAndPalmTreesTest},
               {label: 'Campanas', value: 'campanas'},
               {label: 'Hanoi', value: 'hanoi'},
-              {label: 'Corsi', value: 'corsi'},
+              {label: 'Corsi', value: 'Corsi'},
               {label: 'Camellos', value: 'camellos'},
               {label: 'Cartas', value: 'cartas'},
               {label: 'Prueba de color', value: 'color'},
@@ -290,10 +290,12 @@ function DownloadsTab() {
   );
 
   async function download() {
-    const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
-    console.log("#  #  # LLEGA HASTA ACA #  #  #")
     try {
-      saveFile(csvResult).then((fileUri) => {
+      console.log("valores: -----> ",selectedTestValue, fromDate, toDate)
+      const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
+      console.log("CSV ------- ",csvResult)
+      console.log("#  #  # LLEGA HASTA ACA #  #  #")
+      saveFile(csvResult, selectedTestValue).then((fileUri) => {
         console.log("##### CSV RESULT: ", csvResult)
         return shareFile(fileUri)});
     } catch(e) {

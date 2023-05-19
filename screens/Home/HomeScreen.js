@@ -44,8 +44,9 @@ class HomeScreen extends React.Component{
   }
 
   selectTest=(testName)=>{
-    var patientNumber = this.state.patientNumber;
-    this.props.navigation.navigate(testName, {patientNumber});
+    const patientNumber = this.state.patientNumber;
+    const interviewerNumber = this.state.interviewerNumber;
+    this.props.navigation.navigate(testName, {patientNumber, interviewerNumber});
     //this.navigation.navigate(testName);
   }
   /*cancel=()=>{

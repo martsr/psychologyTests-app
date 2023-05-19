@@ -22,7 +22,7 @@ function PyramidAndPalmTreesTest({navigation, route}) {
   const [testResults, setTestResults] = useState([])
   const [testsExercies, setTestsExercies] = useState(tests)
   //TODO: enable and disable back and next buttons
-  const {patientNumber} = route.params;
+  const {patientNumber, interviewerNumber} = route.params;
 
   const showTest = ()=> {
     return(
@@ -43,7 +43,8 @@ function PyramidAndPalmTreesTest({navigation, route}) {
     
     if( tests.length === (testId + 1) ){ //check if you are in the last test
       setTestCompleted(true)
-      DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, testResults)
+      DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, testResults)
+        .then(() => alert('Datos guardados'))
     } else {
       setTestId(testId+1)
       setStartTime(Date.now())
