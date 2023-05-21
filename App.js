@@ -112,7 +112,7 @@ function TestsTab() {
       <Stack.Screen
         name='bellTest'
         component={BellTest}
-        options={{ title: TestsNames.bellTest }}
+        options={{ title: TestsNames.bellTest, headerShown: false }}
       />
       <Stack.Screen
         name='hanoiTest'
@@ -127,7 +127,7 @@ function TestsTab() {
       <Stack.Screen
         name='cardTest'
         component={CardTest}
-        options={{ title: TestsNames.cardTest }}
+        options={{ title: TestsNames.cardTest, headerShown: false}}
       />
       <Stack.Screen
         name='colorTrailsTest'

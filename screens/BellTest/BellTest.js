@@ -16,9 +16,10 @@ import Timer from '../../components/Hanoi/Timer';
 import DatabaseService from '../../services/DatabaseService';
 
 import IconContainer from './IconContainer'
+import { set } from 'react-native-reanimated';
 
 const windowWidth = Dimensions.get('window').width-20;
-const windowHeight = Dimensions.get('window').height-20-120-90-50;
+const windowHeight = Dimensions.get('window').height-20-120-60;
 
 const mapStateToProps = (state) => {
   return {
@@ -72,8 +73,8 @@ class BellTest extends React.Component {
       mistakes: 0,
       listado: [],
       results: [],
-      height: windowHeight/10,
-      width: windowWidth/16,
+      height: windowHeight/8,
+      width: windowWidth/20,
       visibleFinished: false,
       testApproved: false,
       testBellColor: "#000000",
@@ -81,6 +82,7 @@ class BellTest extends React.Component {
       timerVisible: false,
       patientNumber: this.props.user,
       interviewerNumber: this.props.interviewer,
+      showCross: false
     }
   }
 
@@ -124,6 +126,8 @@ class BellTest extends React.Component {
     console.log("Mistake")
   }
   setInvisible =()=>{
+    this.setState({showCross: true});
+    setTimeout(() => {this.setState({showCross: false})}, 3000);
     this.setState({listado: generateIcons(this.addEvent, this.state.height, this.state.width),timerVisible: true, startTime: new Date()})
   }
 
@@ -131,17 +135,24 @@ class BellTest extends React.Component {
     return (
       <>
       <BellTestInstructions callback={() => this.setInvisible()}></BellTestInstructions>
-        <Modal animationType="slide" visible={this.state.visibleFinished}>
-          <ReturnHomeComponent navigation={this.props.navigation}/>
-        </Modal>
-        <View style={{flex:1, flexDirection: "column"}}>
+      {!this.state.showCross?
+      <>
+      <Modal animationType="slide" visible={this.state.visibleFinished}>
+        <ReturnHomeComponent navigation={this.props.navigation}/>
+      </Modal>
+      <View style={{flex:1, flexDirection: "column"}}>
         <View style={timer}>
-            {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
+          {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
         </View>
         <View style={{flex:1, flexDirection: "row",margin:10, flexWrap:"wrap",alignItems: "center",justifyContent: "center"}}>
             {this.state.listado}
         </View>
-        </View>
+      </View>
+      </>
+      :
+      <View style={{width: '100%', height: '100%', backgroundColor: 'black', padding: 32, alignItems: 'center', justifyContent: 'space-evenly'}}>
+        <Text style={{fontSize: 160, color: 'white'}}>✕</Text>
+      </View>} 
       </>
       );
   }

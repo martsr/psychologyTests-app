@@ -7,7 +7,8 @@ export default class CardsTestRow {
       catchPersistence,
       mistakePersistence,
       round,
-      event) {
+      event,
+      timeInMs) {
         this.patientNumber = aPatientNumber;
         this.professionalNumber = aProfessionalNumber; 
         this.date = aDate; 
@@ -16,7 +17,7 @@ export default class CardsTestRow {
         this.mistakePersistence = mistakePersistence;
         this.round = round;
         this.event = event;
-        this.timeInMs = 0;
+        this.timeInMs = timeInMs;
       }
   
       sqlInsertText() {
