@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Modal, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
 
 import Text from "../../components/Text";
 import colors from "../../config/colors";
@@ -8,7 +8,6 @@ import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native";
 import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 import InstructionsModal from "../../components/InstructionsModal";
-import ReturnHomeComponent from "../../components/ReturnHomeComponent";
 import DatabaseService from '../../services/DatabaseService';
 
 function PyramidAndPalmTreesTest({navigation, route}) {
@@ -18,9 +17,8 @@ function PyramidAndPalmTreesTest({navigation, route}) {
   const [startTime, setStartTime] = useState(null);
   const [start, setStart] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
-  const [testCompleted, setTestCompleted] = useState(false)
   const [testResults, setTestResults] = useState([])
-  const [testsExercies, setTestsExercies] = useState(tests)
+  // const [testCompleted, setTestCompleted] = useState(false)
   //TODO: enable and disable back and next buttons
   const {patientNumber, interviewerNumber} = route.params;
 
@@ -36,15 +34,14 @@ function PyramidAndPalmTreesTest({navigation, route}) {
 
   const handleNextButton = () =>{
     setNextButtonDisable(true)
-    console.log("## # ADDING RESULT: ", tests[testId].results)
     setTestResults([...testResults, tests[testId].results])
     
     testResults.forEach(test => console.log(testResults.indexOf(test)," (",tests.length - 1, "): " ,test))
     
     if( tests.length === (testId + 1) ){ //check if you are in the last test
-      setTestCompleted(true)
+      // setTestCompleted(true)
       DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, testResults)
-        .then(() => alert('Datos guardados'))
+        .then(() => {navigation.navigate('HomeScreen')})
     } else {
       setTestId(testId+1)
       setStartTime(Date.now())
@@ -74,7 +71,7 @@ function PyramidAndPalmTreesTest({navigation, route}) {
   }
 
   const navigateToHomeScreen = () => {
-    props.navigation.navigate('HomeScreen');
+    navigation.navigate('HomeScreen');
   }
 
   const isTheLastTest = ()=> (tests.length === testId + 1)
@@ -82,9 +79,9 @@ function PyramidAndPalmTreesTest({navigation, route}) {
   return ( start
     ? <View style={styles.detailsContainer}>
           {showTest()}
-        <Modal animationType="slide" visible={testCompleted}>
+        {/* <Modal animationType="slide" visible={testCompleted}>
           <ReturnHomeComponent navigation={navigation}/>
-        </Modal>
+        </Modal> */}
         <View style={styles.navigation}>
           <View style={styles.buttonsContainer}>
             {/* {(testId > 0) && <TouchableOpacity style={styles.button} Text={"BACK"} onPress={hadleBackButton} disabled={backButtonDisable}>
