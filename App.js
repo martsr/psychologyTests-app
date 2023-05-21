@@ -1,7 +1,7 @@
 import { NavigationContainer, useIsFocused } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
+import { Text, View, TextInput, ScrollView } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import PyramidAndPalmTreesTest from './screens/PyramidsAndPalmTreesTest/PyramidsAndPalmTreesScreen';
@@ -106,32 +106,32 @@ function TestsTab() {
       <Stack.Screen
         name='pyramidAndPalmTreesTest'
         component={PyramidAndPalmTreesTest}
-        options={{ title: TestsNames.pyramidAndPalmTreesTest, headerShown: false }}
+        options={{ headerShown: false, title: TestsNames.pyramidAndPalmTreesTest }}
       />
       <Stack.Screen
         name='bellTest'
         component={BellTest}
-        options={{ title: TestsNames.bellTest, headerShown: false }}
+        options={{ headerShown: false, title: TestsNames.bellTest }}
       />
       <Stack.Screen
         name='hanoiTest'
         component={HanoiTest}
-        options={{ title: TestsNames.hanoiTest, headerShown: false }}
+        options={{ headerShown: false, title: TestsNames.hanoiTest }}
       />
       <Stack.Screen
         name='corsiTest'
         component={CorsiTest}
-        options={{ title: TestsNames.corsiTest, headerShown: false }}
+        options={{ headerShown: false, title: TestsNames.corsiTest }}
       />
       <Stack.Screen
         name='cardTest'
         component={CardTest}
-        options={{ title: TestsNames.cardTest, headerShown: false }}
+        options={{ headerShown: false, title: TestsNames.cardTest }}
       />
       <Stack.Screen
         name='colorTrailsTest'
         component={ColorTrailsTest}
-        options={{ title: TestsNames.colorTrailsTest, headerShown: false }}
+        options={{ headerShown: false, title: TestsNames.colorTrailsTest }}
       />
     </Stack.Navigator>
   );
@@ -300,22 +300,10 @@ function DownloadsTab() {
       console.log("valores: -----> ",selectedTestValue, fromDate, toDate)
       const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate, patientNumberToFilter);
       console.log("CSV ------- ",csvResult)
-      console.log("#  #  # LLEGA HASTA ACA #  #  #")
       saveFile(csvResult, selectedTestValue).then((fileUri) => {
-        console.log("##### CSV RESULT: ", csvResult)
         return shareFile(fileUri)});
     } catch(e) {
-      console.log("##### ERROR: ", e)
       alert(e.message)
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

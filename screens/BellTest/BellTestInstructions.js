@@ -12,6 +12,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import colors from '../../config/colors';
 import AppButton from '../../components/AppButton';
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 export default class BellTestInstructions extends React.Component {
     constructor(props){
       super(props);
@@ -52,13 +55,13 @@ render(){
             <Text style={instructions.tutorialTitle}>Presione la campana</Text>
               <View style={instructions.tutorialInteractiveContainer}>
                 <TouchableOpacity style={instructions.tutorialItem} onPress={this.testApproved}>
-                  <FontAwesome name={"bell"} color={this.state.testBellColor} size={150}/>
+                  <FontAwesome name={"bell"} color={this.state.testBellColor} size={windowHeight/7}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={instructions.tutorialItem}>
-                  <FontAwesome name={"star"} color={"#000000"} size={150}/>
+                  <FontAwesome name={"star"} color={"#000000"} size={windowHeight/7}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={instructions.tutorialItem}>
-                  <FontAwesome name={"camera"} color={"#000000"} size={150}/>
+                  <FontAwesome name={"camera"} color={"#000000"} size={windowHeight/7}/>
                 </TouchableOpacity>
               </View>
             </View>
