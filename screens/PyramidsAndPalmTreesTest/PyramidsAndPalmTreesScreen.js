@@ -63,6 +63,10 @@ function PyramidAndPalmTreesTest(props) {
     setStartTime(Date.now())
   }
 
+  const navigateToHomeScreen = () => {
+    props.navigation.navigate('HomeScreen');
+  }
+
   const isTheLastTest = ()=> (tests.length === testId + 1)
   
   return ( start
@@ -88,6 +92,7 @@ function PyramidAndPalmTreesTest(props) {
           instructions={"En la parte superior de la pantalla aparecerá una figura. Deberá seleccionar una de las cuatro imagenes que aparecen en la parte inferior de la pantalla y que comparta alguna reclación"}
           onPressAccept={ () => setShowInstructions(!showInstructions)}
           visible={showInstructions}
+          onPressCancel={navigateToHomeScreen}
         />
         <DemoScreen onStartPress={() => initiateTest()}/>
       </>

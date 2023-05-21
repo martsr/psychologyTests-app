@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Modal, StyleSheet } from "react-native";
 
-import AppButton from '../../components/AppButton';
 import Text from "../../components/Text";
 import colors from "../../config/colors";
 import CardSetTest from "../../components/pyramidAndPalmTrees/CardsSetTest";
 import { TouchableOpacity } from "react-native";
-import { demoTest } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
+import { demoTest, resetTests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 import AnswerFeedbackModal from "../../components/AnswerFeedbackModal";
 
 function DemoScreen({ onStartPress }) {
@@ -16,7 +15,11 @@ function DemoScreen({ onStartPress }) {
   const [modalMessage, setmodalMessage] = useState("");
   const [showButton, setShowButton]  = useState(false);
   const [showCross, setShowCross] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false); 
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  useEffect(() => {
+    resetTests();
+  }, []);
 
   const showTest = () => {
     return (
