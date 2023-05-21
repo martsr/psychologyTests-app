@@ -153,7 +153,7 @@ class CardTest extends React.Component {
         <Modal animationType="slide" visible={this.state.finishedGameModalVisible}>
           <ReturnHomeComponent navigation={this.props.navigation}/>
         </Modal>
-        {!this.state.finishedTutorial ?<CardTutorial finishTutorial={this.finishTutorial}></CardTutorial>:<>
+        {!this.state.finishedTutorial ?<CardTutorial navigation={this.props.navigation} finishTutorial={this.finishTutorial}></CardTutorial>:<>
         {!this.state.showCross?
         <>
         <Modal transparent={true} animationType="slide" visible={this.state.visible}>

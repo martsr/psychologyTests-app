@@ -32,7 +32,7 @@ export default function Box({boxKey, order, color, position, disabled, onBoxPres
     <TouchableOpacity
       style={{height: position? '20%' : 100, aspectRatio: 1, margin:10, backgroundColor: boxColor, position: position? 'absolute' : 'relative', top: position? position[1] : 0, left: position? position[0] : 0}}
       onPress={onPress}>
-      <Text>{boxKey}</Text>  
+      {/* <Text>{boxKey}</Text>   */}
     </TouchableOpacity>
   );
 };

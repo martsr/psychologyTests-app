@@ -46,6 +46,11 @@ export default class CardTest extends React.Component {
         startedTutorial: false,
     }
 
+    constructor(props){
+        super(props);
+        console.log(this.props)
+    }
+
     addEvent=(id,name,color,side)=>{
         if(this.state.evaluation == "color"){
             if(side =="rabbit"){
