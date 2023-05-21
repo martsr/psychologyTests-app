@@ -95,7 +95,7 @@ class BellTest extends React.Component {
     }
   }
   addBell = () => {
-    const time =(new Date() - this.state.startTime)
+    const time =(new Date() - this.state.startTime - 3000)
     const user = this.props.user
     const interviewer = this.props.interviewer
     const results = this.state.results
@@ -114,7 +114,7 @@ class BellTest extends React.Component {
   }
 
   addMistake = () => {
-    const time =(new Date() - this.state.startTime)
+    const time =(new Date() - this.state.startTime -3000)
     const user = this.props.user
     const interviewer = this.props.interviewer
     const results = this.state.results
