@@ -141,4 +141,16 @@ const demoTest = [
   cactusTest,
 ]
 
-export {tests, demoTest};
+const resetTests = () =>{
+  demoTest.map( test => {
+    test.results = {};
+    test.cards.map( card => card.selected = false)
+  })
+
+  tests.map( test => {
+    test.results = {};
+    test.cards.map( card => card.selected = false)
+  })
+}
+
+export {tests, demoTest, resetTests};
