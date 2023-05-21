@@ -136,7 +136,7 @@ export default class CardTest extends React.Component {
                 <Text style={instructions.text}>Comencemos agrupando por {this.state.evaluation}.</Text>
             </View>
             <View style={instructions.buttonContainer}>
-                <AppButton title={'Cancelar'} textColor={colors.primary} style={styles.emptyButton}></AppButton>
+                <AppButton title={'Cancelar'} textColor={colors.primary} style={styles.emptyButton} onPress={()=> this.props.navigation.navigate('HomeScreen')}></AppButton>
                 <AppButton title={'Empezar Tutorial'} style={styles.button} onPress={() => this.setState({ startedTutorial : true })}></AppButton>
             </View>
             </View>

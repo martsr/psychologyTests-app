@@ -1,7 +1,7 @@
 import { NavigationContainer, useIsFocused } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import PyramidAndPalmTreesTest from './screens/PyramidsAndPalmTreesTest/PyramidsAndPalmTreesScreen';
@@ -20,10 +20,8 @@ import * as MediaLibrary from 'expo-media-library';
 import DropDownPicker from "react-native-dropdown-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Provider} from 'react-redux';
-import { applyMiddleware } from 'redux';
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import thunk from 'redux-thunk';
 import userReducer from './redux/reducers/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import storage from 'redux-persist/lib/storage';
@@ -107,32 +105,32 @@ function TestsTab() {
       <Stack.Screen
         name='pyramidAndPalmTreesTest'
         component={PyramidAndPalmTreesTest}
-        options={{ title: TestsNames.pyramidAndPalmTreesTest }}
+        options={{ headerShown: false, title: TestsNames.pyramidAndPalmTreesTest }}
       />
       <Stack.Screen
         name='bellTest'
         component={BellTest}
-        options={{ title: TestsNames.bellTest }}
+        options={{ headerShown: false, title: TestsNames.bellTest }}
       />
       <Stack.Screen
         name='hanoiTest'
         component={HanoiTest}
-        options={{ title: TestsNames.hanoiTest }}
+        options={{ headerShown: false, title: TestsNames.hanoiTest }}
       />
       <Stack.Screen
         name='corsiTest'
         component={CorsiTest}
-        options={{ title: TestsNames.corsiTest }}
+        options={{ headerShown: false, title: TestsNames.corsiTest }}
       />
       <Stack.Screen
         name='cardTest'
         component={CardTest}
-        options={{ title: TestsNames.cardTest }}
+        options={{ headerShown: false, title: TestsNames.cardTest }}
       />
       <Stack.Screen
         name='colorTrailsTest'
         component={ColorTrailsTest}
-        options={{ title: TestsNames.colorTrailsTest }}
+        options={{ headerShown: false, title: TestsNames.colorTrailsTest }}
       />
     </Stack.Navigator>
   );
@@ -287,22 +285,10 @@ function DownloadsTab() {
       console.log("valores: -----> ",selectedTestValue, fromDate, toDate)
       const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
       console.log("CSV ------- ",csvResult)
-      console.log("#  #  # LLEGA HASTA ACA #  #  #")
       saveFile(csvResult, selectedTestValue).then((fileUri) => {
-        console.log("##### CSV RESULT: ", csvResult)
         return shareFile(fileUri)});
     } catch(e) {
-      console.log("##### ERROR: ", e)
       alert(e.message)
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
