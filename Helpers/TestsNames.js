@@ -3,7 +3,6 @@ const TestsNames = {
     bellTest: "Campanas",
     hanoiTest: "Torres de Hanoi",
     corsiTest: "Corsi",
-    camelTest: "Camellos",
     cardTest: "Cartas",
     colorTrailsTest: "Color Trails",
 }

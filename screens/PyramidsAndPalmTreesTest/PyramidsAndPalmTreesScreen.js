@@ -9,8 +9,9 @@ import { TouchableOpacity } from "react-native";
 import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 import InstructionsModal from "../../components/InstructionsModal";
 import ReturnHomeComponent from "../../components/ReturnHomeComponent";
+import DatabaseService from '../../services/DatabaseService';
 
-function PyramidAndPalmTreesTest(props) {
+function PyramidAndPalmTreesTest({navigation, route}) {
   const [testId, setTestId] = useState(0);
   // const [backButtonDisable, setbackButtonDisable] = useState(false);
   const [nextButtonDisable, setNextButtonDisable] = useState(true);
@@ -18,7 +19,10 @@ function PyramidAndPalmTreesTest(props) {
   const [start, setStart] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
   const [testCompleted, setTestCompleted] = useState(false)
+  const [testResults, setTestResults] = useState([])
+  const [testsExercies, setTestsExercies] = useState(tests)
   //TODO: enable and disable back and next buttons
+  const {patientNumber, interviewerNumber} = route.params;
 
   const showTest = ()=> {
     return(
@@ -30,32 +34,38 @@ function PyramidAndPalmTreesTest(props) {
     )
   }
 
-  const hadleNextButton = () =>{
+  const handleNextButton = () =>{
     setNextButtonDisable(true)
+    console.log("## # ADDING RESULT: ", tests[testId].results)
+    setTestResults([...testResults, tests[testId].results])
+    
+    testResults.forEach(test => console.log(testResults.indexOf(test)," (",tests.length - 1, "): " ,test))
+    
     if( tests.length === (testId + 1) ){ //check if you are in the last test
       setTestCompleted(true)
+      DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, testResults)
+        .then(() => alert('Datos guardados'))
     } else {
       setTestId(testId+1)
       setStartTime(Date.now())
     }
   }
 
-  const hadleBackButton = () =>{
-    if( testId > 0){
-      setTestId(testId-1)
-    } else {
-      //TODO: disable back button
-    }
-  }
+  // const hadleBackButton = () =>{
+  //   if( testId > 0){
+  //     setTestId(testId-1)
+  //   } else {
+  //     //TODO: disable back button
+  //   }
+  // }
 
   const handleOnSelect = (card) =>{
     const now = Date.now()
-    const timeSpend = tests[testId]?.results?.timeSpend
-    const totalTimeSpend = (now - startTime) + (timeSpend? timeSpend : 0)
+    const totalTimeSpend = (now - startTime)
     setNextButtonDisable(false)
 
-    tests[testId].results = {timeSpend: totalTimeSpend, isCorrect: card.isCorrect, isAnimated: tests[testId].isAnimated}
-    console.log("TEST NUM "+ testId + ": ", tests[testId].results)
+    tests[testId].results = {testName: tests[testId].name, timeSpend: totalTimeSpend, isCorrect: card.isCorrect, isAnimated: tests[testId].isAnimated}
+    // console.log("TEST NUM "+ testId + ": ", tests[testId].results )
   }
 
   const initiateTest = () =>{
@@ -69,7 +79,7 @@ function PyramidAndPalmTreesTest(props) {
     ? <View style={styles.detailsContainer}>
           {showTest()}
         <Modal animationType="slide" visible={testCompleted}>
-          <ReturnHomeComponent navigation={props.navigation}/>
+          <ReturnHomeComponent navigation={navigation}/>
         </Modal>
         <View style={styles.navigation}>
           <View style={styles.buttonsContainer}>
@@ -77,7 +87,7 @@ function PyramidAndPalmTreesTest(props) {
                 <Text style={styles.buttonText}>BACK</Text>
               </TouchableOpacity>
             } */}
-            {!nextButtonDisable? <TouchableOpacity style={styles.button} onPress={hadleNextButton}>
+            {!nextButtonDisable? <TouchableOpacity style={styles.button} onPress={handleNextButton}>
               <Text style={styles.buttonText}>{isTheLastTest()? 'FINISH':'NEXT'}</Text>
             </TouchableOpacity> : null}
           </View>
@@ -99,10 +109,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   navigation: {
-    position:"absolute",
-    bottom:0,
-    height:50,
-    width:"100%"
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    height: 50,
+    width: 200,
   },
   buttonsContainer:{
     flexDirection: 'row',
