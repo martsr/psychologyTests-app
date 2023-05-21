@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Alert
+  Alert,
+  TextInput
 } from 'react-native';
 import { general } from '../../config/styles/GeneralStyles';
 import { FontAwesome } from '@expo/vector-icons';
@@ -35,6 +36,7 @@ class HanoiTest extends React.Component {
     this.stopTimer = React.createRef();
     this.validMovements = 0;
     this.invalidMovements = 0;
+    this.maxTime = 0;
     this.state = {
         leftTower: [0.05*WIDTH, 0.08*WIDTH, 0.15*WIDTH, 0.23*WIDTH, 0.3*WIDTH],
         centerTower: [0, 0, 0, 0, 0],
@@ -43,11 +45,16 @@ class HanoiTest extends React.Component {
         instructionOneVisible: true,
         instructionTwoVisible: false,
         instructionThreeVisible: false,
+        instructionFourVisible: false,
         tutorial: true,
-        timerVisible: false
+        timerVisible: false,
+        maxTime: 0
     }
   }
 hideComponent = () => {
+  this.setState({ instructionTwoVisible : false, instructionThreeVisible: true});
+}
+hideSettings = () => {
   this.setState({ instructionOneVisible : false, instructionTwoVisible: true});
 }
 endTutorial = () => {
@@ -56,7 +63,7 @@ endTutorial = () => {
     centerTower: [0, 0, 0, 0, 0],
     rightTower: [0, 0, 0, 0, 0],
     tutorial : false, 
-    instructionThreeVisible: false,
+    instructionFourVisible: false,
     timerVisible: true});
 }
 render(){
@@ -78,7 +85,7 @@ render(){
         newTower.splice(lastElementIndex, 1, width)
         this.setState({centerTower: newTower})
         if(this.state.tutorial == true){
-          this.setState({instructionTwoVisible: false, instructionThreeVisible: true})
+          this.setState({instructionThreeVisible: false, instructionFourVisible: true})
         }
       }
       else{
@@ -88,10 +95,10 @@ render(){
         newTower.splice(lastElementIndex, 1, width)
         this.setState({rightTower: newTower})
         if(this.state.tutorial == true){
-          this.setState({instructionTwoVisible: false, instructionThreeVisible: true})
+          this.setState({instructionThreeVisible: false, instructionFourVisible: true})
         }
       }
-      if(this.state.centerTower.lastIndexOf(0) == -1 || this.state.rightTower.lastIndexOf(0) == -1){
+      if(this.state.centerTower.lastIndexOf(0) == -1 || this.state.rightTower.lastIndexOf(0) == -1 || (this.stopTimer.current == null? 0: this.stopTimer.current.state.time) >= this.state.maxTime ){
         var time = this.stopTimer.current.state.time;
         this.stopTimer.current.stop();
         this.setState({visibleFinished: true});
@@ -103,8 +110,6 @@ render(){
         DatabaseService.instance().saveHanoiTestResult(this.props.user, this.props.interviewer, results);
       }
     }
-    console.log(this.props.user);
-    console.log(this.props.interviewer);
     const removeElementFromOldTower = (tower, width) => {
       if(tower == 'l'){
         //We need to find where is the element to be removed
@@ -174,6 +179,20 @@ render(){
     return (
         <SafeAreaView style={styles.container}>
             {this.state.instructionOneVisible? (<View style={styles.textContainer}>
+              <Text style={styles.title}>¡Atencion, Instructor!</Text>
+              <View>
+                <Text style={styles.text}>Ingresa la duracion maxima del test en minutos</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={this.props.maxTime}
+                  onChangeText={(time) => this.setState({ maxTime: time * 60 })}
+                  placeholder='Tiempo en minutos'
+                  keyboardType='numeric'
+                />
+                <AppButton onPress={this.hideSettings} title="Comenzar Tutorial" style={{width: 200, marginTop: 30, marginLeft: 75}}></AppButton>
+              </View>
+            </View>): null}
+            {this.state.instructionTwoVisible? (<View style={styles.textContainer}>
               <Text style={styles.title}>Instrucciones</Text>
               <View>
                 <Text style={styles.text}>En este test deberás trasladar la pila azul al otro lado siguiendo ciertas reglas:</Text>
@@ -183,13 +202,13 @@ render(){
                 <AppButton onPress={this.hideComponent} title="Entendido" style={{width: 200, marginTop: 30, marginLeft: 75}}></AppButton>
               </View>
             </View>): null}
-            {this.state.instructionTwoVisible? (<View style={styles.textContainer}>
+            {this.state.instructionThreeVisible? (<View style={styles.textContainer}>
               <Text style={styles.title}>¡Intentemos!</Text>
               <View>
                 <Text style={styles.text}>Traslada la pieza ubicada en el extremo superior de la pila hacia alguna de las pilas vacias</Text>
               </View>
             </View>): null}
-            {this.state.instructionThreeVisible? (<View style={styles.textContainer}>
+            {this.state.instructionFourVisible? (<View style={styles.textContainer}>
               <Text style={styles.title}>¡Excelente!</Text>
               <View>
                 <Text style={styles.text}>Es ahora tu turno de trasladar toda la pila hacia otra de las zonas</Text>
@@ -197,6 +216,10 @@ render(){
                 <AppButton onPress={this.endTutorial} title="Comenzar" style={{width: 200, marginTop: 30, marginLeft: 75}}></AppButton>
               </View>
             </View>): null}
+            
+            <View style={styles.leftStickContainer}/>
+            <View style={styles.centerStickContainer}/>
+            <View style={styles.rightStickContainer}/>
 
             <Modal animationType="slide" visible={this.state.visibleFinished}>
               <ReturnHomeComponent navigation={this.props.navigation}/>
@@ -205,7 +228,7 @@ render(){
               {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
             </View>
             <View style={styles.main}>
-              <View style={styles.stackedObjects}>
+              <View style={styles.stackedObjects}>   
                   {leftObjects}
               </View>
               <View style={styles.stackedObjects}>
@@ -213,6 +236,7 @@ render(){
               </View>
               <View style={styles.stackedObjects}>
                   {rightObjects}
+                  
               </View>
             </View>
         </SafeAreaView>
@@ -232,7 +256,7 @@ const styles = StyleSheet.create({
   stackedObjects: {
     flex: 1,
     alignItems: "center",
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   timer: {
     marginTop: 15,
@@ -244,17 +268,61 @@ const styles = StyleSheet.create({
     position: "absolute",
     flex: 1,
     zIndex : 1,
-    elevation: 1
+    elevation: 1,
+    backgroundColor: 'white',
+    opacity: 0.9,
+    paddingBottom: 10,
+    marginLeft: 10,
+    marginTop: 10,  
+    borderRadius: 5
+  },
+  leftStickContainer: {
+    position: "absolute",
+    zIndex : -100,
+    elevation: -100,
+    backgroundColor: 'red',
+    height: 300,
+    width: 30,
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+    bottom: 0,
+    left: (WIDTH/3)/2
+  },
+  centerStickContainer: {
+    position: "absolute",
+    zIndex : -100,
+    elevation: -100,
+    backgroundColor: 'red',
+    height: 300,
+    width: 30,
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+    bottom: 0,
+    left: (WIDTH/3)+(WIDTH/3)/2-15
+  },
+  rightStickContainer: {
+    position: "absolute",
+    zIndex : -100,
+    elevation: -100,
+    backgroundColor: 'red',
+    height: 300,
+    width: 30,
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+    bottom: 0,
+    right: (WIDTH/3)/2
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     marginLeft: 75,
-    marginVertical: 30
+    marginVertical: 20,
+    marginRight: 20
   },
   text: {
-    fontSize: 24,
-    marginLeft: 75
+    fontSize: 20,
+    marginLeft: 75,
+    marginRight: 20
   },
   button: {
     marginTop: 20,
@@ -266,6 +334,17 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
     padding: 10,
     width: 200
+  },
+  textInput: {
+    fontSize: 16,
+    marginLeft: 75,
+    marginRight: 20,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: 'grey',
+    marginBottom: 10,
+    marginTop: 10,
+    width: '50%'
   }
 });
 export default connect(mapStateToProps)(HanoiTest);

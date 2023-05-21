@@ -151,6 +151,9 @@ let style = StyleSheet.create({
       width: '100%',
       height: '100%',
       backgroundColor: 'blue',
+      position: 'absolute',
+      elevation: 100,
+      zIndex: 100,
       borderRadius: 20
   },
 })
