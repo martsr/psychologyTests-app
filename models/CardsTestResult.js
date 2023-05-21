@@ -17,7 +17,7 @@ export default class CardsTestResult extends TestResult {
         resultItem.mistakePersistence,
         resultItem.round,
         resultItem.event,
-        resultItem.Time
+        resultItem.timeInMs
       );
     });
   }

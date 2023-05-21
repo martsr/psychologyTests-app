@@ -63,6 +63,7 @@ class CardTest extends React.Component {
         totalTime: "",
         patientNumber: this.props.user,
         interviewerNumber: this.props.interviewer,
+        showCross: false
     }
 
     addEvent=(id,name,color,side)=>{
@@ -93,26 +94,29 @@ class CardTest extends React.Component {
         if(this.state.lastEvent == "catch") {
             catchPersistence = catchPersistence + 1
         }
-        results.push({user: this.props.user, interviewer: this.props.interviewer ,criterio: criterio, catchPersistence: catchPersistence, mistakePersistence: 0, round: this.state.totalEvents+1, event: "catch"})
+        results.push({user: this.props.user, interviewer: this.props.interviewer ,criterio: criterio, catchPersistence: catchPersistence, mistakePersistence: 0, round: this.state.totalEvents+1, event: "catch", timeInMs: time})
         this.setState({catches: this.state.catches + 1, lastEvent: "catch", roundResults: results, catchPersistence: catchPersistence, mistakePersistence: 0})
     }
     
     addMistake = () => {
+        const time = (new Date() - this.state.startTime)
         var mistakePersistence = this.state.mistakePersistence
         var results = this.state.roundResults
         var criterio = this.state.evaluation
         if(this.state.lastEvent == "mistake") {
             mistakePersistence = mistakePersistence + 1
         }
-        results.push({user: this.state.patientNumber, interviewer: this.state.interviewerNumber ,criterio: criterio, catchPersistence: 0, mistakePersistence: mistakePersistence, round: this.state.totalEvents+1, event: "mistake"})
+        results.push({user: this.state.patientNumber, interviewer: this.state.interviewerNumber ,criterio: criterio, catchPersistence: 0, mistakePersistence: mistakePersistence, round: this.state.totalEvents+1, event: "mistake", timeInMs: time})
         this.setState({mistakes: this.state.mistakes + 1, lastEvent: "mistake", roundResults: results, catchPersistence: 0, mistakePersistence: mistakePersistence})
     }
 
     setInvisible =()=>{
-        this.setState({visible: false, cards: generateCards()})
+        this.setState({visible: false, cards: generateCards(), startTime: new Date()})
     }
 
     finishTutorial = () =>{
+        this.setState({showCross: true});
+        setTimeout(() => {this.setState({showCross: false})}, 3000);
         this.setState({finishedTutorial: true})
     }
 
@@ -149,10 +153,11 @@ class CardTest extends React.Component {
         <Modal animationType="slide" visible={this.state.finishedGameModalVisible}>
           <ReturnHomeComponent navigation={this.props.navigation}/>
         </Modal>
-        {!this.state.finishedTutorial ?<CardTutorial finishTutorial={this.finishTutorial} navigation={this.props.navigation}></CardTutorial>:<>
+        {!this.state.finishedTutorial ?<CardTutorial finishTutorial={this.finishTutorial}></CardTutorial>:<>
+        {!this.state.showCross?
+        <>
         <Modal transparent={true} animationType="slide" visible={this.state.visible}>
             <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center',backgroundColor:"#F6F3F5"}}>
-                <Text style={instructions.text}>criterio : {this.state.evaluation}</Text>
                 <TouchableOpacity style={mainPage.button} onPress={this.setInvisible}>
                     <Text style={instructions.buttonText}> Comenzar test</Text>
                 </TouchableOpacity>
@@ -162,7 +167,7 @@ class CardTest extends React.Component {
             <View style={instructions.popupModalContainer}>
                 {this.state.lastEvent == "catch" ?
                     <View style ={instructions.popupModalCorrectContainer}>
-                        <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
+                        <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada Correcta</Text>
                         <View style={{alignSelf:"center"}}>
                             <FontAwesome name="check-circle" size={50} color={colors.homeButton} />
                         </View>
@@ -174,7 +179,7 @@ class CardTest extends React.Component {
                     </View>
                     :
                     <View style ={instructions.popupModalIncorrectContainer}>
-                        <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada completada {this.state.lastEvent}</Text>
+                        <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada Incorrecta</Text>
                         <View style={{alignSelf:"center"}}>
                             <FontAwesome name="times-circle" size={50} color={colors.danger} />
                         </View>
@@ -198,6 +203,10 @@ class CardTest extends React.Component {
                 </View>
             </View>
         </View>
+        </>:
+        <View style={{width: '100%', height: '100%', backgroundColor: 'black', padding: 32, alignItems: 'center', justifyContent: 'space-evenly'}}>
+            <Text style={{fontSize: 160, color: 'white'}}>✕</Text>
+        </View>}
         </>}
         </>
         );
