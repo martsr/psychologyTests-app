@@ -1,10 +1,12 @@
 import CorsiTestResult from "../models/CorsiTestResult";
+import TestsNames from "../Helpers/TestsNames";
 import CardsTestResult from "../models/CardsTestResult";
 import BellsTestResult from "../models/bellsTestResult";
 import ColorTrailsTestResult from "../models/ColorTrailsTestResult";
 import HanoiTestResult from "../models/HanoiTestResult";
 import { Database } from "./Database";
 import * as Promise from "bluebird"
+import PyramidAndPalmTreesTestResult from "../models/PyramidAndPalmtreesTestResult";
 
 export default class DatabaseService {
   static instance() {
@@ -21,9 +23,18 @@ export default class DatabaseService {
     this._db = new Database('test');
   }
 
-  async saveCorsiTestResult(patientNumber, corsiResult) {
-    const testResult = new CorsiTestResult(patientNumber, 0, new Date(), corsiResult);
+  async saveCorsiTestResult(patientNumber, interviewerNumber, corsiResult) {
+    const testResult = new CorsiTestResult(patientNumber, interviewerNumber, new Date(), corsiResult);
     await this.createCorsiTable();
+    Promise.each(testResult.rows(), async (row) => {
+      await this._db.execute(row.sqlInsertText());
+    });
+  }
+
+
+  async savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, result) {
+    const testResult = new PyramidAndPalmTreesTestResult(patientNumber, interviewerNumber, new Date(), result);
+    await this.createPyramidsAndPalmtreesTable();
     Promise.each(testResult.rows(), async (row) => {
       await this._db.execute(row.sqlInsertText());
     });
@@ -57,6 +68,18 @@ export default class DatabaseService {
       timeInMs number);`);
   }
 
+  async createPyramidsAndPalmtreesTable() {
+    await this._db.execute(`create table if not exists pyramidsAndPalmtreesTest (
+      id integer primary key not null, 
+      patientNumber text,
+      professionalNumber text,
+      date text,
+      testName text,
+      timeSpend number,
+      isCorrect text,
+      isAnimated text);`);
+  }
+
   async createCardsTable() {
     await this._db.execute(`create table if not exists cardsTest (
       id integer primary key not null, 
@@ -70,7 +93,7 @@ export default class DatabaseService {
       event text,
       timeInMs number);`);
   }
-/* drop table if exists bellsTest; */
+
   async createBellsTable() {
     await this._db.execute(`create table if not exists bellsTest  (
       id integer primary key not null, 
@@ -83,19 +106,34 @@ export default class DatabaseService {
       timeInS real);`);
   }
 
-
   async getCorsiTestCSVResults(fromDate, toDate) {
     await this.createCorsiTable();
     const dbResults = await this._db.execute(`select * from corsiTest`);
     const header = 'patientNumber,professionalNumber,date,inverted,amountOfBoxes,correct,timeInMs\n';
     const data = dbResults.rows.
     filter((row) => {
-      console.log('row', row)
+      console.log('ROW: filter:',fromDate <= new Date(row.date) && toDate >= new Date(row.date), row)
       return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
     }).
     map((row) => {
       return `${row.patientNumber},${row.professionalNumber},${row.date},${row.inverted},${row.amountOfBoxes},${row.correct},${row.timeInMs}\n`
     }).join('');
+    return `${header}${data}`;
+  }
+
+  async getPyramidTestCSVResults(fromDate, toDate) {
+    await this.createPyramidsAndPalmtreesTable();
+    const dbResults = await this._db.execute(`select * from pyramidsAndPalmtreesTest`);
+    const header = 'patientNumber,professionalNumber,date,testName,timeSpend,isCorrect,isAnimated\n';
+    const data = dbResults.rows.
+    filter((row) => {
+      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
+    }).
+    map((row) => {
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.testName},${row.timeSpend},${row.isCorrect},${row.isAnimated}\n`
+    }).join('');
+
+    console.log("&&&&&&&&&&&&&&& DATA: ", data)
     return `${header}${data}`;
   }
 
@@ -130,20 +168,22 @@ export default class DatabaseService {
   }
 
   async getCSVResults(test, fromDate, toDate) {
-    if (test == 'corsi') {
-      return this.getCorsiTestCSVResults(fromDate, toDate);
-    } else if (test == 'piramides') {
-      return this.getCorsiTestCSVResults(fromDate, toDate);
-    } else if (test == 'cartas') {
-      return this.getCardsTestCSVResults(fromDate, toDate);
-    } else if (test == 'campanas') {
-      return this.getBellsTestCSVResults(fromDate, toDate);
-    } else if (test == 'color'){
-      return this.getColorTrailsTestCSVResults(fromDate, toDate);
-    } else if (test == 'hanoi'){
-      return this.getHanoiTestCSVResults(fromDate, toDate);
-    } else {
-      throw new Error('No existe el test');
+    console.log('estoy en getCSVResults')
+    switch(test){
+      case TestsNames.corsiTest:
+        return this.getCorsiTestCSVResults(fromDate, toDate);
+      case TestsNames.pyramidAndPalmTreesTest:
+        return this.getPyramidTestCSVResults(fromDate, toDate);
+      case TestsNames.cardTest:
+        return this.getCardsTestCSVResults(fromDate, toDate);
+      case TestsNames.bellTest:
+        return this.getBellsTestCSVResults(fromDate, toDate);
+      case TestsNames.colorTrailsTest:
+        return this.getColorTrailsTestCSVResults(fromDate, toDate);
+      case TestsNames.hanoiTest:
+        return this.getHanoiTestCSVResults(fromDate, toDate);
+      default:
+        throw new Error('Selecciona un test');
     }
   }
 
@@ -181,6 +221,7 @@ export default class DatabaseService {
     }).join('');
     return `${header}${data}`;
   }
+
   async createHanoiTestTable() {
     await this._db.execute(`create table if not exists HanoiTest (
       id integer primary key not null, 
@@ -201,7 +242,7 @@ export default class DatabaseService {
   }
 
   async getHanoiTestCSVResults(fromDate, toDate) {
-    await this.createColorTrailsTable();
+    await this.createHanoiTestTable();
     const dbResults = await this._db.execute(`select * from HanoiTest`);
     const header = 'patientNumber,professionalNumber,date,validMovements,invalidMovements,timeElapsed\n';
     const data = dbResults.rows.

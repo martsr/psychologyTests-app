@@ -101,9 +101,10 @@ const styles = StyleSheet.create({
   },
   navigation: {
     position: "absolute",
-    bottom: 0,
+    bottom: 10,
+    right: 0,
     height: 50,
-    width: "100%",
+    width: 200,
   },
   buttonsContainer: {
     flex: 1,

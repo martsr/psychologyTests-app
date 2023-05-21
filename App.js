@@ -11,7 +11,6 @@ import HanoiTest from './screens/HanoiTest/HanoiTest';
 import CorsiTest from './screens/CorsiTest/CorsiTest';
 import CardTest from './screens/CardTest/CardTest';
 import ColorTrailsTest from './screens/ColorTrailsTest/ColorTrailsTest';
-import CamelTest from './screens/CamelTest/CamelTest';
 import DatabaseService from './services/DatabaseService';
 import { useState } from 'react';
 import * as FileSystem from 'expo-file-system';
@@ -126,11 +125,6 @@ function TestsTab() {
         options={{ title: TestsNames.corsiTest }}
       />
       <Stack.Screen
-        name='camelTest'
-        component={CamelTest}
-        options={{ title: TestsNames.camelTest }}
-      />
-      <Stack.Screen
         name='cardTest'
         component={CardTest}
         options={{ title: TestsNames.cardTest }}
@@ -150,9 +144,9 @@ function DownloadsTab() {
   const [testsDropdownOpen, setTestsDropdownOpen] = useState(false);
   const [selectedTestValue, setSelectedTestValue] = useState(null);
 
-  async function saveFile(data) {
+  async function saveFile(data, testName) {
     let directoryUri = FileSystem.documentDirectory;
-    let fileUri = directoryUri + "corsi.csv";
+    let fileUri = directoryUri + testName + ".csv";
     await FileSystem.writeAsStringAsync(fileUri, data, { encoding: FileSystem.EncodingType.UTF8 });
     return fileUri;
   };
@@ -185,10 +179,10 @@ function DownloadsTab() {
     return date;
   }
 
-  const [fromDate, setFromDate] = useState(subtractMonths(new Date(), 1));
+  const [fromDate, setFromDate] = useState(subtractMonths(new Date(new Date().setUTCHours(0,0,0,0)), 1));
   const [fromDateShow, setFromDateShow] = useState(false);
   const onChangeFromDate = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    const currentDate = new Date(selectedDate.setUTCHours(0,0,0,0));
     setFromDateShow(false);
     setFromDate(currentDate);
   };
@@ -196,10 +190,10 @@ function DownloadsTab() {
     setFromDateShow(true)
   }
 
-  const [toDate, setToDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date(new Date().setUTCHours(23,59,59,999)));
   const [toDateShow, setToDateShow] = useState(false);
   const onChangeToDate = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    const currentDate = new Date(selectedDate.setUTCHours(23,59,59,999));
     setToDateShow(false);
     setToDate(currentDate);
   };
@@ -241,12 +235,12 @@ function DownloadsTab() {
             open={testsDropdownOpen}
             value={selectedTestValue}
             items={[
-              {label: 'Pirámides y palmeras', value: 'piramides'},
-              {label: 'Color Trails', value: 'color'},
-              {label: 'Campanas', value: 'campanas'},
-              {label: 'Hanoi', value: 'hanoi'},
-              {label: 'Corsi', value: 'corsi'},
-              {label: 'Cartas', value: 'cartas'},
+              {label: 'Pirámides y palmeras', value: TestsNames.pyramidAndPalmTreesTest},
+              {label: 'Campanas', value: TestsNames.bellTest},
+              {label: 'Hanoi', value: TestsNames.hanoiTest},
+              {label: 'Corsi', value: TestsNames.corsiTest},
+              {label: 'Color Trails', value: TestsNames.colorTrailsTest},
+              {label: 'Cartas', value: TestsNames.cardTest},
             ]}
             setOpen={setTestsDropdownOpen}
             setValue={setSelectedTestValue}
@@ -289,11 +283,16 @@ function DownloadsTab() {
   );
 
   async function download() {
-    const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
-    console.log(selectedTestValue)
     try {
-      saveFile(csvResult).then((fileUri) => shareFile(fileUri));
+      console.log("valores: -----> ",selectedTestValue, fromDate, toDate)
+      const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
+      console.log("CSV ------- ",csvResult)
+      console.log("#  #  # LLEGA HASTA ACA #  #  #")
+      saveFile(csvResult, selectedTestValue).then((fileUri) => {
+        console.log("##### CSV RESULT: ", csvResult)
+        return shareFile(fileUri)});
     } catch(e) {
+      console.log("##### ERROR: ", e)
       alert(e.message)
     }
   }
