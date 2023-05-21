@@ -106,29 +106,31 @@ export default class DatabaseService {
       timeInS real);`);
   }
 
-  async getCorsiTestCSVResults(fromDate, toDate) {
+  async getCorsiTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createCorsiTable();
     const dbResults = await this._db.execute(`select * from corsiTest`);
     const header = 'patientNumber,professionalNumber,date,inverted,amountOfBoxes,correct,timeInMs\n';
     const data = dbResults.rows.
-    filter((row) => {
-      console.log('ROW: filter:',fromDate <= new Date(row.date) && toDate >= new Date(row.date), row)
-      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
-    }).
+    filter(this.rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber)).
     map((row) => {
       return `${row.patientNumber},${row.professionalNumber},${row.date},${row.inverted},${row.amountOfBoxes},${row.correct},${row.timeInMs}\n`
     }).join('');
     return `${header}${data}`;
   }
 
-  async getPyramidTestCSVResults(fromDate, toDate) {
+  rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber) {
+    return (row) => {
+      return (fromDate <= new Date(row.date) && toDate >= new Date(row.date))
+        && (!patientNumber || patientNumber.toLowerCase() == row.patientNumber.toLowerCase());
+    };
+  }
+
+  async getPyramidTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createPyramidsAndPalmtreesTable();
     const dbResults = await this._db.execute(`select * from pyramidsAndPalmtreesTest`);
     const header = 'patientNumber,professionalNumber,date,testName,timeSpend,isCorrect,isAnimated\n';
     const data = dbResults.rows.
-    filter((row) => {
-      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
-    }).
+    filter(this.rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber)).
     map((row) => {
       return `${row.patientNumber},${row.professionalNumber},${row.date},${row.testName},${row.timeSpend},${row.isCorrect},${row.isAnimated}\n`
     }).join('');
@@ -137,51 +139,45 @@ export default class DatabaseService {
     return `${header}${data}`;
   }
 
-  async getCardsTestCSVResults(fromDate, toDate) {
+  async getCardsTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createCardsTable();
     const dbResults = await this._db.execute(`select * from cardsTest`);
     const header = 'patientNumber,professionalNumber,date,criteria,catchPersistence,mistakePersistence,round,event,timeInMs\n';
     const data = dbResults.rows.
-    filter((row) => {
-      console.log('row', row)
-      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
-    }).
+    filter(this.rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber)).
     map((row) => {
       return `${row.patientNumber},${row.professionalNumber},${row.date},${row.criteria},${row.catchPersistence},${row.mistakePersistence},${row.round},${row.event},${row.timeInMs}\n`
     }).join('');
     return `${header}${data}`;
   }
 
-  async getBellsTestCSVResults(fromDate, toDate) {
+  async getBellsTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createBellsTable();
     const dbResults = await this._db.execute(`select * from bellsTest`);
     const header = 'patientNumber,professionalNumber,date,bells,mistakes,timeInMs,timeInS\n';
     const data = dbResults.rows.
-    filter((row) => {
-      console.log('row', row)
-      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
-    }).
+    filter(this.rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber)).
     map((row) => {
       return `${row.patientNumber},${row.professionalNumber},${row.date},${row.bells},${row.mistakes},${row.timeInMs},${row.timeInS}\n`
     }).join('');
     return `${header}${data}`;
   }
 
-  async getCSVResults(test, fromDate, toDate) {
+  async getCSVResults(test, fromDate, toDate, patientNumber) {
     console.log('estoy en getCSVResults')
     switch(test){
       case TestsNames.corsiTest:
-        return this.getCorsiTestCSVResults(fromDate, toDate);
+        return this.getCorsiTestCSVResults(fromDate, toDate, patientNumber);
       case TestsNames.pyramidAndPalmTreesTest:
-        return this.getPyramidTestCSVResults(fromDate, toDate);
+        return this.getPyramidTestCSVResults(fromDate, toDate, patientNumber);
       case TestsNames.cardTest:
-        return this.getCardsTestCSVResults(fromDate, toDate);
+        return this.getCardsTestCSVResults(fromDate, toDate, patientNumber);
       case TestsNames.bellTest:
-        return this.getBellsTestCSVResults(fromDate, toDate);
+        return this.getBellsTestCSVResults(fromDate, toDate, patientNumber);
       case TestsNames.colorTrailsTest:
-        return this.getColorTrailsTestCSVResults(fromDate, toDate);
+        return this.getColorTrailsTestCSVResults(fromDate, toDate, patientNumber);
       case TestsNames.hanoiTest:
-        return this.getHanoiTestCSVResults(fromDate, toDate);
+        return this.getHanoiTestCSVResults(fromDate, toDate, patientNumber);
       default:
         throw new Error('Selecciona un test');
     }
@@ -207,15 +203,12 @@ export default class DatabaseService {
     });
   }
 
-  async getColorTrailsTestCSVResults(fromDate, toDate) {
+  async getColorTrailsTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createColorTrailsTable();
     const dbResults = await this._db.execute(`select * from ColorTrailsTest`);
     const header = 'patientNumber,professionalNumber,date,pathLength,validMovements,invalidMovements,timeElapsed\n';
     const data = dbResults.rows.
-    filter((row) => {
-      console.log('row', row)
-      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
-    }).
+    filter(this.rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber)).
     map((row) => {
       return `${row.patientNumber},${row.professionalNumber},${row.date},${row.pathLength},${row.validMovements},${row.invalidMovements},${row.timeElapsed}\n`
     }).join('');
@@ -241,15 +234,12 @@ export default class DatabaseService {
     });
   }
 
-  async getHanoiTestCSVResults(fromDate, toDate) {
+  async getHanoiTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createHanoiTestTable();
     const dbResults = await this._db.execute(`select * from HanoiTest`);
     const header = 'patientNumber,professionalNumber,date,validMovements,invalidMovements,timeElapsed\n';
     const data = dbResults.rows.
-    filter((row) => {
-      console.log('row', row)
-      return fromDate <= new Date(row.date) && toDate >= new Date(row.date);
-    }).
+    filter(this.rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber)).
     map((row) => {
       return `${row.patientNumber},${row.professionalNumber},${row.date},${row.pathLength},${row.validMovements},${row.invalidMovements},${row.timeElapsed}\n`
     }).join('');

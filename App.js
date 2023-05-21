@@ -1,7 +1,7 @@
 import { NavigationContainer, useIsFocused } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import PyramidAndPalmTreesTest from './screens/PyramidsAndPalmTreesTest/PyramidsAndPalmTreesScreen';
@@ -18,12 +18,11 @@ import * as Sharing from 'expo-sharing';
 import * as MediaLibrary from 'expo-media-library';
 
 import DropDownPicker from "react-native-dropdown-picker";
+DropDownPicker.setListMode('SCROLLVIEW');
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Provider} from 'react-redux';
-import { applyMiddleware } from 'redux';
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import thunk from 'redux-thunk';
 import userReducer from './redux/reducers/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import storage from 'redux-persist/lib/storage';
@@ -107,36 +106,37 @@ function TestsTab() {
       <Stack.Screen
         name='pyramidAndPalmTreesTest'
         component={PyramidAndPalmTreesTest}
-        options={{ title: TestsNames.pyramidAndPalmTreesTest }}
+        options={{ title: TestsNames.pyramidAndPalmTreesTest, headerShown: false }}
       />
       <Stack.Screen
         name='bellTest'
         component={BellTest}
-        options={{ title: TestsNames.bellTest }}
+        options={{ title: TestsNames.bellTest, headerShown: false }}
       />
       <Stack.Screen
         name='hanoiTest'
         component={HanoiTest}
-        options={{ title: TestsNames.hanoiTest }}
+        options={{ title: TestsNames.hanoiTest, headerShown: false }}
       />
       <Stack.Screen
         name='corsiTest'
         component={CorsiTest}
-        options={{ title: TestsNames.corsiTest }}
+        options={{ title: TestsNames.corsiTest, headerShown: false }}
       />
       <Stack.Screen
         name='cardTest'
         component={CardTest}
-        options={{ title: TestsNames.cardTest }}
+        options={{ title: TestsNames.cardTest, headerShown: false }}
       />
       <Stack.Screen
         name='colorTrailsTest'
         component={ColorTrailsTest}
-        options={{ title: TestsNames.colorTrailsTest }}
+        options={{ title: TestsNames.colorTrailsTest, headerShown: false }}
       />
     </Stack.Navigator>
   );
 }
+
 
 function DownloadsTab() {
   const isFocused = useIsFocused();
@@ -201,91 +201,104 @@ function DownloadsTab() {
     setToDateShow(true)
   }
 
+  const [patientNumberToFilter, setPatientNumberToFilter] = useState(null);
+
   return (
-    <View 
+    <ScrollView 
       style={{
         paddingHorizontal:75,
         paddingTop: 30
       }}>
-      <Text style={{
-        marginTop: 10,
-        alignSelf: 'flex-start',
-        color: colors.title,
-        fontSize: 30,
-        fontWeight: 'bold'
-      }}>Descargas</Text>
-      <View style={{
-        alignSelf: 'center',
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: colors.white,
-        width: 600,
-        paddingVertical: 40,
-        borderRadius: 20,
-        marginTop: 20
-      }}>
-        <Text>Seleccione la prueba</Text>
-        <DropDownPicker
-            containerStyle={{
-              marginTop: 15,
-              marginBottom:30,
-              width: 300,
-              zIndex: 999
-            }}
-            open={testsDropdownOpen}
-            value={selectedTestValue}
-            items={[
-              {label: 'Pirámides y palmeras', value: TestsNames.pyramidAndPalmTreesTest},
-              {label: 'Campanas', value: TestsNames.bellTest},
-              {label: 'Hanoi', value: TestsNames.hanoiTest},
-              {label: 'Corsi', value: TestsNames.corsiTest},
-              {label: 'Color Trails', value: TestsNames.colorTrailsTest},
-              {label: 'Cartas', value: TestsNames.cardTest},
-            ]}
-            setOpen={setTestsDropdownOpen}
-            setValue={setSelectedTestValue}
-            placeholder='Seleccione una prueba'
-        />
-        <Text style={{textDecorationLine:"underline", color:"blue"}} onPress={showFromDate}>Seleccionar fecha desde</Text>
-        <Text>{fromDate.toLocaleString("es-ES").split(',')[0]}</Text>
-        {fromDateShow && <DateTimePicker
-            style={{
-              height: 60
-            }}
-            maximumDate={new Date()}
-            value={fromDate}
-            mode={'date'}
-            onChange={onChangeFromDate}
-          />}
-        <Text style={{textDecorationLine:"underline", color:"blue"}} onPress={showToDate}>Seleccionar fecha hasta</Text>
-        <Text>{toDate.toLocaleString("es-ES").split(',')[0]}</Text>
-        {toDateShow && <DateTimePicker
-            style={{
-              height: 60,
-              marginBottom: 20
-            }}
-            maximumDate={new Date()}
-            value={toDate}
-            mode={'date'}
-            onChange={onChangeToDate}
-          />}
-        <AppButton 
-          style={{
-            width: 300,
-            marginTop: 20
-          }}
-          color={colors.button}
-          title="Descargar"
-          onPress={download}
+          <View style={{height:1000}}>
+          <Text style={{
+          marginTop: 10,
+          alignSelf: 'flex-start',
+          color: colors.title,
+          fontSize: 30,
+          fontWeight: 'bold'
+        }}>Descargas</Text>
+        <View style={{
+          alignSelf: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: colors.white,
+          width: 600,
+          paddingVertical: 40,
+          borderRadius: 20,
+          marginTop: 20,
+          marginBottom: 80
+        }}>
+          <Text>Seleccione la prueba</Text>
+          <DropDownPicker
+              dropDownContainerStyle={{minHeight: 250}}
+              containerStyle={{
+                marginTop: 15,
+                marginBottom:20,
+                width: 300,
+                zIndex: 999
+              }}
+              open={testsDropdownOpen}
+              value={selectedTestValue}
+              items={[
+                {label: 'Pirámides y palmeras', value: TestsNames.pyramidAndPalmTreesTest},
+                {label: 'Campanas', value: TestsNames.bellTest},
+                {label: 'Cartas', value: TestsNames.cardTest},
+                {label: 'Hanoi', value: TestsNames.hanoiTest},
+                {label: 'Corsi', value: TestsNames.corsiTest},
+                {label: 'Color Trails', value: TestsNames.colorTrailsTest},
+              ]}
+              setOpen={setTestsDropdownOpen}
+              setValue={setSelectedTestValue}
+              placeholder='Seleccione una prueba'
           />
-      </View>
-    </View>
+          <Text style={{textDecorationLine:"underline", color:"blue"}} onPress={showFromDate}>Seleccionar fecha desde</Text>
+          <Text>{fromDate.toLocaleString("es-ES").split(',')[0]}</Text>
+          {fromDateShow && <DateTimePicker
+              style={{
+                height: 60
+              }}
+              maximumDate={new Date()}
+              value={fromDate}
+              mode={'date'}
+              onChange={onChangeFromDate}
+            />}
+          <Text style={{textDecorationLine:"underline", color:"blue"}} onPress={showToDate}>Seleccionar fecha hasta</Text>
+          <Text>{toDate.toLocaleString("es-ES").split(',')[0]}</Text>
+          {toDateShow && <DateTimePicker
+              style={{
+                height: 60,
+                marginBottom: 20
+              }}
+              maximumDate={new Date()}
+              value={toDate}
+              mode={'date'}
+              onChange={onChangeToDate}
+            />}
+          <Text>Filtar por número de paciente (opcional)</Text>
+          <TextInput
+            value={patientNumberToFilter}
+            onChangeText={(patientNumber) => setPatientNumberToFilter(patientNumber)}
+            placeholder='Número de paciente'
+            keyboardType='numeric'
+          ></TextInput>
+          <AppButton 
+            style={{
+              width: 300,
+              marginTop: 20
+            }}
+            color={colors.button}
+            title="Descargar"
+            onPress={download}
+            />
+        </View>
+        </View>
+    </ScrollView>
   );
 
   async function download() {
     try {
       console.log("valores: -----> ",selectedTestValue, fromDate, toDate)
-      const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate);
+      const csvResult = await DatabaseService.instance().getCSVResults(selectedTestValue, fromDate, toDate, patientNumberToFilter);
       console.log("CSV ------- ",csvResult)
       console.log("#  #  # LLEGA HASTA ACA #  #  #")
       saveFile(csvResult, selectedTestValue).then((fileUri) => {

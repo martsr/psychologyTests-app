@@ -77,7 +77,7 @@ class HomeScreen extends React.Component{
           <View style={styles.identificationsContainer}>
             <Text style={styles.identificationsTitle}>Ingrese número de profesional y paciente</Text>
             <View style={styles.imageAndIdContainer}>
-              <Ionicons name="person" size={30} color="black" />
+              <FontAwesome name="stethoscope" size={30} color="black"/>
               <TextInput
                 style={styles.patientModal.input}
                 value={this.state.interviewerNumber}
@@ -90,7 +90,7 @@ class HomeScreen extends React.Component{
               <MaterialCommunityIcons name="pencil" size={25} color="black" />
             </View>
             <View style={styles.imageAndIdContainer}>
-              <FontAwesome name="stethoscope" size={30} color="black"/>
+              <Ionicons name="person" size={30} color="black" />
               <TextInput
                 style={styles.patientModal.input}
                 value={this.state.patientNumber}
