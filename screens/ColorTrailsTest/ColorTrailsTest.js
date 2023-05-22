@@ -89,6 +89,7 @@ class ColorTrailsTest extends React.Component {
         this.stopTimer.current.stop();
         this.setState({testVisible: false});
         this.setState({visibleFinished: true});
+        this.forceUpdate();
         results = [{
           "pathLength": N,
           "validMovements": this.validMovements,
