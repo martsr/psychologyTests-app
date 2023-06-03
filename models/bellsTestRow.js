@@ -5,6 +5,7 @@ export default class BellsTestRow {
       aDate, 
       bells,
       mistakes,
+      omisionMistakes,
       timeInMs,
       timeInS) {
         this.patientNumber = aPatientNumber;
@@ -12,6 +13,7 @@ export default class BellsTestRow {
         this.date = aDate; 
         this.bells = bells;
         this.mistakes = mistakes;
+        this.omisionMistakes = omisionMistakes;
         this.timeInMs = timeInMs;
         this.timeInS = timeInS;
       }
@@ -23,6 +25,7 @@ export default class BellsTestRow {
                   date,
                   bells,
                   mistakes,
+                  omisionMistakes,
                   timeInMs,
                   timeInS) 
                 values (
@@ -31,6 +34,7 @@ export default class BellsTestRow {
                   '${this.date.toISOString()}',
                   '${this.bells}',
                   '${this.mistakes}',
+                  '${this.omisionMistakes}',
                   ${this.timeInMs},
                   ${this.timeInS}
                 );`

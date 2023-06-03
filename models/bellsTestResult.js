@@ -14,6 +14,7 @@ export default class BellsTestResult extends TestResult {
             this.date, 
             resultItem.bells,
             resultItem.mistakes,
+            resultItem.omisionMistakes,
             resultItem.timeInMs,
             resultItem.timeInS
         );

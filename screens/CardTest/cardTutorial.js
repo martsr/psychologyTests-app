@@ -138,7 +138,7 @@ export default class CardTest extends React.Component {
                 <Text style={instructions.title}>Instrucciones</Text>
                 <Text style={instructions.text}>En este test usted deberá agrupar las cartas por forma o por color,
                     este criterio de agrupación cambiará en cada prueba. </Text>
-                <Text style={instructions.text}>Comencemos agrupando por {this.state.evaluation}.</Text>
+                <Text style={instructions.text}>Comencemos agrupando por forma.</Text>
             </View>
             <View style={instructions.buttonContainer}>
                 <AppButton title={'Cancelar'} textColor={colors.primary} style={styles.emptyButton} onPress={()=> this.props.navigation.navigate('HomeScreen')}></AppButton>
@@ -150,7 +150,7 @@ export default class CardTest extends React.Component {
                 <View style={instructions.popupModalContainer}>
                     {this.state.lastEvent == "catch" ?
                         <View style ={instructions.popupModalCorrectContainer}>
-                            <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada correcta {this.state.lastEvent}</Text>
+                            <Text style={[instructions.buttonText,{alignSelf:"center"}]}>Jugada correcta</Text>
                             <View style={{alignSelf:"center"}}>
                                 <FontAwesome name="check-circle" size={50} color={colors.homeButton} />
                             </View>
@@ -177,7 +177,7 @@ export default class CardTest extends React.Component {
             </Modal>
             <Modal transparent={true} visible={this.state.nextStepVisible}>
                 <View style={{flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center', backgroundColor:"#F6F3F5"}}>
-                    <Text style={instructions.text}>Excelente!! ahora vamos a agrupar por color</Text>
+                    <Text style={instructions.text}>Excelente, ahora vamos a agrupar por color</Text>
                     <TouchableOpacity style={[mainPage.button,{alignSelf:"center"}]} onPress={this.setNextStepModalInvisible}>
                         <FontAwesome name="thumbs-o-up" size={50} color={colors.white} />
                     </TouchableOpacity>

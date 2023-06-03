@@ -14,6 +14,7 @@ import ReturnHomeComponent from '../../components/ReturnHomeComponent'
 import { connect} from 'react-redux';
 import Timer from '../../components/Hanoi/Timer';
 import DatabaseService from '../../services/DatabaseService';
+import FinishTestComponent from '../../components/returnButton';
 
 import IconContainer from './IconContainer'
 import { set } from 'react-native-reanimated';
@@ -101,7 +102,7 @@ class BellTest extends React.Component {
     const results = this.state.results
     const bells = this.state.bells
     const mistakes = this.state.mistakes
-    results.push({user: user, interviewer: interviewer, bells: bells+1, mistakes: mistakes, timeInS: (time*0.001), timeInMs: time})
+    results.push({user: user, interviewer: interviewer, bells: bells+1, mistakes: mistakes, omisionMistakes:0, timeInS: (time*0.001), timeInMs: time})
     console.log("Bell")
     this.setState({bells: this.state.bells + 1,results: results})
     if(this.state.bells == 9){
@@ -120,7 +121,7 @@ class BellTest extends React.Component {
     const results = this.state.results
     const bells = this.state.bells
     const mistakes = this.state.mistakes
-    results.push({user: user, interviewer: interviewer, bells: bells, mistakes: mistakes+1, timeInS: (time*0.001), timeInMs: time})
+    results.push({user: user, interviewer: interviewer, bells: bells, mistakes: mistakes+1, omisionMistakes: 0,timeInS: (time*0.001), timeInMs: time})
     this.setState({mistakes: this.state.mistakes + 1,results: results})
     this.setState({mistakes: this.state.mistakes + 1})
     console.log("Mistake")
@@ -128,21 +129,38 @@ class BellTest extends React.Component {
   setInvisible =()=>{
     this.setState({showCross: true});
     setTimeout(() => {this.setState({showCross: false})}, 3000);
-    this.setState({listado: generateIcons(this.addEvent, this.state.height, this.state.width),timerVisible: true, startTime: new Date()})
+    this.setState({listado: generateIcons(this.addEvent, this.state.height, this.state.width),timerVisible: true , startTime: new Date()})
+  }
+
+  finishTest = () => {
+    const time =(new Date() - this.state.startTime -3000)
+    const user = this.props.user
+    const interviewer = this.props.interviewer
+    const results = this.state.results
+    const bells = this.state.bells
+    const mistakes = this.state.mistakes
+    results.push({user: user, interviewer: interviewer, bells: bells, mistakes: mistakes, omisionMistakes: 10-bells , timeInS: (time*0.001), timeInMs: time})
+    this.setState({visibleFinished: true})
+    DatabaseService.instance().saveBellsTestResult(this.state.patientNumber, this.state.interviewerNumber, this.state.results).then(() => {
+      console.log("guardado")
+    });
   }
 
     render(){
     return (
       <>
-      <BellTestInstructions callback={() => this.setInvisible()}></BellTestInstructions>
+      <BellTestInstructions navigation={this.props.navigation} callback={() => this.setInvisible()}></BellTestInstructions>
       {!this.state.showCross?
       <>
       <Modal animationType="slide" visible={this.state.visibleFinished}>
         <ReturnHomeComponent navigation={this.props.navigation}/>
       </Modal>
       <View style={{flex:1, flexDirection: "column"}}>
-        <View style={timer}>
-          {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
+        <View style={{flexDirection: "row", justifyContent: "space-evenly"}}>
+          <View style={timer}>
+            {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
+          </View>
+          {this.state.timerVisible? <FinishTestComponent onPress={()=> this.finishTest}/>: null}
         </View>
         <View style={{flex:1, flexDirection: "row",margin:10, flexWrap:"wrap",alignItems: "center",justifyContent: "center"}}>
             {this.state.listado}

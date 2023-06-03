@@ -102,6 +102,7 @@ export default class DatabaseService {
       date text,
       bells number,
       mistakes number,
+      omisionMistakes number,
       timeInMs number,
       timeInS real);`);
   }
@@ -154,11 +155,11 @@ export default class DatabaseService {
   async getBellsTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createBellsTable();
     const dbResults = await this._db.execute(`select * from bellsTest`);
-    const header = 'patientNumber,professionalNumber,date,bells,mistakes,timeInMs,timeInS\n';
+    const header = 'patientNumber,professionalNumber,date,bells,mistakes,omisionMistakes,timeInMs,timeInS\n';
     const data = dbResults.rows.
     filter(this.rowOfPatientNumberIfAnyAndBetweenDates(fromDate, toDate, patientNumber)).
     map((row) => {
-      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.bells},${row.mistakes},${row.timeInMs},${row.timeInS}\n`
+      return `${row.patientNumber},${row.professionalNumber},${row.date},${row.bells},${row.mistakes},${row.omisionMistakes},${row.timeInMs},${row.timeInS}\n`
     }).join('');
     return `${header}${data}`;
   }

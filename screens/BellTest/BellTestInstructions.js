@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Dimensions,
+  StyleSheet
 } from 'react-native';
 import { general,mainPage } from '../../config/styles/GeneralStyles';
 import { instructions } from '../../config/styles/BellTestStyles';
@@ -69,6 +70,7 @@ render(){
               <Text style={instructions.message}>{this.state.showMessage ? "*Seleccione la campana para continuar" : ""}</Text>
             </View>
             <View style={instructions.buttonContainer}>
+              <AppButton title={'Cancelar'} textColor={colors.primary} style={styles.emptyButton} onPress={()=> this.props.navigation.navigate('HomeScreen')}></AppButton>
               {this.state.testApproved ?
                 <AppButton style = {instructions.button} title={'Comenzar'} onPress={this.setInvisible}></AppButton>
               :
@@ -79,3 +81,15 @@ render(){
           );
         }
 };
+
+const styles = StyleSheet.create({
+  button: {
+      width: 200,
+      marginHorizontal: 20
+  },
+  emptyButton: {
+      width: 200,
+      backgroundColor: 'transparent',
+      marginHorizontal: 20
+  }
+});
