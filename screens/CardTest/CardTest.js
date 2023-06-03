@@ -18,6 +18,7 @@ import colors from '../../config/colors';
 import ReturnHomeComponent from '../../components/ReturnHomeComponent';
 import { connect} from 'react-redux';
 import DatabaseService from '../../services/DatabaseService';
+import FinishTestComponent from '../../components/returnButton';
 
 const mapStateToProps = (state) => {
   return {
@@ -30,7 +31,7 @@ function generateCards(){
     const iconsList=['rabbit','ship']
     const colors =["#a95906","#ffffff"]
     const cards=[]
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 40; index++) {
         const random = Math.floor(Math.random() * iconsList.length);
         const color = colors[Math.floor(Math.random() * 2)]
         cards.push({id:index, name: iconsList[random], color: color})
@@ -63,7 +64,8 @@ class CardTest extends React.Component {
         totalTime: "",
         patientNumber: this.props.user,
         interviewerNumber: this.props.interviewer,
-        showCross: false
+        showCross: false,
+        roundEvents:0
     }
 
     addEvent=(id,name,color,side)=>{
@@ -78,11 +80,18 @@ class CardTest extends React.Component {
         else{
             name == side ? this.addCatch() : this.addMistake()
         }
-        this.setState({responseModalVisible: true, idToDelete: id, totalEvents: this.state.totalEvents+1}) 
-        if(this.state.totalEvents == 10){
+        this.setState({responseModalVisible: true, idToDelete: id, totalEvents: this.state.totalEvents+1, roundEvents: this.state.roundEvents+1}) 
+        if(this.state.roundEvents == 9){
+            console.log("cambio criterio")
+            if(this.state.evaluation == "color"){
+                this.setState({evaluation: "shape", roundEvents: 0, mistakePersistence: 0, catchPersistence: 0})
+            }
+            else{
+                this.setState({evaluation: "color", roundEvents: 0, mistakePersistence: 0, catchPersistence: 0})
+            }
+        }
+        if(this.state.totalEvents == 40){
             console.log("terminado")
-            console.log(this.state.catches)
-            console.log(this.state.mistakes)
         }
         
     }
@@ -94,8 +103,8 @@ class CardTest extends React.Component {
         if(this.state.lastEvent == "catch") {
             catchPersistence = catchPersistence + 1
         }
-        results.push({user: this.props.user, interviewer: this.props.interviewer ,criterio: criterio, catchPersistence: catchPersistence, mistakePersistence: 0, round: this.state.totalEvents+1, event: "catch", timeInMs: time})
-        this.setState({catches: this.state.catches + 1, lastEvent: "catch", roundResults: results, catchPersistence: catchPersistence, mistakePersistence: 0})
+        results.push({user: this.props.user, interviewer: this.props.interviewer ,criterio: criterio, catchPersistence: catchPersistence, mistakePersistence:0 , round: this.state.totalEvents+1, event: "catch", timeInMs: time})
+        this.setState({catches: this.state.catches + 1, lastEvent: "catch", roundResults: results, catchPersistence: catchPersistence})
     }
     
     addMistake = () => {
@@ -103,7 +112,7 @@ class CardTest extends React.Component {
         var mistakePersistence = this.state.mistakePersistence
         var results = this.state.roundResults
         var criterio = this.state.evaluation
-        if(this.state.lastEvent == "mistake") {
+        if(this.state.roundEvents != 0) {
             mistakePersistence = mistakePersistence + 1
         }
         results.push({user: this.state.patientNumber, interviewer: this.state.interviewerNumber ,criterio: criterio, catchPersistence: 0, mistakePersistence: mistakePersistence, round: this.state.totalEvents+1, event: "mistake", timeInMs: time})
@@ -131,7 +140,7 @@ class CardTest extends React.Component {
             anotherColor = "#a95906"
         }
         this.setState({cards: result, rabbitColor: color, shipColor: anotherColor, responseModalVisible: false});
-        if(this.state.totalEvents==10){
+        if(this.state.totalEvents==40){
             var starTime = this.state.startTime
             var finishTime = new Date().getTime()
             this.setState({finishedGameModalVisible: true, finishTime: finishTime, totalTime: finishTime - starTime})
@@ -144,6 +153,13 @@ class CardTest extends React.Component {
                 console.log("guardado")
             });
         }
+    }
+
+    finishGame = () => {
+        DatabaseService.instance().saveCardsTestResult(this.state.patientNumber, this.state.interviewerNumber, this.state.roundResults).then(() => {
+            console.log("guardado")
+            this.setState({finishedGameModalVisible: true})
+        });
     }
 
     render(){
@@ -192,6 +208,9 @@ class CardTest extends React.Component {
                 }
             </View>
         </Modal>
+        <View style={{alignSelf: "center"}}>
+            <FinishTestComponent onPress={() => this.finishGame}/>
+        </View>
         <View style={CardsConfig.container}>
             {listado[0]}
             <View style={CardsConfig.optionsContainer}>
