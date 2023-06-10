@@ -209,7 +209,7 @@ class CardTest extends React.Component {
             </View>
         </Modal>
         <View style={{alignSelf: "center"}}>
-            <FinishTestComponent onPress={() => this.finishGame}/>
+            <FinishTestComponent onPress={this.finishGame}/>
         </View>
         <View style={CardsConfig.container}>
             {listado[0]}

@@ -15,7 +15,7 @@ export default class FinishTestComponent extends React.Component{
     render(){
         return(
             <>
-            <TouchableOpacity style={styles.button} onPress={this.props.onPress()}>
+            <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
                 <Text style={styles.text}>Terminar</Text>
             </TouchableOpacity>
             </>
@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
-      padding: 10,
-      width: 200,
+      padding: 5,
+      width: 75,
       borderColor: colors.primary,
       borderWidth: 2,
     },
     text: {
-      fontSize: 16,
+      fontSize: 10,
       color: colors.primary,
       textTransform: "uppercase",
       fontWeight: "500",

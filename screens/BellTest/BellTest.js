@@ -160,7 +160,7 @@ class BellTest extends React.Component {
           <View style={timer}>
             {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
           </View>
-          {this.state.timerVisible? <FinishTestComponent onPress={()=> this.finishTest}/>: null}
+          {this.state.timerVisible? <FinishTestComponent onPress={this.finishTest}/>: null}
         </View>
         <View style={{flex:1, flexDirection: "row",margin:10, flexWrap:"wrap",alignItems: "center",justifyContent: "center"}}>
             {this.state.listado}
