@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import reactDom from 'react-dom';
 import DatabaseService from '../../services/DatabaseService';
 import AppButton from '../../components/AppButton';
+import FinishTestComponent from '../../components/returnButton';
 
 const mapStateToProps = (state) => {
   return {
@@ -66,6 +67,18 @@ endTutorial = () => {
     instructionFourVisible: false,
     timerVisible: true});
 }
+finishTest = () => {
+  var time = this.stopTimer.current.state.time;
+  this.stopTimer.current.stop();
+  this.setState({visibleFinished: true});
+  results = [{
+    "validMovements": this.validMovements,
+    "invalidMovements": this.invalidMovements,
+    "timeElapsed": time
+  }]
+  DatabaseService.instance().saveHanoiTestResult(this.props.user, this.props.interviewer, results);
+}
+
 render(){
     const stopTimer = false;
     const sendElementToNewTower = (tower, width) => {
@@ -225,7 +238,14 @@ render(){
               <ReturnHomeComponent navigation={this.props.navigation}/>
             </Modal>
             <View style={styles.timer}>
-              {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
+              {this.state.timerVisible? 
+                <Timer ref={this.stopTimer}/>
+                : null}
+            </View>
+            <View style={styles.timer}>
+              {this.state.timerVisible? 
+                <FinishTestComponent onPress={()=> this.finishTest}/>
+                : null}
             </View>
             <View style={styles.main}>
               <View style={styles.stackedObjects}>   
