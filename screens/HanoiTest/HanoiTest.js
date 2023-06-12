@@ -239,12 +239,12 @@ render(){
             </Modal>
             <View style={styles.timer}>
               {this.state.timerVisible? 
-                <Timer ref={this.stopTimer}/>
+                <FinishTestComponent onPress={()=> this.finishTest}/>
                 : null}
             </View>
             <View style={styles.timer}>
               {this.state.timerVisible? 
-                <FinishTestComponent onPress={()=> this.finishTest}/>
+                <Timer ref={this.stopTimer}/>
                 : null}
             </View>
             <View style={styles.main}>
