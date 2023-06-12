@@ -13,9 +13,15 @@ export default class Circle extends React.Component {
         this.setState({pressed: !this.state.pressed});
         this.props.valuesFromCircle(this.props.color, this.props.number);
     }
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextState.pressed != this.state.pressed){
+            return true;
+        }
+        return false;
+    }
     render() {
         return (
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={this.state.pressed == false? 
                     style(this.props.color, 1, this.props.position).object: 
                     style(this.props.color, 0.5, this.props.position).object }
@@ -36,8 +42,8 @@ export const style = (color, opacity, position) => StyleSheet.create({
       alignItems: 'center',
       borderColor: 'black',
       borderWidth: 1,
-      opacity: opacity,
       position: 'absolute',
+      opacity: opacity,
       top: position.top,
       left: position.left
   },
