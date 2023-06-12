@@ -23,16 +23,16 @@ export default class Circle extends React.Component {
         return (
             <TouchableOpacity
                 style={this.state.pressed == false? 
-                    style(this.props.color, 1, this.props.position, this.props.number).object: 
-                    style(this.props.color, 0.5, this.props.position, this.props.number).object }
+                    style(this.props.color, 1, this.props.position).object: 
+                    style(this.props.color, 0.5, this.props.position).object }
                 onPress={()=> this.onPressButton()}
             >
-                <Text style={style(this.props.color, 1, this.props.position, this.props.number).number}>{this.props.number}</Text>
+                <Text style={style(this.props.color, 1, this.props.position).number}>{this.props.number}</Text>
             </TouchableOpacity>
         )
     }
 }
-export const style = (color, opacity, position, number) => StyleSheet.create({
+export const style = (color, opacity, position) => StyleSheet.create({
   object: {
       width: 50,
       height: 50,
