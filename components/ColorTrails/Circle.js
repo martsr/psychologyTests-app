@@ -42,8 +42,9 @@ export const style = (color, opacity, position, number) => StyleSheet.create({
       alignItems: 'center',
       borderColor: 'black',
       borderWidth: 1,
+      position: 'absolute',
       opacity: opacity,
-      top: position.top - 50*(number-1),
+      top: position.top,
       left: position.left
   },
   number: {

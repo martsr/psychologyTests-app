@@ -16,8 +16,9 @@ import {Dimensions } from "react-native";
 import DatabaseService from '../../services/DatabaseService';
 import Circle from '../../components/ColorTrails/Circle.js';
 import ReturnHomeComponent from '../../components/ReturnHomeComponent';
-import ColorTrailInstructions from './ColorTrailInstructions';
 import AppButton from '../../components/AppButton';
+import POSITIONS from './positions';
+import FinishTestComponent from '../../components/returnButton';
 
 const mapStateToProps = (state) => {
   return {
@@ -25,18 +26,18 @@ const mapStateToProps = (state) => {
     interviewer: state.userReducer.interviewer
   }
 }
-
+const TEST_POSITIONS = [{"left": 80, "top": 79}, {"left": 331, "top": 158}, {"left": 469, "top": 10}, {"left": 660, "top": 138}, {"left": 173, "top": 164}, {"left": 680, "top": 51}, {"left": 242, "top": 48}, {"left": 551, "top": 192}]
 const WIDTH = Math.round(Dimensions.get('window').width) - 100;
 const HEIGHT = Math.round(Dimensions.get('window').height) - 400;
 const OFFSET = 10;
 const N = 8;
+const TYPE = Math.floor(Math.random() * 3)
 const CIRCLES = Array.from({length: N}, (_, index) => index + 1);
 
 class ColorTrailsTest extends React.Component {
   constructor(props){
     super(props);
     this.stopTimer = React.createRef();
-    this.positions = [];
     this.lastValidColor = '';
     this.lastValidNumber = 0;
     this.validMovements = 0;
@@ -46,29 +47,25 @@ class ColorTrailsTest extends React.Component {
     this.state = {
       instructionOneVisible: true,
       instructionTwoVisible: false,
-      tutorial: false,
+      tutorial: true,
       visibleFinished: false,
       timerVisible: false,
       testVisible: false,
       trail: CIRCLES
     }
   }
-  createPosition(){
-    var left = Math.floor(Math.random() * (WIDTH-OFFSET) + OFFSET);
-    var top = Math.floor(Math.random() * (HEIGHT-OFFSET) + OFFSET);
-    while(this.isArroundOther(left, top))
-    {
-      var left = Math.floor(Math.random() * (WIDTH-OFFSET) + OFFSET);
-      var top = Math.floor(Math.random() * (HEIGHT-OFFSET) + OFFSET);
-    }
-    this.positions.push({"left": left, "top": top});
-    return {"left": left, "top": top}
-  }
-  isArroundOther(left, top) {
-    return this.positions.filter(value => 
-      left > value.left - 75 && left < value.left + 75 && 
-      top > value.top - 75 && top < value.top + 75)
-      .length != 0;
+  finishTest = () => {
+    var time = this.stopTimer.current.state.time;
+    this.stopTimer.current.stop();
+    this.positions = []
+    this.setState({testVisible: false, visibleFinished: true});
+    results = [{
+      "pathLength": N,
+      "validMovements": this.validMovements,
+      "invalidMovements": this.invalidMovements,
+      "timeElapsed": time
+    }]
+    DatabaseService.instance().saveColorTrailsTestResult(this.props.user, this.props.interviewer, results);
   }
   endTutorial = () => {
     this.setState({ 
@@ -95,9 +92,13 @@ class ColorTrailsTest extends React.Component {
         this.lastInvalidNumber = number;
       }
       if(this.validMovements == N){
-        console.log("Im about to modify the state");
+        this.lastValidColor = '';
+        this.lastValidNumber = 0;
+        this.validMovements = 0;
+        this.lastInvalidColor = '';
+        this.lastInvalidNumber = 0;
+        this.invalidMovements = 0;
         this.setState({instructionOneVisible: false, instructionTwoVisible: true, tutorial: false});
-        console.log("Done");
       }
     }
     else{
@@ -120,6 +121,7 @@ class ColorTrailsTest extends React.Component {
       if(this.validMovements == N){
         var time = this.stopTimer.current.state.time;
         this.stopTimer.current.stop();
+        this.positions = []
         this.setState({testVisible: false, visibleFinished: true});
         results = [{
           "pathLength": N,
@@ -135,21 +137,30 @@ class ColorTrailsTest extends React.Component {
     const valuesFromCircle = (color, number) => {
       this.updateMovements(color, number);
     }
-    redCircles = this.state.trail.map((num, index) => (
+    testCircles = TEST_POSITIONS.map((position, index) => (
       <Circle 
-        key={"r"+num+index} 
+        key={"r"+position.left} 
         color='#ee856f'
-        number={num}
-        position={this.createPosition()}
+        number={index+1}
+        position={position}
         valuesFromCircle={valuesFromCircle}
         />
     ));
-    yellowCircles = this.state.trail.map((num, index) => (
+    redCircles = POSITIONS[TYPE].slice(0,8).map((position, index) => (
       <Circle 
-        key={"y"+num+index} 
+        key={"r"+position.left} 
+        color='#ee856f'
+        number={index+1}
+        position={position}
+        valuesFromCircle={valuesFromCircle}
+        />
+    ));
+    yellowCircles = POSITIONS[TYPE].slice(8,16).map((position, index) => (
+      <Circle 
+        key={"y"+position.left} 
         color='#eeec0b'
-        number={num}
-        position={this.createPosition()}
+        number={index+1}
+        position={position}
         valuesFromCircle={valuesFromCircle}
         />
     ));
@@ -174,10 +185,15 @@ class ColorTrailsTest extends React.Component {
           <ReturnHomeComponent navigation={this.props.navigation}/>
         </Modal>
         <View style={styles.timer}>
+          <View style={{marginRight: 10}}>
           {this.state.timerVisible? <Timer ref={this.stopTimer}/>: null}
+          </View>
+          <View>
+          {this.state.timerVisible? <FinishTestComponent onPress={()=> this.finishTest}/>: null}
+          </View>
         </View>
         {this.state.tutorial? (<View>
-          {redCircles}
+          {testCircles}
         </View>): null}
         {this.state.testVisible? (<View>
           {redCircles}
@@ -195,6 +211,8 @@ const styles = StyleSheet.create({
   },
   timer: {
     marginTop: 15,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
     paddingTop: 5,
     paddingBottom: 5
