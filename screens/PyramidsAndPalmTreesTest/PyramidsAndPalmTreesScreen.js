@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Modal, View, StyleSheet } from "react-native";
 
 import Text from "../../components/Text";
 import colors from "../../config/colors";
@@ -9,6 +9,8 @@ import { TouchableOpacity } from "react-native";
 import { tests } from "../../components/pyramidAndPalmTrees/evaluationTests/Tests";
 import InstructionsModal from "../../components/InstructionsModal";
 import DatabaseService from '../../services/DatabaseService';
+import FinishTestComponent from "../../components/returnButton";
+import ReturnHomeComponent from "../../components/ReturnHomeComponent";
 
 function PyramidAndPalmTreesTest({navigation, route}) {
   const [testId, setTestId] = useState(0);
@@ -18,9 +20,21 @@ function PyramidAndPalmTreesTest({navigation, route}) {
   const [start, setStart] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
   const [testResults, setTestResults] = useState([])
-  // const [testCompleted, setTestCompleted] = useState(false)
+  const [testCompleted, setTestCompleted] = useState(false)
   //TODO: enable and disable back and next buttons
   const {patientNumber, interviewerNumber} = route.params;
+
+  /**
+   * handleNextButton setTestResults async effect
+   */
+  useEffect( ()=> {
+    if( (testResults.length) == tests.length ){ //check if you were in the last test
+      // setTestCompleted(true)
+      DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, testResults)
+        .then(() => {navigation.navigate('HomeScreen')})
+    } 
+    // testResults.forEach(test => console.log(testResults.indexOf(test)," (",tests.length - 1, "): " ,test))
+  }, [testResults])
 
   const showTest = ()=> {
     return(
@@ -32,20 +46,18 @@ function PyramidAndPalmTreesTest({navigation, route}) {
     )
   }
 
-  const handleNextButton = () =>{
+  const handleNextButton = () => {
     setNextButtonDisable(true)
     setTestResults([...testResults, tests[testId].results])
-    
-    testResults.forEach(test => console.log(testResults.indexOf(test)," (",tests.length - 1, "): " ,test))
-    
-    if( tests.length === (testId + 1) ){ //check if you are in the last test
-      // setTestCompleted(true)
-      DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, testResults)
-        .then(() => {navigation.navigate('HomeScreen')})
-    } else {
+    setStartTime(Date.now())
+    if( (testId + 1) < tests.length) { //check you are not in the last test
       setTestId(testId+1)
-      setStartTime(Date.now())
     }
+  }
+
+  const endTest = () => {
+    DatabaseService.instance().savePyramidsAndPalmtreesTestResult(patientNumber, interviewerNumber, testResults)
+      .then(() => {setTestCompleted(true)})
   }
 
   // const hadleBackButton = () =>{
@@ -78,10 +90,14 @@ function PyramidAndPalmTreesTest({navigation, route}) {
   
   return ( start
     ? <View style={styles.detailsContainer}>
+        <View style={styles.exitButtonContainer}>
+          <FinishTestComponent onPress={endTest}></FinishTestComponent>
+          {/* <TouchableOpacity style={styles.exitButton} onPress={endTest}><Text style={styles.exitButtonText}>save and exit</Text></TouchableOpacity> */}
+        </View>
           {showTest()}
-        {/* <Modal animationType="slide" visible={testCompleted}>
+        <Modal animationType="slide" visible={testCompleted}>
           <ReturnHomeComponent navigation={navigation}/>
-        </Modal> */}
+        </Modal>
         <View style={styles.navigation}>
           <View style={styles.buttonsContainer}>
             {/* {(testId > 0) && <TouchableOpacity style={styles.button} Text={"BACK"} onPress={hadleBackButton} disabled={backButtonDisable}>
@@ -96,7 +112,7 @@ function PyramidAndPalmTreesTest({navigation, route}) {
       </View>
     : <>
         <InstructionsModal
-          instructions={"En la parte superior de la pantalla aparecerá una figura. Deberá seleccionar una de las cuatro imagenes que aparecen en la parte inferior de la pantalla y que comparta alguna reclación"}
+          instructions={"En la parte superior de la pantalla aparecerá una figura. Deberá seleccionar una de las cuatro imágenes que aparecen en la parte inferior de la pantalla y que comparta alguna relación."}
           onPressAccept={ () => setShowInstructions(!showInstructions)}
           visible={showInstructions}
           onPressCancel={navigateToHomeScreen}
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    margin:15,
+    margin:12,
     fontWeight:"bold",
     flex: 1,
   },
@@ -139,6 +155,24 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 7,
+  },
+  exitButtonContainer: {
+    position: "absolute",
+    top: 15,
+    right: 15,
+    zIndex: 1,
+  },
+  exitButton: {
+    backgroundColor: colors.danger,
+    height: 25,
+    width: 70,
+    borderColor: colors.black,
+    borderRadius: 15,
+  },
+  exitButtonText: {
+    textAlign: "center",
+    margin: 5,
+    fontSize: 10,
   },
 });
 
