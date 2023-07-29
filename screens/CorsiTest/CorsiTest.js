@@ -5,6 +5,7 @@ import DatabaseService from '../../services/DatabaseService';
 import Box from './Box';
 import boxesData from './boxesData';
 import Instructions from './Instructions';
+import FinishTestComponent from '../../components/returnButton';
 
 export default function CorsiTest({navigation, route}) {
   const [boxes, setBoxes] = useState(boxesData);
@@ -40,9 +41,9 @@ export default function CorsiTest({navigation, route}) {
     }
   }, [results.length])
 
-  
   return start ? (
     <View style={{ width: '100%', height: '100%', backgroundColor: 'black', padding: 16 }}>
+      <FinishTestComponent onPress={endTest}></FinishTestComponent>
       <View style={{height: 16, width: 16,  backgroundColor: boxesDisabled? 'yellow' : 'green', marginLeft: 'auto', borderRadius: 16}}></View>
       <View style={{ flexGrow: 1, position: 'relative' }}>
         {
@@ -78,6 +79,12 @@ export default function CorsiTest({navigation, route}) {
       checkBoxOrderIsCorrect(order);
     }
   };
+
+  function endTest() {
+    DatabaseService.instance().saveCorsiTestResult(patientNumber, interviewerNumber, results).then(() => {
+      navigation.navigate('HomeScreen');
+    });
+  }
 
   function saveResult() {
     setResults((prevResults) => {
