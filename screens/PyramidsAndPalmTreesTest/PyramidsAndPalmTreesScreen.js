@@ -105,7 +105,7 @@ function PyramidAndPalmTreesTest({navigation, route}) {
               </TouchableOpacity>
             } */}
             {!nextButtonDisable? <TouchableOpacity style={styles.button} onPress={handleNextButton}>
-              <Text style={styles.buttonText}>{isTheLastTest()? 'FINISH':'NEXT'}</Text>
+              <Text style={styles.buttonText}>{isTheLastTest()? 'FINISH':'>>'}</Text>
             </TouchableOpacity> : null}
           </View>
         </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.button,
     height: 50,
-    width: 200,
+    width: 100,
     borderRadius: 15,
   },
   buttonText: {
