@@ -3,27 +3,30 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import colors from "../config/colors";
 
-function AppButton({
+function UploadButton({
   title,
+  disabled,
   onPress,
   textColor = colors.white,
   color = colors.primary,
   borderColor,
   style = {},
 }) {
-  return (
-    <TouchableOpacity
-      style={{
-        ...styles.button,
-        backgroundColor: color,
-        borderColor: borderColor ?? color,
-        ...style,
-      }}
-      onPress={onPress}
-    >
-      <Text style={{ ...styles.text, color: textColor }}>{title}</Text>
-    </TouchableOpacity>
-  );
+  if (!disabled)
+    return (
+      <TouchableOpacity
+        style={{
+          ...styles.button,
+          backgroundColor: color,
+          borderColor: borderColor ?? color,
+          ...style,
+        }}
+        onPress={onPress}
+      >
+        <Text style={{ ...styles.text, color: textColor }}>{title}</Text>
+      </TouchableOpacity>
+    );
+  return;
 }
 
 const styles = StyleSheet.create({
@@ -43,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppButton;
+export default UploadButton;
