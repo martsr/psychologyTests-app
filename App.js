@@ -42,6 +42,7 @@ import colors from "./config/colors";
 import AppButton from "./components/AppButton";
 import UploadButton from "./components/UploadButton";
 import TestsNames from "./Helpers/TestsNames";
+import RedcapService from "./services/RedcapService";
 
 const rootReducer = combineReducers({
   userReducer,
@@ -164,7 +165,6 @@ function TestsTab() {
 }
 
 function UploadToRedCap() {
-  console.log("Click Subir a Redcap");
   const [disabled, setDisabled] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
   const netInfo = useNetInfo();
@@ -232,7 +232,8 @@ function UploadToRedCap() {
 
   async function upload() {
     console.log("Aprete el boton de Subir");
-    //Insertar llamad a las funciones de agarrar info de BD
+    console.log(await RedcapService.instance().getHanoiTestResults());
+    //Insertar llamado a las funciones de agarrar info de BD
   }
 }
 
