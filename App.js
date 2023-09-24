@@ -232,7 +232,8 @@ function UploadToRedCap() {
 
   async function upload() {
     console.log("Aprete el boton de Subir");
-    console.log(await RedcapService.instance().getHanoiTestResults());
+    const upload = await RedcapService.instance().getHanoiTestResults();
+    console.log(await upload);
     //Insertar llamado a las funciones de agarrar info de BD
   }
 }
