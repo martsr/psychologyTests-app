@@ -13,7 +13,6 @@ import axios from "axios";
 //TODO
 const API_BASE_URL = "http://18.116.149.64:80/redcap/api/";
 //const API_TOKEN_BELLS = "4A91660FE559974433C0DB45306179C0";
-const API_TOKEN_HANOI = "9F5789B932F1F065CBB89BF658163E4";
 //TODO crear funcion que va a ser llamada cuando se haga click en upload to redcap.
 //Esta funcion va a tener que llamar a funciones nuevas (una por cada test) creadas cuyo objetivo es traer todo desde las BD local
 //Ver a futuro el tema de eliminacion de registros en BD, si no se van a pisar en redcap
@@ -37,7 +36,7 @@ export default class RedcapService {
 
   async hanoiToRedcap(data) {
     console.log("Entre a create JSON");
-    const info = data.rows;
+    const info = JSON.stringify(data.rows);
     console.log(info);
 
     const formData = new FormData();
@@ -51,12 +50,18 @@ export default class RedcapService {
     formData.append("data", info);
     formData.append("returnContent", "count");
     formData.append("returnFormat", "json");
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://18.116.149.64:80/redcap/api/",
+        data: formData,
+      });
+      console.log(response.status);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error:", error.response.data.error);
+    }
 
-    const response = await axios({
-      method: "post",
-      url: API_BASE_URL,
-      data: formData,
-    });
     console.log(response.status);
     if (response.status === 200) {
       console.log("Request was successfull");
