@@ -86,7 +86,7 @@ export default function App() {
                 ),
               }}
             ></Tab.Screen>
-            <Tab.Screen
+            {/* <Tab.Screen
               name="Descargas"
               component={DownloadsTab}
               options={{
@@ -98,7 +98,7 @@ export default function App() {
                   />
                 ),
               }}
-            ></Tab.Screen>
+            ></Tab.Screen> */}
             <Tab.Screen
               name="Subir a RedCap"
               component={UploadToRedCap}

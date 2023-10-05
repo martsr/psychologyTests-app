@@ -1,27 +1,28 @@
 export default class HanoiTestRow {
-    constructor(
-        aPatientNumber,
-        aProfessionalNumber,
-        aDate,
-        validMovements,
-        invalidMovements,
-        timeElapsed,) {
-            this.patientNumber = aPatientNumber;
-            this.professionalNumber = aProfessionalNumber;
-            this.date = aDate;
-            this.validMovements = validMovements;
-            this.invalidMovements = invalidMovements;
-            this.timeElapsed = timeElapsed;
-        }
+  constructor(
+    aPatientNumber,
+    aProfessionalNumber,
+    aDate,
+    validMovements,
+    invalidMovements,
+    timeElapsed
+  ) {
+    this.patientNumber = aPatientNumber;
+    this.professionalNumber = aProfessionalNumber;
+    this.date = aDate;
+    this.validMovements = validMovements;
+    this.invalidMovements = invalidMovements;
+    this.timeElapsed = timeElapsed;
+  }
 
-        sqlInsertText() {
-            return `insert into HanoiTest(
-                        patientNumber,
-                        professionalNumber,
+  sqlInsertText() {
+    return `insert into HanoiTest(
+                        patient_number,
+                        professional_number,
                         date,
-                        validMovements,
-                        invalidMovements,
-                        timeElapsed)
+                        valid_movements,
+                        invalid_movements,
+                        time_elapsed)
                     values (
                         '${this.patientNumber}',
                         '${this.professionalNumber}',
@@ -29,6 +30,6 @@ export default class HanoiTestRow {
                         ${this.validMovements},
                         ${this.invalidMovements},
                         ${this.timeElapsed}
-                    );`
-        }
+                    );`;
+  }
 }

@@ -302,12 +302,12 @@ export default class DatabaseService {
   async createHanoiTestTable() {
     await this._db.execute(`create table if not exists HanoiTest (
       id integer primary key not null, 
-      patientNumber text,
-      professionalNumber text,
+      patient_number text,
+      professional_number text,
       date text,
-      validMovements number,
-      invalidMovements number,
-      timeElapsed number);`);
+      valid_movements number,
+      invalid_movements number,
+      time_elapsed number);`);
   }
 
   async saveHanoiTestResult(patientNumber, professionalNumber, hanoiResult) {
@@ -327,7 +327,7 @@ export default class DatabaseService {
     await this.createHanoiTestTable();
     const dbResults = await this._db.execute(`select * from HanoiTest`);
     const header =
-      "patientNumber,professionalNumber,date,validMovements,invalidMovements,timeElapsed\n";
+      "patient_number,professional_number,date,valid_movements,invalid_movements,time_elapsed\n";
     const data = dbResults.rows
       .filter(
         this.rowOfPatientNumberIfAnyAndBetweenDates(
