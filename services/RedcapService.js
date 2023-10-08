@@ -1,14 +1,8 @@
-import CorsiTestResult from "../models/CorsiTestResult";
-import TestsNames from "../Helpers/TestsNames";
-import CardsTestResult from "../models/CardsTestResult";
-import BellsTestResult from "../models/bellsTestResult";
-import ColorTrailsTestResult from "../models/ColorTrailsTestResult";
-import HanoiTestResult from "../models/HanoiTestResult";
+import React from "react";
+import { Modal } from "react-native";
 import { Database } from "./Database";
-import * as Promise from "bluebird";
-import PyramidAndPalmTreesTestResult from "../models/PyramidAndPalmtreesTestResult";
-import uuid from "react-native-uuid";
 import axios from "axios";
+import SuccessfulUpdate from "../components/SuccessfulUpdate";
 
 //TODO
 const API_BASE_URL = "http://18.116.149.64:80/redcap/api/";
@@ -35,10 +29,13 @@ export default class RedcapService {
   }
 
   async hanoiToRedcap(data) {
-    console.log("Entre a create JSON");
+    // const dataObj = data.rows.map((record) => {
+    //   const { date, professional_number, patient_number } = record;
+    //   record.id =
+    //     date.slice(0, 10) + "-" + professional_number + "-" + patient_number;
+    //   return record;
+    // });
     const info = JSON.stringify(data.rows);
-    console.log(info);
-
     const formData = new FormData();
     formData.append("token", "64A9273BE8E10D638F17EC262D604675");
     formData.append("content", "record");
@@ -56,68 +53,46 @@ export default class RedcapService {
         url: "http://18.116.149.64:80/redcap/api/",
         data: formData,
       });
-      console.log(response.status);
-      console.log(response.data);
+
+      if (response.status === 200) {
+        console.log("Request was successfull, with status 200");
+        console.log("Response Data: ", response.data);
+        //await this._db.execute(`delete from HanoiTest`);
+        return true;
+      } else {
+        console.error("Request failed with status code:", response.status);
+        console.error("Response Data:", response.data);
+        console.log("Message: ", response.data.error);
+        return false;
+      }
     } catch (error) {
       console.error("Error:", error.response.data.error);
     }
-
-    console.log(response.status);
-    if (response.status === 200) {
-      console.log("Request was successfull");
-      console.log("Response Data: ", response.data);
-      return true;
-    } else {
-      console.error("Request failed with status code:", response.status);
-      console.error("Response Data:", response.data);
-      console.log("Message: ", response.data.error);
-      return false;
-    }
   }
 
-  async getHanoiTestResults() {
+  async getTestResults() {
     try {
       //esto tiene los resultados de la ejecucion de query
       //aca se tiene que validar si esta vacia la query o no , si lo esta que no llame a redcap es al pedo.if results.row ==[], entonces que no lo suba
       const results = await this._db.execute(`select * from HanoiTest`);
-      //llamo a funcion que crea un json y le paso como paramentro results
-      //este lo que va a hacer es iterar sobre cada fila y que devuelva un objeto llave valor en el orden que yo quiero
-      //despues lo transforo en json, porque como es un .map itera y devuelve un array
-      //una vez con el json hacer otra funcion que llame a la api e inserte los valores
-      //depende del resultado ver que hacer
-      //asegurarse si o si que no haya ningun campo undefined, si el campo es undefined entonces ver que valor poner
-      //esto deberia estar afuera, conviene crear otra funcion que se encargue de hacer el llamado de todas las funciones correspondientes
-      //renombrar funcion como upload to redcap o algo asi
+      if (results.rows.length == 0)
+        return "Hanoi Test table is empty no tests were uploaded to DB";
+      else {
+        //console.log("RESULTS: ", results.rows);
+        //llamo a funcion que crea un json y le paso como paramentro results
+        //este lo que va a hacer es iterar sobre cada fila y que devuelva un objeto llave valor en el orden que yo quiero
+        //despues lo transforo en json, porque como es un .map itera y devuelve un array
+        //una vez con el json hacer otra funcion que llame a la api e inserte los valores
+        //depende del resultado ver que hacer
+        //asegurarse si o si que no haya ningun campo undefined, si el campo es undefined entonces ver que valor poner
+        //esto deberia estar afuera, conviene crear otra funcion que se encargue de hacer el llamado de todas las funciones correspondientes
+        //renombrar funcion como upload to redcap o algo asi
 
-      const hanoi_result = await this.hanoiToRedcap(results);
-      console.log(hanoi_result);
-      // const hanoi_results = results.rows.map((record) => {
-      //   console.log(record)
-      //   if (record != undefined) {
-      //     const {
-      //       patientNumber,
-      //       professionalNumber,
-      //       date,
-      //       validMovements,
-      //       invalidMovements,
-      //       timeElapsed,
-      //     } = record;
-      //     const id = uuid.v4();
-
-      //     return {
-      //       id,
-      //       patientNumber,
-      //       professionalNumber,
-      //       date,
-      //       validMovements,
-      //       invalidMovements,
-      //       timeElapsed,
-      //     };
-      //   }
-      // });
-      console.log("Esto funciona");
-      // console.log(hanoi_results);
-      return hanoi_json;
+        const hanoi_result = await this.hanoiToRedcap(results);
+        if (hanoi_result) return true;
+        // console.log(hanoi_results);
+        //return hanoi_json;
+      }
     } catch (e) {
       console.log(e);
     }

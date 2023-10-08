@@ -1,7 +1,7 @@
 import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Text, View, TextInput, ScrollView } from "react-native";
+import { Text, View, TextInput, ScrollView, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -232,9 +232,11 @@ function UploadToRedCap() {
 
   async function upload() {
     console.log("Aprete el boton de Subir");
-    const upload = await RedcapService.instance().getHanoiTestResults();
-    console.log(await upload);
-    //Insertar llamado a las funciones de agarrar info de BD
+    //llamo a funcion que sube a redcap
+    const upload = await RedcapService.instance().getTestResults();
+    if (upload) {
+      Alert.alert("Datos subidos de manera exitosa");
+    }
   }
 }
 
