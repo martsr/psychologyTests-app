@@ -12,7 +12,7 @@ web-build/
 .idea
 .yarn
 .yarnrc.yml
-
+.env
 # macOS
 .DS_Store
 

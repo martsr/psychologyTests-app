@@ -56,27 +56,11 @@ class HomeScreen extends React.Component {
         patientNumber,
         interviewerNumber,
       });
-    Alert.alert("Por favor ingresar número de profesional y paciente");
-    //this.navigation.navigate(testName);
+    else {
+      Alert.alert("Por favor ingresar número de profesional y paciente");
+    }
   };
-  /*cancel=()=>{
-    setPatientNumber(null);
-    setInterviewerNumber(null);
-  }*/
 
-  /*openTest=()=>{
-    if (!patientNumber) {
-      setPatientError('Por favor ingresa un número de paciente.');
-      return;
-    }
-    if (!intrviewerNumber) {
-      setInterviewerError('Por favor ingresa un número de entrevistador.');
-      return;
-    }
-    /*setModalVisible(!modalVisible);
-    navigation.navigate(selectedTest, {patientNumber});*/
-  //}
-  //}
   render() {
     return (
       <SafeAreaView>
@@ -110,7 +94,6 @@ class HomeScreen extends React.Component {
                 }
                 placeholder="Número de profesional"
                 keyboardType="numeric"
-                //disabled = 'true'
               ></TextInput>
               <Text>{this.state.patientError}</Text>
               <MaterialCommunityIcons name="pencil" size={25} color="black" />
@@ -125,7 +108,6 @@ class HomeScreen extends React.Component {
                 }
                 placeholder="Número de paciente"
                 keyboardType="numeric"
-                //disabled = 'true'
               ></TextInput>
               <Text>{this.state.interviewerError}</Text>
               <MaterialCommunityIcons name="pencil" size={25} color="black" />

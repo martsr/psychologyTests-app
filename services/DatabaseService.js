@@ -82,60 +82,60 @@ export default class DatabaseService {
   async createCorsiTable() {
     await this._db.execute(`create table if not exists corsiTest (
       id integer primary key not null, 
-      patientNumber text,
-      professionalNumber text,
+      patient_number text,
+      professional_number text,
       date text,
       inverted text,
-      amountOfBoxes number,
+      amount_of_boxes number,
       correct text,
-      timeInMs number);`);
+      time_in_ms number);`);
   }
 
   async createPyramidsAndPalmtreesTable() {
     await this._db
       .execute(`create table if not exists pyramidsAndPalmtreesTest (
       id integer primary key not null, 
-      patientNumber text,
-      professionalNumber text,
+      patient_number text,
+      professional_number text,
       date text,
-      testName text,
-      timeSpend number,
-      isCorrect text,
-      isAnimated text);`);
+      test_name text,
+      time_spend number,
+      is_correct text,
+      is_animated text);`);
   }
 
   async createCardsTable() {
     await this._db.execute(`create table if not exists cardsTest (
       id integer primary key not null, 
-      patientNumber text,
-      professionalNumber text,
+      patient_number text,
+      professional_number text,
       date text,
       criteria text,
-      catchPersistence number,
-      mistakePersistence number,
+      catch_persistence number,
+      mistake_persistence number,
       round number,
       event text,
-      timeInMs number);`);
+      time_in_ms number);`);
   }
 
   async createBellsTable() {
     await this._db.execute(`create table if not exists bellsTest  (
       id integer primary key not null, 
-      patientNumber text,
-      professionalNumber text,
+      patient_number text,
+      professional_number text,
       date text,
       bells number,
       mistakes number,
-      omisionMistakes number,
-      timeInMs number,
-      timeInS real);`);
+      omision_mistakes number,
+      time_in_ms number,
+      time_in_s real);`);
   }
 
   async getCorsiTestCSVResults(fromDate, toDate, patientNumber) {
     await this.createCorsiTable();
     const dbResults = await this._db.execute(`select * from corsiTest`);
     const header =
-      "patientNumber,professionalNumber,date,inverted,amountOfBoxes,correct,timeInMs\n";
+      "patient_number,professional_number,date,inverted,amount_of_boxes,correct,time_in_ms\n";
     const data = dbResults.rows
       .filter(
         this.rowOfPatientNumberIfAnyAndBetweenDates(
@@ -168,7 +168,7 @@ export default class DatabaseService {
       `select * from pyramidsAndPalmtreesTest`
     );
     const header =
-      "patientNumber,professionalNumber,date,testName,timeSpend,isCorrect,isAnimated\n";
+      "patient_number,professional_number,date,test_name,time_spend,is_correct,is_animated\n";
     const data = dbResults.rows
       .filter(
         this.rowOfPatientNumberIfAnyAndBetweenDates(
@@ -190,7 +190,7 @@ export default class DatabaseService {
     await this.createCardsTable();
     const dbResults = await this._db.execute(`select * from cardsTest`);
     const header =
-      "patientNumber,professionalNumber,date,criteria,catchPersistence,mistakePersistence,round,event,timeInMs\n";
+      "patient_number,professional_number,date,criteria,catch_persistence,mistake_persistence,round,event,time_in_ms\n";
     const data = dbResults.rows
       .filter(
         this.rowOfPatientNumberIfAnyAndBetweenDates(
@@ -210,7 +210,7 @@ export default class DatabaseService {
     await this.createBellsTable();
     const dbResults = await this._db.execute(`select * from bellsTest`);
     const header =
-      "patientNumber,professionalNumber,date,bells,mistakes,omisionMistakes,timeInMs,timeInS\n";
+      "patient_number,professional_number,date,bells,mistakes,omision_mistakes,time_in_ms,time_in_s\n";
     const data = dbResults.rows
       .filter(
         this.rowOfPatientNumberIfAnyAndBetweenDates(
@@ -253,13 +253,13 @@ export default class DatabaseService {
   async createColorTrailsTable() {
     await this._db.execute(`create table if not exists ColorTrailsTest (
       id integer primary key not null, 
-      patientNumber text,
-      professionalNumber text,
+      patient_number text,
+      professional_number text,
       date text,
-      pathLength number,
-      validMovements number,
-      invalidMovements text,
-      timeElapsed number);`);
+      path_length number,
+      valid_movements number,
+      invalid_movements text,
+      time_elapsed number);`);
   }
 
   async saveColorTrailsTestResult(
@@ -283,7 +283,7 @@ export default class DatabaseService {
     await this.createColorTrailsTable();
     const dbResults = await this._db.execute(`select * from ColorTrailsTest`);
     const header =
-      "patientNumber,professionalNumber,date,pathLength,validMovements,invalidMovements,timeElapsed\n";
+      "patient_number,professional_number,date,path_length,valid_movements,invalid_movements,time_elapsed\n";
     const data = dbResults.rows
       .filter(
         this.rowOfPatientNumberIfAnyAndBetweenDates(

@@ -1,30 +1,31 @@
 export default class CorsiTestRow {
   constructor(
-    aPatientNumber, 
-    aProfessionalNumber, 
-    aDate, 
-    inverted, 
+    aPatientNumber,
+    aProfessionalNumber,
+    aDate,
+    inverted,
     anAmountOfBoxes,
     correct,
-    someTimeInMs,) {
-      this.patientNumber = aPatientNumber;
-      this.professionalNumber = aProfessionalNumber; 
-      this.date = aDate; 
-      this.inverted = inverted; 
-      this.amountOfBoxes = anAmountOfBoxes;
-      this.correct = correct;
-      this.timeInMs = someTimeInMs;
-    }
+    someTimeInMs
+  ) {
+    this.patientNumber = aPatientNumber;
+    this.professionalNumber = aProfessionalNumber;
+    this.date = aDate;
+    this.inverted = inverted;
+    this.amountOfBoxes = anAmountOfBoxes;
+    this.correct = correct;
+    this.timeInMs = someTimeInMs;
+  }
 
-    sqlInsertText() {
-      return `insert into corsiTest (
-                patientNumber,
-                professionalNumber,
+  sqlInsertText() {
+    return `insert into corsiTest (
+                patient_number,
+                professional_number,
                 date,
                 inverted,
-                amountOfBoxes,
+                amount_of_boxes,
                 correct,
-                timeInMs) 
+                time_in_ms) 
               values (
                 '${this.patientNumber}',
                 '${this.professionalNumber}',
@@ -33,6 +34,6 @@ export default class CorsiTestRow {
                 ${this.amountOfBoxes},
                 '${this.correct}',
                 ${this.timeInMs}
-              );`
-    }
+              );`;
+  }
 }

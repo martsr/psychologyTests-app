@@ -1,17 +1,5 @@
-import React from "react";
-import { Modal } from "react-native";
 import { Database } from "./Database";
 import axios from "axios";
-import SuccessfulUpdate from "../components/SuccessfulUpdate";
-
-//TODO
-const API_BASE_URL = "http://18.116.149.64:80/redcap/api/";
-//const API_TOKEN_BELLS = "4A91660FE559974433C0DB45306179C0";
-//TODO crear funcion que va a ser llamada cuando se haga click en upload to redcap.
-//Esta funcion va a tener que llamar a funciones nuevas (una por cada test) creadas cuyo objetivo es traer todo desde las BD local
-//Ver a futuro el tema de eliminacion de registros en BD, si no se van a pisar en redcap
-//Ver como llegan los datos y como hacer para formatearlos en JSON
-//Tema ID hacer un random ( si no se va a tener que ir a redcap y extraer data para ver el ultimo ID, no tiene sentido)<--- Esto especificarlo en el informe
 
 export default class RedcapService {
   static instance() {
@@ -24,26 +12,21 @@ export default class RedcapService {
   }
 
   constructor() {
-    this.corsiResults = []; //Porque corsi results tiene que estar aca ?
+    this.corsiResults = [];
     this._db = new Database("test");
   }
-
-  async hanoiToRedcap(data) {
-    // const dataObj = data.rows.map((record) => {
-    //   const { date, professional_number, patient_number } = record;
-    //   record.id =
-    //     date.slice(0, 10) + "-" + professional_number + "-" + patient_number;
-    //   return record;
-    // });
-    const info = JSON.stringify(data.rows);
+  async uploadResults(dataObj, token) {
+    console.log("Entre a Upload: ", dataObj, token);
+    const info = JSON.stringify(dataObj);
+    console.log(info);
     const formData = new FormData();
-    formData.append("token", "64A9273BE8E10D638F17EC262D604675");
+    formData.append("token", token);
     formData.append("content", "record");
     formData.append("action", "import");
     formData.append("format", "json");
     formData.append("type", "flat");
     formData.append("overwriteBehavior", "normal");
-    formData.append("forceAutoNumber", "true");
+    formData.append("forceAutoNumber", "false");
     formData.append("data", info);
     formData.append("returnContent", "count");
     formData.append("returnFormat", "json");
@@ -57,42 +40,221 @@ export default class RedcapService {
       if (response.status === 200) {
         console.log("Request was successfull, with status 200");
         console.log("Response Data: ", response.data);
-        //await this._db.execute(`delete from HanoiTest`);
         return true;
       } else {
-        console.error("Request failed with status code:", response.status);
-        console.error("Response Data:", response.data);
-        console.log("Message: ", response.data.error);
-        return false;
+        return 400;
       }
     } catch (error) {
+      console.error("Request failed with status code:", response.status);
+      console.error("Response Data:", response.data);
+      console.log("Message: ", response.data.error);
       console.error("Error:", error.response.data.error);
     }
   }
 
+  async hanoiToRedcap(data) {
+    token = "64A9273BE8E10D638F17EC262D604675";
+    const dataObj = data.rows.map((record) => {
+      const { date, professional_number, patient_number } = record;
+      newId =
+        date.slice(0, 10) + "-" + professional_number + "-" + patient_number;
+      const isDuplicate = data.rows.some(
+        (otherRecord) => otherRecord.id === newId
+      );
+      if (isDuplicate) {
+        this._db.execute(`delete from HanoiTest where id=?`, [record.id]);
+        return;
+      }
+      record.id = newId;
+      return record;
+    });
+
+    return await this.uploadResults(dataObj, token);
+  }
+
+  async bellsToRedcap(data) {
+    token = "2E539EE9F446B883979F4138C3C2715B";
+    const dataObj = data.rows.map((record) => {
+      const { date, professional_number, patient_number, bells } = record;
+      newId =
+        date.slice(0, 10) +
+        "-" +
+        professional_number +
+        "-" +
+        patient_number +
+        "-" +
+        bells;
+      const isDuplicate = data.rows.some(
+        (otherRecord) => otherRecord.id === newId
+      );
+      if (isDuplicate) {
+        this._db.execute(`delete from bellsTest where id=?`, [record.id]);
+        return;
+      }
+      record.id = newId;
+      return record;
+    });
+
+    return await this.uploadResults(dataObj, token);
+  }
+
+  async corsiToRedcap(data) {
+    token = "3842E0C5FE25BFD62527A917D59F2DCC";
+    const dataObj = data.rows.map((record) => {
+      const { date, professional_number, patient_number, id } = record;
+      newId =
+        date.slice(0, 10) +
+        "-" +
+        professional_number +
+        "-" +
+        patient_number +
+        "-" +
+        id;
+      const isDuplicate = data.rows.some(
+        (otherRecord) => otherRecord.id === newId
+      );
+      if (isDuplicate) {
+        this._db.execute(`delete from corsiTest where id=?`, [record.id]);
+        return;
+      }
+      record.id = newId;
+      return record;
+    });
+
+    return await this.uploadResults(dataObj, token);
+  }
+
+  async cardsToRedcap(data) {
+    token = "37408C840BED324243CE3089EDD8B0AF";
+    console.log(data.rows);
+    const dataObj = data.rows.map((record) => {
+      const { date, professional_number, patient_number, round } = record;
+      newId =
+        date.slice(0, 10) +
+        "-" +
+        professional_number +
+        "-" +
+        patient_number +
+        "-" +
+        round;
+      const isDuplicate = data.rows.some(
+        (otherRecord) => otherRecord.id === newId
+      );
+      if (isDuplicate) {
+        this._db.execute(`delete from cardsTest where id=?`, [record.id]);
+        return;
+      }
+      record.id = newId;
+      return record;
+    });
+
+    return await this.uploadResults(dataObj, token);
+  }
+
+  async colorTrailsToRedcap(data) {
+    token = "28CACD4CEF1F5CC19A60D7677C6C0640";
+    const dataObj = data.rows.map((record) => {
+      const { date, professional_number, patient_number } = record;
+      newId =
+        date.slice(0, 10) + "-" + professional_number + "-" + patient_number;
+      const isDuplicate = data.rows.some(
+        (otherRecord) => otherRecord.id === newId
+      );
+      if (isDuplicate) {
+        this._db.execute(`delete from ColorTrailsTest where id=?`, [record.id]);
+        return;
+      }
+      record.id = newId;
+      return record;
+    });
+
+    return await this.uploadResults(dataObj, token);
+  }
+
+  async pyramidsToRedcap(data) {
+    token = "6299C4D500781B0EF86B5885CE805E36";
+    const dataObj = data.rows.map((record) => {
+      const { date, professional_number, patient_number, test_name } = record;
+      newId =
+        date.slice(0, 10) +
+        "-" +
+        professional_number +
+        "-" +
+        patient_number +
+        "-" +
+        test_name;
+      const isDuplicate = data.rows.some(
+        (otherRecord) => otherRecord.id === newId
+      );
+      if (isDuplicate) {
+        this._db.execute(`delete from pyramidsAndPalmtreesTest where id=?`, [
+          record.id,
+        ]);
+        return;
+      }
+      record.id = newId;
+      return record;
+    });
+
+    return await this.uploadResults(dataObj, token);
+  }
+
   async getTestResults() {
     try {
-      //esto tiene los resultados de la ejecucion de query
-      //aca se tiene que validar si esta vacia la query o no , si lo esta que no llame a redcap es al pedo.if results.row ==[], entonces que no lo suba
-      const results = await this._db.execute(`select * from HanoiTest`);
-      if (results.rows.length == 0)
-        return "Hanoi Test table is empty no tests were uploaded to DB";
-      else {
-        //console.log("RESULTS: ", results.rows);
-        //llamo a funcion que crea un json y le paso como paramentro results
-        //este lo que va a hacer es iterar sobre cada fila y que devuelva un objeto llave valor en el orden que yo quiero
-        //despues lo transforo en json, porque como es un .map itera y devuelve un array
-        //una vez con el json hacer otra funcion que llame a la api e inserte los valores
-        //depende del resultado ver que hacer
-        //asegurarse si o si que no haya ningun campo undefined, si el campo es undefined entonces ver que valor poner
-        //esto deberia estar afuera, conviene crear otra funcion que se encargue de hacer el llamado de todas las funciones correspondientes
-        //renombrar funcion como upload to redcap o algo asi
+      const hanoiData = await this._db.execute(`select * from HanoiTest`);
+      const bellsData = await this._db.execute(`select * from bellsTest`);
+      const corsiData = await this._db.execute(`select * from corsiTest`);
+      const cardsData = await this._db.execute(`select * from cardsTest`);
+      const colorTrailsData = await this._db.execute(
+        `select * from ColorTrailsTest`
+      );
+      const pyramidsData = await this._db.execute(
+        `select * from pyramidsAndPalmtreesTest`
+      );
 
-        const hanoi_result = await this.hanoiToRedcap(results);
-        if (hanoi_result) return true;
-        // console.log(hanoi_results);
-        //return hanoi_json;
+      if (
+        hanoiData.rows.length == 0 &&
+        bellsData.rows.length == 0 &&
+        corsiData.rows.length == 0 &&
+        cardsData.rows.length == 0 &&
+        colorTrailsData.rows.length == 0 &&
+        pyramidsData.rows.length == 0
+      )
+        return false;
+      if (hanoiData.rows.length !== 0) {
+        const hanoiResults = await this.hanoiToRedcap(hanoiData);
+        if (hanoiResults) await this._db.execute(`delete from HanoiTest`);
       }
+      if (bellsData.rows.length !== 0) {
+        const bellsResults = await this.bellsToRedcap(bellsData);
+        if (bellsResults) await this._db.execute(`delete from bellsTest`);
+      }
+
+      if (corsiData.rows.length !== 0) {
+        const corsiResults = await this.corsiToRedcap(corsiData);
+        if (corsiResults) await this._db.execute(`delete from corsiTest`);
+      }
+
+      if (cardsData.rows.length !== 0) {
+        const cardsResults = await this.cardsToRedcap(cardsData);
+        if (cardsResults) await this._db.execute(`delete from cardsTest`);
+      }
+
+      if (colorTrailsData.rows.length !== 0) {
+        const colorTrailsResults = await this.colorTrailsToRedcap(
+          colorTrailsData
+        );
+        if (colorTrailsResults)
+          await this._db.execute(`delete from ColorTrailsTest`);
+      }
+
+      if (pyramidsData.rows.length !== 0) {
+        const pyramidsResults = await this.pyramidsToRedcap(pyramidsData);
+        if (pyramidsResults)
+          await this._db.execute(`delete from pyramidsAndPalmtreesTest`);
+      }
+
+      return true;
     } catch (e) {
       console.log(e);
     }

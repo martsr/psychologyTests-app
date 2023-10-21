@@ -1,36 +1,37 @@
 export default class CardsTestRow {
-    constructor(
-      aPatientNumber, 
-      aProfessionalNumber, 
-      aDate, 
-      criteria,
-      catchPersistence,
-      mistakePersistence,
-      round,
-      event,
-      timeInMs) {
-        this.patientNumber = aPatientNumber;
-        this.professionalNumber = aProfessionalNumber; 
-        this.date = aDate; 
-        this.criteria = criteria;
-        this.catchPersistence = catchPersistence;
-        this.mistakePersistence = mistakePersistence;
-        this.round = round;
-        this.event = event;
-        this.timeInMs = timeInMs;
-      }
-  
-      sqlInsertText() {
-        return `insert into cardsTest (
-                  patientNumber,
-                  professionalNumber,
+  constructor(
+    aPatientNumber,
+    aProfessionalNumber,
+    aDate,
+    criteria,
+    catchPersistence,
+    mistakePersistence,
+    round,
+    event,
+    timeInMs
+  ) {
+    this.patientNumber = aPatientNumber;
+    this.professionalNumber = aProfessionalNumber;
+    this.date = aDate;
+    this.criteria = criteria;
+    this.catchPersistence = catchPersistence;
+    this.mistakePersistence = mistakePersistence;
+    this.round = round;
+    this.event = event;
+    this.timeInMs = timeInMs;
+  }
+
+  sqlInsertText() {
+    return `insert into cardsTest (
+                  patient_number,
+                  professional_number,
                   date,
                   criteria,
-                  catchPersistence,
-                  mistakePersistence,
+                  catch_persistence,
+                  mistake_persistence,
                   round,
                   event,
-                  timeInMs) 
+                  time_in_ms) 
                 values (
                   '${this.patientNumber}',
                   '${this.professionalNumber}',
@@ -41,6 +42,6 @@ export default class CardsTestRow {
                   '${this.round}',
                   '${this.event}',
                   ${this.timeInMs}
-                );`
-      }
+                );`;
   }
+}

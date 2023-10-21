@@ -1,7 +1,7 @@
-import { NavigationContainer, useIsFocused } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Text, View, TextInput, ScrollView, Alert } from "react-native";
+import { Text, View, ScrollView, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -12,21 +12,14 @@ import HanoiTest from "./screens/HanoiTest/HanoiTest";
 import CorsiTest from "./screens/CorsiTest/CorsiTest";
 import CardTest from "./screens/CardTest/CardTest";
 import ColorTrailsTest from "./screens/ColorTrailsTest/ColorTrailsTest";
-import DatabaseService from "./services/DatabaseService";
 import { useEffect, useState } from "react";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
-import * as MediaLibrary from "expo-media-library";
-
 import DropDownPicker from "react-native-dropdown-picker";
 DropDownPicker.setListMode("SCROLLVIEW");
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import userReducer from "./redux/reducers/user";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import storage from 'redux-persist/lib/storage';
 import {
   persistReducer,
   FLUSH,
@@ -39,7 +32,6 @@ import {
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import colors from "./config/colors";
-import AppButton from "./components/AppButton";
 import UploadButton from "./components/UploadButton";
 import TestsNames from "./Helpers/TestsNames";
 import RedcapService from "./services/RedcapService";
@@ -86,19 +78,6 @@ export default function App() {
                 ),
               }}
             ></Tab.Screen>
-            {/* <Tab.Screen
-              name="Descargas"
-              component={DownloadsTab}
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="download"
-                    color={color}
-                    size={size}
-                  />
-                ),
-              }}
-            ></Tab.Screen> */}
             <Tab.Screen
               name="Subir a RedCap"
               component={UploadToRedCap}
@@ -231,220 +210,14 @@ function UploadToRedCap() {
   );
 
   async function upload() {
-    console.log("Aprete el boton de Subir");
-    //llamo a funcion que sube a redcap
     const upload = await RedcapService.instance().getTestResults();
-    if (upload) {
+
+    if (upload == true) {
       Alert.alert("Datos subidos de manera exitosa");
-    }
-  }
-}
-
-function DownloadsTab() {
-  const isFocused = useIsFocused();
-
-  const [testsDropdownOpen, setTestsDropdownOpen] = useState(false);
-  const [selectedTestValue, setSelectedTestValue] = useState(null);
-
-  async function saveFile(data, testName) {
-    let directoryUri = FileSystem.documentDirectory;
-    let fileUri = directoryUri + testName + ".csv";
-    await FileSystem.writeAsStringAsync(fileUri, data, {
-      encoding: FileSystem.EncodingType.UTF8,
-    });
-    return fileUri;
-  }
-
-  async function shareFile(fileUri) {
-    const canShare = await Sharing.isAvailableAsync();
-    // Check if permission granted
-    if (canShare) {
-      try {
-        const res = await Sharing.shareAsync(fileUri);
-        console.log("shareAsync", res);
-        return true;
-      } catch {
-        return false;
-      }
-    } else {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status === "granted") {
-        // Permisos otorgados, puedes utilizar el método shareAsync
-        const res = await Sharing.shareAsync(fileUri);
-        console.log("shareAsync", res);
-      } else {
-        // El usuario no otorgó permisos, muestra un mensaje o solicita los permisos nuevamente
-        alert("no se otorgaron permisos");
-      }
-    }
-  }
-
-  function subtractMonths(date, months) {
-    date.setMonth(date.getMonth() - months);
-    return date;
-  }
-
-  const [fromDate, setFromDate] = useState(
-    subtractMonths(new Date(new Date().setUTCHours(0, 0, 0, 0)), 1)
-  );
-  const [fromDateShow, setFromDateShow] = useState(false);
-  const onChangeFromDate = (event, selectedDate) => {
-    const currentDate = new Date(selectedDate.setUTCHours(0, 0, 0, 0));
-    setFromDateShow(false);
-    setFromDate(currentDate);
-  };
-  const showFromDate = () => {
-    setFromDateShow(true);
-  };
-
-  const [toDate, setToDate] = useState(
-    new Date(new Date().setUTCHours(23, 59, 59, 999))
-  );
-  const [toDateShow, setToDateShow] = useState(false);
-  const onChangeToDate = (event, selectedDate) => {
-    const currentDate = new Date(selectedDate.setUTCHours(23, 59, 59, 999));
-    setToDateShow(false);
-    setToDate(currentDate);
-  };
-  const showToDate = () => {
-    setToDateShow(true);
-  };
-
-  const [patientNumberToFilter, setPatientNumberToFilter] = useState(null);
-
-  return (
-    <ScrollView
-      style={{
-        paddingHorizontal: 75,
-        paddingTop: 30,
-      }}
-    >
-      <View style={{ height: 1000 }}>
-        <Text
-          style={{
-            marginTop: 10,
-            alignSelf: "flex-start",
-            color: colors.title,
-            fontSize: 30,
-            fontWeight: "bold",
-          }}
-        >
-          Descargas
-        </Text>
-        <View
-          style={{
-            alignSelf: "center",
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: colors.white,
-            width: 600,
-            paddingVertical: 40,
-            borderRadius: 20,
-            marginTop: 20,
-            marginBottom: 80,
-          }}
-        >
-          <Text>Seleccione la prueba</Text>
-          <DropDownPicker
-            dropDownContainerStyle={{ minHeight: 250 }}
-            containerStyle={{
-              marginTop: 15,
-              marginBottom: 20,
-              width: 300,
-              zIndex: 999,
-            }}
-            open={testsDropdownOpen}
-            value={selectedTestValue}
-            items={[
-              {
-                label: "Pirámides y palmeras",
-                value: TestsNames.pyramidAndPalmTreesTest,
-              },
-              { label: "Campanas", value: TestsNames.bellTest },
-              { label: "Cartas", value: TestsNames.cardTest },
-              { label: "Hanoi", value: TestsNames.hanoiTest },
-              { label: "Corsi", value: TestsNames.corsiTest },
-              { label: "Color Trails", value: TestsNames.colorTrailsTest },
-            ]}
-            setOpen={setTestsDropdownOpen}
-            setValue={setSelectedTestValue}
-            placeholder="Seleccione una prueba"
-          />
-          <Text
-            style={{ textDecorationLine: "underline", color: "blue" }}
-            onPress={showFromDate}
-          >
-            Seleccionar fecha desde
-          </Text>
-          <Text>{fromDate.toLocaleString("es-ES").split(",")[0]}</Text>
-          {fromDateShow && (
-            <DateTimePicker
-              style={{
-                height: 60,
-              }}
-              maximumDate={new Date()}
-              value={fromDate}
-              mode={"date"}
-              onChange={onChangeFromDate}
-            />
-          )}
-          <Text
-            style={{ textDecorationLine: "underline", color: "blue" }}
-            onPress={showToDate}
-          >
-            Seleccionar fecha hasta
-          </Text>
-          <Text>{toDate.toLocaleString("es-ES").split(",")[0]}</Text>
-          {toDateShow && (
-            <DateTimePicker
-              style={{
-                height: 60,
-                marginBottom: 20,
-              }}
-              maximumDate={new Date()}
-              value={toDate}
-              mode={"date"}
-              onChange={onChangeToDate}
-            />
-          )}
-          <Text>Filtar por número de paciente (opcional)</Text>
-          <TextInput
-            value={patientNumberToFilter}
-            onChangeText={(patientNumber) =>
-              setPatientNumberToFilter(patientNumber)
-            }
-            placeholder="Número de paciente"
-            keyboardType="numeric"
-          ></TextInput>
-          <AppButton
-            style={{
-              width: 300,
-              marginTop: 20,
-            }}
-            color={colors.button}
-            title="Descargar"
-            onPress={download}
-          />
-        </View>
-      </View>
-    </ScrollView>
-  );
-
-  async function download() {
-    try {
-      console.log("valores: -----> ", selectedTestValue, fromDate, toDate);
-      const csvResult = await DatabaseService.instance().getCSVResults(
-        selectedTestValue,
-        fromDate,
-        toDate,
-        patientNumberToFilter
+    } else if (upload == false) Alert.alert("No hay datos para cargar");
+    else
+      Alert.alert(
+        "Error en conexion con Red Cap, verifique que el servidor este prendido."
       );
-      console.log("CSV ------- ", csvResult);
-      saveFile(csvResult, selectedTestValue).then((fileUri) => {
-        return shareFile(fileUri);
-      });
-    } catch (e) {
-      alert(e.message);
-    }
   }
 }

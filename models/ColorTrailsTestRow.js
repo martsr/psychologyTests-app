@@ -1,30 +1,31 @@
 export default class ColorTrailsTestRow {
-    constructor(
-        aPatientNumber,
-        aProfessionalNumber,
-        aDate,
-        pathLength,
-        validMovements,
-        invalidMovements,
-        timeElapsed,) {
-            this.patientNumber = aPatientNumber;
-            this.professionalNumber = aProfessionalNumber;
-            this.date = aDate;
-            this.pathLength = pathLength;
-            this.validMovements = validMovements;
-            this.invalidMovements = invalidMovements;
-            this.timeElapsed = timeElapsed;
-        }
+  constructor(
+    aPatientNumber,
+    aProfessionalNumber,
+    aDate,
+    pathLength,
+    validMovements,
+    invalidMovements,
+    timeElapsed
+  ) {
+    this.patientNumber = aPatientNumber;
+    this.professionalNumber = aProfessionalNumber;
+    this.date = aDate;
+    this.pathLength = pathLength;
+    this.validMovements = validMovements;
+    this.invalidMovements = invalidMovements;
+    this.timeElapsed = timeElapsed;
+  }
 
-        sqlInsertText() {
-            return `insert into ColorTrailsTest(
-                        patientNumber,
-                        professionalNumber,
+  sqlInsertText() {
+    return `insert into ColorTrailsTest(
+                        patient_number,
+                        professional_number,
                         date,
-                        pathLength,
-                        validMovements,
-                        invalidMovements,
-                        timeElapsed)
+                        path_length,
+                        valid_movements,
+                        invalid_movements,
+                        time_elapsed)
                     values (
                         '${this.patientNumber}',
                         '${this.professionalNumber}',
@@ -33,6 +34,6 @@ export default class ColorTrailsTestRow {
                         ${this.validMovements},
                         '${this.invalidMovements}',
                         ${this.timeElapsed}
-                    );`
-        }
+                    );`;
+  }
 }
