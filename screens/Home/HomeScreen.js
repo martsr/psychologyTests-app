@@ -51,9 +51,6 @@ class HomeScreen extends React.Component {
   selectTest = (testName) => {
     const patientNumber = this.state.patientNumber;
     const interviewerNumber = this.state.interviewerNumber;
-    console.log(patientNumber);
-    console.log(this.props);
-    console.log(interviewerNumber);
     if (patientNumber && interviewerNumber)
       this.props.navigation.navigate(testName, {
         patientNumber,
@@ -111,7 +108,6 @@ class HomeScreen extends React.Component {
                 style={styles.patientModal.input}
                 value={this.state.patientNumber}
                 onChangeText={(patientNumber) => {
-                  console.log(this.state.patientNumber);
                   this.setState({ patientNumber });
                   this.props.setUser(patientNumber);
                 }}
@@ -127,9 +123,7 @@ class HomeScreen extends React.Component {
               textColor={colors.white}
               style={styles.patientModal.button}
               onPress={() => {
-                console.log(this.state.patientNumber);
                 this.props.setUser(this.state.patientNumber);
-                //this.state.patientNumber = "";
                 this.props.setInterviewer(this.state.interviewerNumber);
               }}
             ></AppButton>
