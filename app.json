@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Tests de psicología",
-    "slug": "testsPsicologia",
+    "slug": "psychologytests-app",
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/icon.png",
@@ -31,7 +31,9 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.uca.tpf2023",
-      "permissions": ["WRITE_EXTERNAL_STORAGE"]
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -39,7 +41,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "19cbe40c-796b-4ece-9173-26d451c29ca5"
+        "projectId": "e1cd3fab-5b56-423c-aa79-e437cb39e066"
       }
     },
     "plugins": [
@@ -49,6 +51,7 @@
           "initialOrientation": "LANDSCAPE"
         }
       ]
-    ]
+    ],
+    "owner": "martyrs"
   }
 }

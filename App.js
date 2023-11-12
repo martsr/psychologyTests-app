@@ -190,8 +190,8 @@ function UploadToRedCap() {
         >
           <Text>
             {disabled
-              ? "No hay internet, por favor compruebe su conexion"
-              : "Por favor aprete el boton Subir para continuar"}
+              ? "No hay internet, por favor compruebe su conexión"
+              : "Por favor aprete el botón Subir para continuar"}
           </Text>
 
           <UploadButton
