@@ -61,10 +61,6 @@ class HomeScreen extends React.Component {
     }
   };
 
-  componentDidUpdate() {
-    this.state.patientNumber = "";
-  }
-
   render() {
     return (
       <SafeAreaView>
@@ -107,10 +103,9 @@ class HomeScreen extends React.Component {
               <TextInput
                 style={styles.patientModal.input}
                 value={this.state.patientNumber}
-                onChangeText={(patientNumber) => {
-                  this.setState({ patientNumber });
-                  this.props.setUser(patientNumber);
-                }}
+                onChangeText={(patientNumber) =>
+                  this.setState({ patientNumber })
+                }
                 placeholder="Número de paciente"
                 keyboardType="numeric"
               ></TextInput>
