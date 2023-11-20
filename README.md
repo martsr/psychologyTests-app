@@ -1,23 +1,21 @@
-# psychologyTests-app
+# Trabajo Final: Continuación del desarrollo de aplicación para la realización de pruebas cognitivas que permita el almacenamiento local de datos y su exportación.
 
-Psychology tests app with RedCap integration build in React Native with Expo
+# Noviembre 2023
+
+- Lenguaje utilizado: JavaScript
+- Framework: React Native
+- Autores: Glenn Craig y Martina Rivero
 
 # setup enviroment
 
-1. Clone the repo with `git clone git@github.com:TF-ING-INF-UCA-2022/psychologyTests-app.git`
-2. Install node v18.12.1
-   - if you have nvm run:
+1. Instalar node v18.12.1
+   - Si se tiene nvm colocar los siguientes comandos en la terminal:
    - `nvm install 18.12.1`
    - `nvm use 18.12.1`
-3. Navigate inside the repo and run `npm i`
-4. Start the app with `npm run start`
+2. En terminal escribir: `npm i`
+3. Correr el siguiente comando para poder utilizar la aplicacion `npm run start`
 
-# To build an apk on EAS
+# Para crear un APK en EAS
 
-    1. Add EAS project id on app.json
-    2. Run ```eas build -p android --profile preview ```
-
-### Dev Team
-
-- Glenn Craig
-- Martina Rivero
+    1. Agregar  EAS project id en app.json (esta se consigue en expo.dev)
+    2. correr `eas build -p android --profile preview`
